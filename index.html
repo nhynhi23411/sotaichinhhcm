@@ -942,6 +942,13 @@ body.is-presentation,
   .layout { grid-template-columns: 1fr; }
   section, .card, .header, .page-header { box-shadow: none; }
 }
+@media print {
+  .sidebar { display: none; }     /* bỏ sidebar khi in */
+  .layout { grid-template-columns: 1fr; }
+  section { break-inside: avoid; page-break-inside: avoid; }
+  thead { display: table-header-group; } /* header bảng lặp lại mỗi trang */
+  body { background: #fff; }
+}
 
     </style>
   </head>
