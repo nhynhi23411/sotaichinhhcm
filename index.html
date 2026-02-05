@@ -5,1250 +5,1701 @@
     <title>Tờ trình sắp xếp, xử lý nhà đất công</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-      :root {
-        --bg: #f5f7fb;
-        --bg-card: #ffffff;
-        --border-soft: #d8dfeb;
-        --primary: #1c62b9;
-        --primary-soft: #e4efff;
-        --accent: #ff9800;
-        --text-main: #1f2933;
-        --text-soft: #6b7785;
-        --table-header: #edf2ff;
-        --danger: #d32f2f;
-        --success: #2e7d32;
-        --info: #0288d1;
-        --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.08);
-        --radius-lg: 16px;
-        --radius-md: 10px;
-        --radius-sm: 6px;
-      }
+      /* =========================================================
+   EXECUTIVE DASHBOARD CSS
+   Readable • Presentable • Maintainable (no !important abuse)
+   ========================================================= */
 
-      * {
-        box-sizing: border-box;
-      }
+/* =========================================================
+   1) DESIGN TOKENS (:root)
+   ========================================================= */
+:root {
+  /* Surfaces */
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-bg-soft: #f3f7ff;
 
-      body {
-        margin: 0;
-        font-family:
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
-        background: linear-gradient(135deg, #eef2ff, #f9fafb);
-        color: var(--text-main);
-        line-height: 1.55;
-      }
+  --color-border: #d9e2f2;
+  --color-border-soft: #e6edf9;
 
-      .page {
-        max-width: 1240px;
-        margin: 24px auto 40px;
-        padding: 0 16px 32px;
-      }
+  /* Brand palette */
+  --color-primary: #2c6ddd;
+  --color-primary-deep: #1054c7;
+  --color-primary-deeper: #0f459f;
+  --color-accent: #21a6e9;
 
-      /* ===== HEADER ===== */
-      .doc-header {
-        display: flex;
-        justify-content: space-between;
-        gap: 24px;
-        margin-bottom: 24px;
-        font-family: "Segoe UI", system-ui, sans-serif;
-      }
+  --color-soft-1: #75b8fc;
+  --color-soft-2: #9dcafc;
+  --color-soft-3: #c8d9fd;
 
-      .doc-block-left,
-      .doc-block-right {
-        flex: 1;
-        padding: 12px 16px;
-        border-radius: 12px;
-        border: 1px solid #d0d7e2;
-        background: #ffffff;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-        position: relative;
-        overflow: hidden;
-      }
+  /* Deep teal accent (charts/rare emphasis) */
+  --color-teal-deep: #005073;
+  --color-teal: #117dad;
 
-      .doc-block-left::before,
-      .doc-block-right::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background: radial-gradient(
-          circle at top left,
-          rgba(59, 130, 246, 0.08),
-          transparent 55%
-        );
-      }
+  /* Semantic (soft) */
+  --color-success: #1f7a43;
+  --color-success-bg: #eaf7ef;
 
-      .doc-block-left {
-        flex: 1.2;
-      }
+  --color-danger: #b42318;
+  --color-danger-bg: #fdecec;
 
-      .doc-title-line {
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #6b7280;
-        position: relative;
-        z-index: 1;
-      }
+  --color-warning: #b45309;
+  --color-warning-bg: #fff4e5;
 
-      .doc-main-title {
-        font-size: 17px;
-        font-weight: 700;
-        margin-top: 4px;
-        text-transform: uppercase;
-        position: relative;
-        z-index: 1;
-      }
+  --color-info: #155eef;
+  --color-info-bg: #eaf1ff;
 
-      .doc-number {
-        margin-top: 8px;
-        font-size: 14px;
-        position: relative;
-        z-index: 1;
-      }
+  /* Typography */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-weight-regular: 500;
+  --font-weight-semibold: 650;
+  --font-weight-bold: 750;
 
-      .doc-subject {
-        margin-top: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        position: relative;
-        z-index: 1;
-      }
+  --text-1: #0f172a;
+  --text-2: #334155;
+  --text-3: #64748b;
 
-      .doc-receiver {
-        margin-top: 6px;
-        font-size: 14px;
-        position: relative;
-        z-index: 1;
-      }
+  /* Font sizes */
+  --fs-00: 0.875rem;  /* 14 */
+  --fs-0: 1rem;       /* 16 */
+  --fs-1: 1.125rem;   /* 18 */
+  --fs-2: 1.25rem;    /* 20 */
+  --fs-3: 1.5rem;     /* 24 */
+  --fs-4: 2rem;       /* 32 */
+  --fs-kpi: clamp(1.75rem, 2.2vw, 2.5rem);
 
-      .doc-block-right {
-        text-align: center;
-      }
+  --lh-tight: 1.25;
+  --lh-normal: 1.5;
+  --lh-loose: 1.6;
 
-      .doc-main-title-right {
-        font-size: 15px;
-        font-weight: 700;
-        text-transform: uppercase;
-        position: relative;
-        z-index: 1;
-      }
+  /* Spacing */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 40px;
 
-      .doc-subtitle-right {
-        font-size: 14px;
-        font-style: italic;
-        margin-top: 4px;
-        position: relative;
-        z-index: 1;
-      }
+  /* Radius & shadows */
+  --r-sm: 12px;
+  --r-md: 14px;
+  --r-lg: 16px;
 
-      .doc-divider {
-        width: 120px;
-        height: 1px;
-        background: #9ca3af;
-        margin: 6px auto 0;
-        position: relative;
-        z-index: 1;
-      }
+  --shadow-1: 0 8px 22px rgba(15, 23, 42, 0.08);
+  --shadow-2: 0 14px 30px rgba(15, 23, 42, 0.10);
 
-      .doc-date {
-        font-size: 13px;
-        color: #4b5563;
-        margin-top: 10px;
-        text-align: right;
-        position: relative;
-        z-index: 1;
-      }
+  /* Layout */
+  --container-max: 1280px;
+  --content-max: 1120px;
+  --sidebar-w: 300px;
 
-      /* ===== TOP BADGE ===== */
-      .summary-strip {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-bottom: 24px;
-      }
+  /* Tables */
+  --table-header-bg: #eaf1ff;
+  --table-zebra: #f8fbff;
+  --table-hover: #eef5ff;
 
-      .chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 13px;
-        background: var(--primary-soft);
-        color: var(--primary);
-        border: 1px solid rgba(37, 99, 235, 0.25);
-      }
+  /* Focus */
+  --focus: 0 0 0 3px rgba(44, 109, 221, 0.25);
+  --focus-border: rgba(44, 109, 221, 0.55);
+}
 
-      .chip span.value {
-        font-weight: 700;
-      }
+@media (prefers-contrast: more) {
+  :root {
+    --text-2: #1f2a3a;
+    --text-3: #41536a;
+    --color-border: #c9d5eb;
+  }
+}
 
-      .chip.muted {
-        background: #f3f4f6;
-        border-color: #e5e7eb;
-        color: var(--text-soft);
-      }
+/* =========================================================
+   2) BASE STYLES
+   ========================================================= */
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
-      /* ===== LAYOUT ===== */
-      .layout {
-        display: grid;
-        grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-        gap: 18px;
-      }
+html { color-scheme: light; }
 
-      @media (max-width: 900px) {
-        .layout {
-          grid-template-columns: 1fr;
-        }
-        .doc-header {
-          flex-direction: column;
-        }
-      }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--lh-loose);
+  color: var(--text-1);
+  background: linear-gradient(135deg, var(--color-bg-soft), #ffffff 55%);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
 
-      /* ===== SIDEBAR ===== */
-      .sidebar {
-        position: sticky;
-        top: 12px;
-        align-self: flex-start;
-      }
+a {
+  color: var(--color-primary-deep);
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+a:hover { text-decoration: underline; }
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 10px;
+}
 
-      .card {
-        background: var(--bg-card);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-soft);
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        padding: 12px 14px;
-        margin-bottom: 12px;
-      }
+h1, h2, h3 {
+  line-height: var(--lh-tight);
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.01em;
+}
+h1 { font-size: var(--fs-4); }
+h2 { font-size: var(--fs-3); }
+h3 { font-size: var(--fs-2); }
 
-      .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 4px;
-      }
+p { margin: 0 0 var(--sp-3); color: var(--text-2); }
 
-      .card-title {
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--text-soft);
-      }
+::selection { background: rgba(33, 166, 233, 0.18); }
 
-      .card-tag {
-        font-size: 11px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        background: #ecfdf3;
-        color: var(--success);
-        border: 1px solid rgba(22, 163, 74, 0.25);
-      }
+/* numeric alignment helper */
+.num, .kpi-value, .kpi-value * { font-variant-numeric: tabular-nums; }
 
-      .toc {
-        list-style: none;
-        padding: 0;
-        margin: 4px 0 0;
-        font-size: 13px;
-      }
+/* =========================================================
+   3) LAYOUT
+   ========================================================= */
+.page {
+  max-width: var(--container-max);
+  margin: var(--sp-6) auto;
+  padding: 0 var(--sp-4) var(--sp-6);
+}
 
-      .toc li {
-        margin: 3px 0;
-      }
+.layout {
+  display: grid;
+  grid-template-columns: minmax(260px, var(--sidebar-w)) minmax(0, 1fr);
+  gap: var(--sp-5);
+  align-items: start;
+}
+@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
 
-      .toc a {
-        color: var(--text-main);
-        text-decoration: none;
-        padding: 4px 6px;
-        border-radius: var(--radius-sm);
-        display: block;
-        transition:
-          background 0.15s,
-          color 0.15s;
-      }
+.sidebar {
+  position: sticky;
+  top: var(--sp-4);
+  align-self: start;
+}
 
-      .toc a:hover {
-        background: var(--primary-soft);
-        color: var(--primary);
-      }
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
 
-      .legend {
-        font-size: 11px;
-        color: var(--text-soft);
-        margin-top: 4px;
-        line-height: 1.4;
-      }
+section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: var(--sp-5);
+  scroll-margin-top: 92px;
+}
 
-      .legend span {
-        display: inline-flex;
-        align-items: center;
-        margin-right: 8px;
-      }
+/* section note */
+.section-note {
+  color: var(--text-3);
+  font-size: var(--fs-0);
+  margin-bottom: var(--sp-3);
+}
 
-      .dot {
-        width: 9px;
-        height: 9px;
-        border-radius: 999px;
-        margin-right: 4px;
-        display: inline-block;
-      }
+/* =========================================================
+   4) COMPONENTS – HEADER + SUMMARY + CARD
+   ========================================================= */
 
-      .dot.keep {
-        background: var(--success);
-      }
-      .dot.transfer {
-        background: var(--info);
-      }
-      .dot.reclaim {
-        background: var(--danger);
-      }
-      .dot.convert {
-        background: var(--accent);
-      }
+/* Page header */
+.header,
+.page-header {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-5);
+  position: relative;
+  overflow: hidden;
+}
+.header::before,
+.page-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(44, 109, 221, 0.12), transparent 55%),
+    radial-gradient(circle at 95% 30%, rgba(33, 166, 233, 0.10), transparent 50%);
+  pointer-events: none;
+}
+.header > *,
+.page-header > * { position: relative; }
 
-      /* ===== MAIN CONTENT ===== */
-      .content {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
+/* Optional centering helpers */
+.page-header.is-centered { text-align: center; }
+.page-header .eyebrow,
+.page-header .meta { text-align: center; margin-left: auto; margin-right: auto; }
+.page-header .title {
+  color: var(--color-primary-deeper);
+  text-align: center;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-      section {
-        background: var(--bg-card);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-soft);
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        padding: 14px 18px 16px;
-        scroll-margin-top: 80px;
-      }
+/* Generic card */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+.card-title {
+  font-size: var(--fs-00);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: var(--font-weight-bold);
+}
+.card-tag {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid rgba(31, 122, 67, 0.22);
+  font-weight: var(--font-weight-semibold);
+}
 
-      section h2 {
-        margin: 0 0 8px;
-        font-size: 18px;
-        border-left: 4px solid var(--primary);
-        padding-left: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-      }
+/* Summary strip -> grid to avoid “lonely last chip” */
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: stretch;
+  max-width: var(--container-max);
+  margin: 0 auto var(--sp-5);
+}
+@media (max-width: 1200px) { .summary-strip { grid-template-columns: repeat(3, minmax(220px, 1fr)); } }
+@media (max-width: 900px)  { .summary-strip { grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
+@media (max-width: 520px)  { .summary-strip { grid-template-columns: 1fr; } }
 
-      section h3 {
-        margin: 10px 0 6px;
-        font-size: 15px;
-        color: var(--primary);
-      }
+/* Chip (executive: blue bg + white text) */
+.chip {
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-deep));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(16, 84, 199, 0.18);
+  padding: 12px 16px;
+  border-radius: 999px;
 
-      .section-note {
-        font-size: 13px;
-        color: var(--text-soft);
-        margin-bottom: 8px;
-      }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 
-      /* ===== TABLES ===== */
-      .table-wrap {
-        margin-top: 8px;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--border-soft);
-        overflow: hidden;
-        background: #f9fafb;
-      }
+  min-height: 48px;
+}
+.chip .label {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.95rem;
+  line-height: 1.25;
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-        min-width: 100%;
-      }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 78%;
+}
+.chip .value {
+  color: #ffffff;
+  font-weight: var(--font-weight-bold);
+  font-size: 1.15rem;
+  white-space: nowrap;
 
-      thead {
-        background: var(--table-header);
-      }
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+}
+.chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(16, 84, 199, 0.22);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.chip.is-primary {
+  background: linear-gradient(180deg, var(--color-primary-deep), var(--color-primary-deeper));
+}
+.chip.is-neutral { /* force old neutral chips to match theme */
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-deep));
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.18);
+}
 
-      th,
-      td {
-        padding: 6px 8px;
-        border-bottom: 1px solid #e5e7eb;
-        text-align: left;
-        vertical-align: top;
-      }
+/* =========================================================
+   5) TITLES (H2 / H3 SECTION TITLES)
+   ========================================================= */
 
-      th {
-        font-weight: 600;
-        white-space: nowrap;
-      }
+/* Base title box style (no left bar, per your request) */
+section h2,
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
 
-      tbody tr:nth-child(even) {
-        background: #fdfefe;
-      }
+  margin: 0 0 var(--sp-3);
+  padding: 14px 16px;
 
-      tbody tr:hover {
-        background: #eef2ff;
-      }
+  color: var(--color-primary-deeper);
+  font-weight: var(--font-weight-bold);
+  font-size: clamp(1.25rem, 1.4vw, 1.6rem);
 
-      .num {
-        text-align: right;
-        white-space: nowrap;
-        font-variant-numeric: tabular-nums;
-      }
+  border-radius: 14px;
+  border: 1px solid rgba(44, 109, 221, 0.18);
+  background: linear-gradient(180deg, rgba(44, 109, 221, 0.08), rgba(255, 255, 255, 0.98));
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 2px 7px;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 500;
-        border: 1px solid rgba(148, 163, 184, 0.5);
-        background: #f9fafb;
-      }
+  position: relative;
+  overflow: hidden;
+}
+section h2::after,
+.section-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(33, 166, 233, 0.14), transparent 55%),
+    radial-gradient(circle at 90% 0%, rgba(44, 109, 221, 0.12), transparent 50%);
+  pointer-events: none;
+}
+section h2 > *,
+.section-title > * { position: relative; }
 
-      .badge.keep {
-        border-color: #a5d6a7;
-        color: #1b5e20;
-        background: #ecfdf3;
-      }
-      .badge.transfer {
-        border-color: #81d4fa;
-        color: #01579b;
-        background: #e3f2fd;
-      }
-      .badge.reclaim {
-        border-color: #ef9a9a;
-        color: #b71c1c;
-        background: #ffebee;
-      }
-      .badge.convert {
-        border-color: #ffcc80;
-        color: #e65100;
-        background: #fff8e1;
-      }
+/* right pill in title */
+.pill-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
 
-      .highlight-number {
-        font-weight: 700;
-        color: var(--primary);
-        font-size: 14px;
-      }
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 
-      .pill-title {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        font-size: 11px;
-        background: #eff6ff;
-        color: #1d4ed8;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-      }
+  background: #ffffff;
+  color: var(--color-primary-deeper);
+  border: 1px solid rgba(44, 109, 221, 0.30);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
+  font-weight: var(--font-weight-bold);
+}
 
-      .kpi-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 6px 0 8px;
-      }
+/* H3 section-title in same box style */
+h3.section-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
 
-      .kpi {
-        flex: 1 1 140px;
-        min-width: 0;
-        font-size: 12px;
-        background: #f9fafb;
-        padding: 6px 8px;
-        border-radius: var(--radius-md);
-        border: 1px dashed #e5e7eb;
-      }
+  margin: 0 0 var(--sp-4);
+  padding: 14px 16px;
 
-      .kpi-label {
-        color: var(--text-soft);
-        margin-bottom: 3px;
-      }
+  border-radius: 14px;
+  border: 1px solid rgba(44, 109, 221, 0.18);
+  background: linear-gradient(180deg, rgba(44, 109, 221, 0.08), rgba(255, 255, 255, 0.98));
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
 
-      .kpi-value {
-        font-weight: 600;
-        color: var(--primary);
-      }
+  color: var(--color-primary-deeper);
+  font-weight: var(--font-weight-bold);
+  font-size: clamp(1.15rem, 1.2vw, 1.35rem);
+  line-height: var(--lh-tight);
+
+  position: relative;
+  overflow: hidden;
+}
+h3.section-title::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(33,166,233,0.14), transparent 55%),
+    radial-gradient(circle at 92% 0%, rgba(44,109,221,0.12), transparent 50%);
+  pointer-events: none;
+}
+h3.section-title > *{ position: relative; }
+
+/* Default section h3 (non boxed) */
+section h3 {
+  margin: var(--sp-4) 0 var(--sp-2);
+  color: var(--color-primary-deeper);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* =========================================================
+   6) SIDEBAR – TOC + LEGEND
+   ========================================================= */
+.toc {
+  list-style: none;
+  margin: var(--sp-2) 0 0;
+  padding: 0;
+  font-size: var(--fs-0);
+}
+.toc li { margin: 6px 0; }
+.toc a {
+  display: block;
+  padding: 10px 10px;
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  border: 1px solid transparent;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+.toc a:hover {
+  background: rgba(44, 109, 221, 0.10);
+  border-color: rgba(44, 109, 221, 0.18);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.toc a:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-color: var(--focus-border);
+}
+
+/* Legend */
+.legend {
+  margin-top: var(--sp-2);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  line-height: var(--lh-normal);
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  margin-right: var(--sp-3);
+  white-space: nowrap;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-right: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+}
+.dot.keep    { background: rgba(31, 122, 67, 0.85); }
+.dot.transfer{ background: rgba(21, 94, 239, 0.75); }
+.dot.reclaim { background: rgba(180, 35, 24, 0.75); }
+.dot.convert { background: rgba(180, 83, 9, 0.75); }
+
+/* =========================================================
+   7) KPI CARDS
+   ========================================================= */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin: var(--sp-3) 0 var(--sp-4);
+}
+@media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .kpi-row { grid-template-columns: 1fr; } }
+
+.kpi,
+.kpi-card {
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-md);
+  padding: var(--sp-4);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  min-width: 0;
+}
+
+.kpi-label {
+  font-size: var(--fs-00);
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--sp-2);
+  font-weight: var(--font-weight-semibold);
+}
+
+.kpi-value {
+  font-size: var(--fs-2);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-1);
+}
+
+/* Hero KPI */
+.kpi-card.is-hero .kpi-value,
+.kpi-value.is-hero,
+.kpi-value--hero {
+  font-size: var(--fs-kpi);
+  color: var(--color-primary-deeper);
+  letter-spacing: 0.01em;
+}
+
+.kpi-note {
+  margin-top: var(--sp-2);
+  color: var(--text-3);
+  font-size: var(--fs-00);
+  line-height: var(--lh-normal);
+}
+
+/* KPI modifiers */
+.kpi-row--aligned{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+.kpi-row--aligned .kpi{
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+@media (max-width: 1100px){ .kpi-row--aligned{ grid-template-columns: repeat(2, 1fr);} }
+@media (max-width: 560px){  .kpi-row--aligned{ grid-template-columns: 1fr;} }
+
+.kpi-row--two{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 900px){ .kpi-row--two{ grid-template-columns: 1fr; } }
+
+.kpi-row--center{
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* KPI theme: soft blue cards (used across sections) */
+.kpi-row--softblue .kpi{
+  background: linear-gradient(180deg, rgba(44,109,221,0.72), rgba(16,84,199,0.72));
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 12px 26px rgba(16,84,199,0.16);
+}
+.kpi-row--softblue .kpi-label{
+  color: rgba(255,255,255,0.90);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.95rem;
+}
+.kpi-row--softblue .kpi-value{
+  color: #ffffff;
+  font-weight: 850;
+  font-size: 1.45rem;
+  letter-spacing: 0.01em;
+}
+.kpi-row--softblue .kpi-note{
+  color: rgba(255,255,255,0.86);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.kpi-row--softblue .kpi:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(16, 84, 199, 0.22);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+/* =========================================================
+   8) BADGES (STATUS / DELTA)
+   ========================================================= */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  border: 1px solid var(--color-border);
+  background: #f7f9ff;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.badge::before {
+  content: "●";
+  font-size: 0.6em;
+  opacity: 0.8;
+}
+
+/* status */
+.badge.keep {
+  background: var(--color-success-bg);
+  border-color: rgba(31, 122, 67, 0.22);
+  color: #145c31;
+}
+.badge.keep::before { color: rgba(31, 122, 67, 0.9); }
+
+.badge.transfer {
+  background: var(--color-info-bg);
+  border-color: rgba(21, 94, 239, 0.22);
+  color: #0b3fb3;
+}
+.badge.transfer::before { color: rgba(21, 94, 239, 0.9); }
+
+.badge.reclaim {
+  background: var(--color-danger-bg);
+  border-color: rgba(180, 35, 24, 0.22);
+  color: #7a1a13;
+}
+.badge.reclaim::before { color: rgba(180, 35, 24, 0.9); }
+
+.badge.convert {
+  background: var(--color-warning-bg);
+  border-color: rgba(180, 83, 9, 0.22);
+  color: #7a3b06;
+}
+.badge.convert::before { color: rgba(180, 83, 9, 0.9); }
+
+/* delta */
+.badge.delta::before { content: "▲"; }
+.badge.delta.down::before { content: "▼"; }
+.badge.delta.up   { background: rgba(31, 122, 67, 0.12); border-color: rgba(31, 122, 67, 0.26); }
+.badge.delta.down { background: rgba(180, 35, 24, 0.10); border-color: rgba(180, 35, 24, 0.22); }
+
+/* =========================================================
+   9) TABLES
+   ========================================================= */
+.table-wrap {
+  margin-top: var(--sp-3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--color-border-soft);
+  overflow: hidden;
+  background: #ffffff;
+}
+
+table,
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--fs-0);
+  color: var(--text-2);
+}
+
+thead { background: var(--table-header-bg); }
+
+th,
+td {
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--color-border-soft);
+  vertical-align: top;
+}
+
+th {
+  color: var(--text-1);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+tbody tr:nth-child(even) { background: var(--table-zebra); }
+tbody tr:hover { background: var(--table-hover); }
+
+td.num, th.num, .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table .total-row,
+tbody tr.total-row {
+  background: rgba(44, 109, 221, 0.06);
+}
+.table .total-row td,
+tbody tr.total-row td {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-1);
+}
+
+/* Focus inside tables */
+.table-wrap :is(a, button, [tabindex]):focus-visible,
+.table-wrap :is(th, td):focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 10px;
+}
+
+/* =========================================================
+   10) CHART + CALLOUT + BUTTON
+   ========================================================= */
+.chart-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: var(--sp-5);
+}
+.chart-card .chart-title {
+  font-size: var(--fs-2);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-1);
+  margin-bottom: var(--sp-2);
+}
+.chart-card .chart-subtitle {
+  font-size: var(--fs-0);
+  color: var(--text-3);
+  margin-bottom: var(--sp-4);
+}
+.chart-card .legend { font-size: var(--fs-0); color: var(--text-2); }
+
+.callout {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1px solid var(--color-border-soft);
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+.callout::before {
+  content: "";
+  border-radius: 999px;
+  background: rgba(44, 109, 221, 0.8);
+}
+.callout .callout-title {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-1);
+  margin-bottom: 4px;
+}
+.callout .callout-text { color: var(--text-2); margin: 0; }
+
+.callout.is-info    { background: var(--color-info-bg); }
+.callout.is-info::before { background: rgba(21, 94, 239, 0.85); }
+.callout.is-success { background: var(--color-success-bg); }
+.callout.is-success::before { background: rgba(31, 122, 67, 0.85); }
+.callout.is-warning { background: var(--color-warning-bg); }
+.callout.is-warning::before { background: rgba(180, 83, 9, 0.85); }
+.callout.is-danger  { background: var(--color-danger-bg); }
+.callout.is-danger::before  { background: rgba(180, 35, 24, 0.85); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(44, 109, 221, 0.28);
+  background: rgba(44, 109, 221, 0.10);
+  color: var(--color-primary-deeper);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+.btn:hover {
+  background: rgba(44, 109, 221, 0.14);
+  border-color: rgba(44, 109, 221, 0.36);
+  transform: translateY(-1px);
+}
+.btn:focus-visible { outline: none; box-shadow: var(--focus); }
+
+.btn.is-primary {
+  background: var(--color-primary);
+  border-color: rgba(16, 84, 199, 0.40);
+  color: #ffffff;
+}
+.btn.is-primary:hover { background: var(--color-primary-deep); }
+
+/* =========================================================
+   11) SECTION-SPECIFIC OVERRIDES (keep in one place)
+   ========================================================= */
+
+/* 3.1.2: badges inside its tables as pills (consistent a/b/c) */
+#nhom-so-nganh .table-wrap .badge{
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 850;
+  font-size: 0.95rem;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: #ffffff;
+}
+#nhom-so-nganh .table-wrap .badge.keep{
+  color: #166534;
+  background: rgba(22,101,52,0.10);
+  border-color: rgba(22,101,52,0.18);
+}
+#nhom-so-nganh .table-wrap .badge.transfer{
+  color: var(--color-primary-deeper);
+  background: rgba(44,109,221,0.10);
+  border-color: rgba(44,109,221,0.18);
+}
+#nhom-so-nganh .table-wrap .badge.reclaim{
+  color: #991b1b;
+  background: rgba(153,27,27,0.10);
+  border-color: rgba(153,27,27,0.18);
+}
+#nhom-so-nganh .table-wrap .badge.convert{
+  color: #7a3b06;
+  background: rgba(180,83,9,0.10);
+  border-color: rgba(180,83,9,0.18);
+}
+
+/* 3.1.3: action labels in table as pills (fix “not in box”) */
+#nhom-xa-phuong .table-wrap .badge{
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-weight: 850;
+  font-size: 0.95rem;
+  line-height: 1;
+  white-space: nowrap;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: #ffffff;
+  box-shadow: 0 6px 14px rgba(15,23,42,0.06);
+}
+#nhom-xa-phuong .table-wrap .badge.keep{
+  color: #166534;
+  background: rgba(22,101,52,0.10);
+  border-color: rgba(22,101,52,0.18);
+}
+#nhom-xa-phuong .table-wrap .badge.convert{
+  color: #7a3b06;
+  background: rgba(180,83,9,0.12);
+  border-color: rgba(180,83,9,0.18);
+}
+#nhom-xa-phuong .table-wrap .badge.transfer{
+  color: var(--color-primary-deeper);
+  background: rgba(44,109,221,0.10);
+  border-color: rgba(44,109,221,0.18);
+}
+#nhom-xa-phuong .table-wrap .badge.reclaim{
+  color: #991b1b;
+  background: rgba(153,27,27,0.10);
+  border-color: rgba(153,27,27,0.18);
+}
+
+/* =========================================================
+   12) PRESENTATION MODE (.is-presentation)
+   ========================================================= */
+.is-presentation {
+  --fs-1: 1.25rem; /* 20 */
+  --fs-2: 1.5rem;  /* 24 */
+  --fs-3: 1.875rem;/* 30 */
+  --sp-5: 28px;
+  --sp-6: 40px;
+  --sidebar-w: 320px;
+}
+
+body.is-presentation,
+.is-presentation body {
+  font-size: var(--fs-1);
+  background: linear-gradient(135deg, #f1f6ff, #ffffff 60%);
+}
+
+.is-presentation .page {
+  max-width: var(--content-max);
+  margin: var(--sp-6) auto;
+}
+
+.is-presentation .dot { width: 12px; height: 12px; }
+.is-presentation .card-title { font-size: var(--fs-0); }
+.is-presentation .toc a { padding: 12px 12px; font-size: var(--fs-0); }
+
+.is-presentation .kpi-value.is-hero,
+.is-presentation .kpi-card.is-hero .kpi-value,
+.is-presentation .kpi-value--hero {
+  font-size: clamp(2.2rem, 3vw, 3.1rem);
+}
+
+.is-presentation th,
+.is-presentation td { padding: 14px 14px; }
+
+.is-presentation .summary-strip { gap: 16px; }
+.is-presentation .chip { padding: 14px 18px; min-height: 54px; }
+.is-presentation .chip .label { font-size: 1.05rem; }
+.is-presentation .chip .value { font-size: 1.35rem; }
+
+/* =========================================================
+   13) ACCESSIBILITY + REDUCED MOTION
+   ========================================================= */
+:focus-visible { outline: none; box-shadow: var(--focus); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* =========================================================
+   14) PRINT
+   ========================================================= */
+@media print {
+  body { background: #ffffff !important; }
+  .sidebar { display: none; }
+  .layout { grid-template-columns: 1fr; }
+  section, .card, .header, .page-header { box-shadow: none; }
+}
+
     </style>
   </head>
   <body>
-    <div class="page-header" style="
-  margin-bottom: 20px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(15,23,42,0.06);
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-">
-  <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280;">
-    BẢNG TỔNG HỢP
-  </div>
+    <!-- =====================================================
+     REPORT HEADER (Executive-friendly)
+     ===================================================== -->
+<header class="page-header is-centered" role="banner">
+  <div class="page-header__inner">
+    <div class="eyebrow">BẢNG TỔNG HỢP</div>
 
-  <div style="font-size: 17px; font-weight: 700; margin-top: 4px;">
-    KẾT QUẢ RÀ SOÁT VÀ PHƯƠNG ÁN SẮP XẾP, XỬ LÝ TÀI SẢN CÔNG LÀ NHÀ, ĐẤT
-  </div>
+    <h1 class="title">
+      KẾT QUẢ RÀ SOÁT VÀ PHƯƠNG ÁN SẮP XẾP, XỬ LÝ TÀI SẢN CÔNG LÀ NHÀ, ĐẤT TRÊN ĐỊA BÀN THÀNH PHỐ
+    </h1>
 
-  <div style="font-size: 13px; color: #4b5563; margin-top: 6px;">
-    Đơn vị lập: Sở Tài chính TP. Hồ Chí Minh · Số liệu đến 01/2026
+    <p class="meta">Đơn vị lập: Sở Tài chính TP. Hồ Chí Minh · Số liệu đến 01/2026</p>
+    <p class="meta">Phạm vi: Nhà, đất công do các cơ quan, tổ chức, đơn vị trên địa bàn Thành phố quản lý, sử dụng</p>
   </div>
+</header>
 
-  <div style="font-size: 13px; color: #4b5563; margin-top: 2px;">
-    Phạm vi: Nhà, đất công do các cơ quan, tổ chức, đơn vị trên địa bàn Thành phố quản lý, sử dụng
+<!-- =====================================================
+     TOP SUMMARY (KPIs in chips)
+     ===================================================== -->
+<section class="summary" aria-label="Tổng quan số liệu">
+  <div class="summary-strip is-centered" role="list">
+    <div class="chip is-primary" role="listitem">
+      <span class="label">Tổng số cơ sở nhà, đất</span>
+      <span class="value">14.559</span>
+    </div>
+
+    <div class="chip is-neutral" role="listitem">
+      <span class="label">Trước rà soát (12/2025)</span>
+      <span class="value">12.166</span>
+    </div>
+
+    <div class="chip" role="listitem">
+      <span class="label">Khối cơ quan Đảng</span>
+      <span class="value">333</span>
+    </div>
+
+    <div class="chip" role="listitem">
+      <span class="label">Khối sở, ngành, ĐVSN</span>
+      <span class="value">1.291</span>
+    </div>
+
+    <div class="chip" role="listitem">
+      <span class="label">Khối phường, xã</span>
+      <span class="value">8.150</span>
+    </div>
+
+    <div class="chip" role="listitem">
+      <span class="label">Quỹ đất, nhà chuyên ngành</span>
+      <span class="value">2.993</span>
+    </div>
+
+    <div class="chip is-neutral" role="listitem">
+      <span class="label">Doanh nghiệp 100% vốn Nhà nước</span>
+      <span class="value">919</span>
+    </div>
+
+    <div class="chip is-neutral" role="listitem">
+      <span class="label">Tiếp nhận từ Trung ương</span>
+      <span class="value">60</span>
+    </div>
   </div>
-</div>
+</section>
 
-      <!-- TOP SUMMARY -->
-      <div class="summary-strip">
-        <div class="chip">
-          Tổng số cơ sở nhà, đất:
-          <span class="value">14.559</span>
-        </div>
-        <div class="chip muted">
-          Trước rà soát (12/2025):
-          <span class="value">12.166</span>
-        </div>
-        <div class="chip">
-          Khối cơ quan Đảng:
-          <span class="value">333</span>
-        </div>
-        <div class="chip">
-          Khối sở, ngành, ĐVSN:
-          <span class="value">1.291</span>
-        </div>
-        <div class="chip">
-          Khối phường, xã:
-          <span class="value">8.150</span>
-        </div>
-        <div class="chip">
-          Quỹ đất, nhà chuyên ngành:
-          <span class="value">2.993</span>
-        </div>
-        <div class="chip muted">
-          Doanh nghiệp 100% vốn Nhà nước:
-          <span class="value">919</span>
-        </div>
-        <div class="chip muted">
-          Tiếp nhận từ Trung ương:
-          <span class="value">60</span>
-        </div>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Mục lục nhanh</div>
+        <div class="card-tag">Tổng quan</div>
       </div>
 
-      <div class="layout">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Mục lục nhanh</div>
-              <div class="card-tag">Tổng quan</div>
-            </div>
-            <ul class="toc">
-              <li><a href="#phan-iii">III. Kết quả rà soát</a></li>
-              <li><a href="#nhom-dang">3.1.1 Cơ quan Đảng</a></li>
-              <li><a href="#nhom-so-nganh">3.1.2 Sở, ban, ngành</a></li>
-              <li><a href="#nhom-xa-phuong">3.1.3 UBND cấp xã</a></li>
-              <li><a href="#nhom-quy-dat">3.2 Quỹ đất, nhà chuyên ngành</a></li>
-              <li><a href="#trungtam-bd">3.5.1 TTHC Bình Dương</a></li>
-              <li><a href="#trungtam-brvt">3.5.2 TTHC BR-VT</a></li>
-            </ul>
-            <div class="legend">
-              <span><span class="dot keep"></span>Giữ lại</span>
-              <span><span class="dot transfer"></span>Điều chuyển</span>
-              <span><span class="dot reclaim"></span>Thu hồi</span>
-              <span><span class="dot convert"></span>Chuyển đổi công năng</span>
-            </div>
-          </div>
-        </aside>
+      <ul class="toc">
+        <li><a href="#phan-iii">III. Kết quả rà soát</a></li>
+        <li><a href="#nhom-dang">3.1.1 Cơ quan Đảng</a></li>
+        <li><a href="#nhom-so-nganh">3.1.2 Sở, ban, ngành</a></li>
+        <li><a href="#nhom-xa-phuong">3.1.3 UBND cấp xã</a></li>
+        <li><a href="#nhom-quy-dat">3.2 Quỹ đất, nhà chuyên ngành</a></li>
+        <li><a href="#trungtam-bd">3.5.1 TTHC Bình Dương</a></li>
+        <li><a href="#trungtam-brvt">3.5.2 TTHC BR-VT</a></li>
+      </ul>
 
-        <!-- MAIN CONTENT -->
-        <main class="content">
-          <!-- III. Kết quả rà soát -->
-          <section id="phan-iii">
-            <h2>
-              III. Kết quả rà soát, thống kê
-              <span class="pill-title">Tổng số liệu</span>
-            </h2>
-            <p class="section-note">
-              Tóm tắt số lượng cơ sở nhà, đất theo từng khối quản lý và thay đổi
-              so với báo cáo tháng 12/2025.
-            </p>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nhóm tài sản</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Ghi chú</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Khối cơ quan Đảng và doanh nghiệp kinh tế Đảng</td>
-                    <td class="num">333</td>
-                    <td>Không thay đổi so với Tờ trình 15944/TTr-STC.</td>
-                  </tr>
-                  <tr>
-                    <td>Sở, ban, ngành; ĐVSN công lập; MTTQ, đoàn thể, hội</td>
-                    <td class="num">1.291</td>
-                    <td>Tăng 48 cơ sở so với 1.243 cơ sở trước đây.</td>
-                  </tr>
-                  <tr>
-                    <td>Khối phường, xã, đặc khu</td>
-                    <td class="num">10.369</td>
-                    <td>
-                      Tăng 2.743 cơ sở (bao gồm tài sản công khác, nhà công vụ,
-                      đất công, nền tái định cư).
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Trụ sở làm việc, cơ sở sự nghiệp thuộc UBND cấp xã</td>
-                    <td class="num">8.150</td>
-                    <td>Tăng 524 cơ sở so với 7.626 trước đây.</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Tổ chức phát triển quỹ đất, tổ chức quản lý kinh doanh
-                      nhà, DNNN thuộc Thành phố
-                    </td>
-                    <td class="num">2.993</td>
-                    <td>Tăng 29 cơ sở so với 2.964.</td>
-                  </tr>
-                  <tr>
-                    <td>Cơ sở nhà, đất do Trung ương chuyển giao</td>
-                    <td class="num">60</td>
-                    <td>Đã có quyết định chuyển giao về UBND Thành phố.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Tổng cộng tài sản công là nhà, đất</strong></td>
-                    <td class="num highlight-number">14.559</td>
-                    <td>
-                      Tổng số tài sản thuộc thẩm quyền quản lý của Thành phố
-                      hiện nay.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3.1.1 Khối Đảng -->
-          <section id="nhom-dang">
-            <h2>
-              3.1.1. Khối cơ quan Đảng
-              <span class="pill-title">333 cơ sở</span>
-            </h2>
-            <p class="section-note">
-              Gồm trụ sở, cơ sở hoạt động sự nghiệp và tài sản phục vụ khai thác
-              cho thuê thuộc cơ quan Đảng và doanh nghiệp vốn ngân sách Đảng.
-            </p>
-
-            <div class="kpi-row">
-              <div class="kpi">
-                <div class="kpi-label">Tổng số hiện trạng</div>
-                <div class="kpi-value">333 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Giữ lại làm trụ sở</div>
-                <div class="kpi-value">30 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Dự kiến chuyển giao về Thành phố</div>
-                <div class="kpi-value">60 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Tiếp tục khai thác cho thuê</div>
-                <div class="kpi-value">236 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">DN 100% vốn ngân sách Đảng</div>
-                <div class="kpi-value">07 cơ sở</div>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Phương án xử lý</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Ghi chú</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-                    <td class="num">30</td>
-                    <td>
-                      Một phần trụ sở của Văn phòng Thành ủy, một số cơ sở báo
-                      chí.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span class="badge transfer"
-                        >Chuyển giao về Thành phố</span
-                      >
-                    </td>
-                    <td class="num">60</td>
-                    <td>
-                      Văn phòng Thành ủy dự kiến chuyển về Thành phố để lập
-                      phương án xử lý.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge keep">Khai thác cho thuê</span></td>
-                    <td class="num">236</td>
-                    <td>
-                      Tiếp tục quản lý, khai thác cho thuê theo quy định pháp
-                      luật và quy định của Đảng.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span class="badge keep"
-                        >Doanh nghiệp vốn ngân sách Đảng</span
-                      >
-                    </td>
-                    <td class="num">7</td>
-                    <td>
-                      Nhà, đất do doanh nghiệp 100% vốn ngân sách Đảng quản lý.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3.1.2 Khối sở, ban, ngành -->
-          <section id="nhom-so-nganh">
-            <h2>
-              3.1.2. Sở, ban, ngành; ĐVSN; MTTQ, đoàn thể
-              <span class="pill-title">1.291 cơ sở</span>
-            </h2>
-            <p class="section-note">
-              Gồm khối cơ quan chuyên môn thuộc Thành phố, các đơn vị sự nghiệp
-              công lập và khối Mặt trận, tổ chức chính trị – xã hội, hội quần
-              chúng.
-            </p>
-
-            <h3>a) Khối sở, ban, ngành và đơn vị trực thuộc</h3>
-            <div class="kpi-row">
-              <div class="kpi">
-                <div class="kpi-label">Hiện trạng trước sắp xếp</div>
-                <div class="kpi-value">1.020 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Giữ lại làm trụ sở</div>
-                <div class="kpi-value">931 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Điều chuyển</div>
-                <div class="kpi-value">31 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Thu hồi</div>
-                <div class="kpi-value">58 cơ sở</div>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Phương án xử lý</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Ví dụ/ghi chú</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-                    <td class="num">931</td>
-                    <td>
-                      Bố trí tiếp tục sử dụng làm trụ sở làm việc theo mô hình
-                      mới.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge transfer">Điều chuyển</span></td>
-                    <td class="num">31</td>
-                    <td>
-                      Do thay đổi cơ quan quản lý cấp trên, sắp xếp đơn vị sự
-                      nghiệp.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge reclaim">Thu hồi</span></td>
-                    <td class="num">58</td>
-                    <td>
-                      Không còn nhu cầu; đã có quyết định thu hồi; nằm trong
-                      phạm vi dự án.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>b) Đơn vị sự nghiệp công lập thuộc Thành phố</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nhóm</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Phương án</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Hiện trạng trước sắp xếp</td>
-                    <td class="num">126</td>
-                    <td>Tổng số cơ sở nhà, đất của ĐVSN công lập.</td>
-                  </tr>
-                  <tr>
-                    <td>Giữ lại làm trụ sở</td>
-                    <td class="num">124</td>
-                    <td>Tiếp tục sử dụng ổn định.</td>
-                  </tr>
-                  <tr>
-                    <td>Điều chuyển</td>
-                    <td class="num">1</td>
-                    <td>
-                      Điều chuyển cho đơn vị khác theo phương án phê duyệt.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Thu hồi</td>
-                    <td class="num">1</td>
-                    <td>Hoàn trả do không còn nhu cầu sử dụng.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>c) MTTQ, tổ chức chính trị – xã hội, hội quần chúng</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nhóm</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Phương án</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Hiện trạng trước sắp xếp</td>
-                    <td class="num">145</td>
-                    <td>Tổng số trụ sở, cơ sở nhà, đất.</td>
-                  </tr>
-                  <tr>
-                    <td>Giữ lại làm trụ sở</td>
-                    <td class="num">116</td>
-                    <td>Tiếp tục sử dụng làm trụ sở làm việc.</td>
-                  </tr>
-                  <tr>
-                    <td>Điều chuyển</td>
-                    <td class="num">16</td>
-                    <td>Bố trí sang các cơ quan khác có nhu cầu.</td>
-                  </tr>
-                  <tr>
-                    <td>Thu hồi</td>
-                    <td class="num">13</td>
-                    <td>Các cơ sở không còn nhu cầu, đề nghị hoàn trả.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3.1.3 UBND cấp xã -->
-          <section id="nhom-xa-phuong">
-            <h2>
-              3.1.3. Khối UBND cấp xã
-              <span class="pill-title">8.150 cơ sở</span>
-            </h2>
-            <p class="section-note">
-              Nhóm có số lượng tài sản lớn nhất, gồm trụ sở làm việc, cơ sở sự
-              nghiệp và tài sản công khác sau sắp xếp chính quyền địa phương 2
-              cấp.
-            </p>
-
-            <div class="kpi-row">
-              <div class="kpi">
-                <div class="kpi-label">Hiện trạng trụ sở, cơ sở sự nghiệp</div>
-                <div class="kpi-value">8.150 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Giữ lại làm trụ sở</div>
-                <div class="kpi-value">7.883 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Chuyển đổi công năng</div>
-                <div class="kpi-value">103 cơ sở</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Điều chuyển</div>
-                <div class="kpi-value">3 cơ sở</div>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Phương án</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Chi tiết</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-                    <td class="num">7.883</td>
-                    <td>
-                      Tiếp tục sử dụng trụ sở hiện hữu cho mô hình tổ chức mới.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span class="badge convert">Chuyển đổi công năng</span>
-                    </td>
-                    <td class="num">103</td>
-                    <td>
-                      Y tế: 7; Giáo dục: 16; Văn hóa, thể thao: 29; Mục đích
-                      công cộng (công viên, sân chơi, phòng chống thiên tai,…):
-                      51.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><span class="badge transfer">Điều chuyển</span></td>
-                    <td class="num">3</td>
-                    <td>
-                      Chuyển cho cơ quan khác (ví dụ Bộ Công an, Cục Thuế) theo
-                      nhu cầu sử dụng.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <span class="badge reclaim"
-                        >Thu hồi, giao đơn vị chuyên ngành</span
-                      >
-                    </td>
-                    <td class="num">161</td>
-                    <td>
-                      148 cơ sở giao Trung tâm Quản lý nhà và Giám định xây
-                      dựng, 13 cơ sở giao Trung tâm Phát triển quỹ đất.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3.2 Quỹ đất, nhà chuyên ngành -->
-          <section id="nhom-quy-dat">
-            <h2>
-              3.2. Quỹ đất, nhà do đơn vị chuyên ngành quản lý
-              <span class="pill-title">2.993 cơ sở</span>
-            </h2>
-            <p class="section-note">
-              Gồm Trung tâm Phát triển quỹ đất, các tổ chức quản lý – kinh doanh
-              nhà địa phương, doanh nghiệp dịch vụ công, công ty Kho bãi.
-            </p>
-
-            <h3>3.2.1 Trung tâm Phát triển quỹ đất</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Trạng thái</th>
-                    <th class="num">Số địa chỉ</th>
-                    <th>Ghi chú</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Quản lý tổng cộng</td>
-                    <td class="num">584</td>
-                    <td>Theo báo cáo của Trung tâm Phát triển quỹ đất.</td>
-                  </tr>
-                  <tr>
-                    <td>Đã tiếp nhận</td>
-                    <td class="num">463</td>
-                    <td>Đã hoàn tất thủ tục bàn giao.</td>
-                  </tr>
-                  <tr>
-                    <td>Chưa tiếp nhận</td>
-                    <td class="num">118</td>
-                    <td>Đang trong quá trình thực hiện thủ tục.</td>
-                  </tr>
-                  <tr>
-                    <td>Đã bồi thường GPMB</td>
-                    <td class="num">1</td>
-                    <td>Đã hoàn thành giải phóng mặt bằng.</td>
-                  </tr>
-                  <tr>
-                    <td>Đang bàn giao cho địa phương</td>
-                    <td class="num">1</td>
-                    <td>Chuẩn bị giao cho địa phương quản lý.</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Bàn giao cho dự án công viên – đài tưởng niệm COVID-19
-                    </td>
-                    <td class="num">1</td>
-                    <td>Địa chỉ số 1 đường Lý Thái Tổ.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>3.2.2 Tổ chức quản lý, kinh doanh nhà địa phương</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Đơn vị</th>
-                    <th class="num">Số cơ sở</th>
-                    <th>Trạng thái chính</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Trung tâm Quản lý nhà và Giám định xây dựng</td>
-                    <td class="num">51</td>
-                    <td>
-                      1 tạm quản lý chờ bàn giao; 4 đang cho thuê; còn lại để
-                      trống, lập kế hoạch khai thác.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Trung tâm Quản lý hạ tầng kỹ thuật tỉnh Bà Rịa – Vũng Tàu
-                    </td>
-                    <td class="num">31</td>
-                    <td>Lập kế hoạch khai thác, cho thuê.</td>
-                  </tr>
-                  <tr>
-                    <td>Công ty TNHH MTV Quản lý kinh doanh nhà Thành phố</td>
-                    <td class="num">344</td>
-                    <td>
-                      3 cơ sở dự kiến điều chuyển cho Bộ Công an; phần còn lại
-                      tiếp tục quản lý, khai thác.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Công ty TNHH MTV Dịch vụ công quận, huyện</td>
-                    <td class="num">1.031</td>
-                    <td>
-                      Đang lập thủ tục bàn giao về Trung tâm Quản lý nhà và Giám
-                      định xây dựng.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Công ty Kho bãi Thành phố</td>
-                    <td class="num">33</td>
-                    <td>
-                      Đang lập thủ tục bàn giao để khai thác cho thuê theo Nghị
-                      định 108/2025/NĐ-CP.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3.5.1 Trung tâm hành chính Bình Dương -->
-          <section id="trungtam-bd">
-            <h2>
-              3.5.1. Trung tâm hành chính tập trung Bình Dương
-              <span class="pill-title">550 nhân sự – 15 đơn vị</span>
-            </h2>
-            <p class="section-note">
-              Khu Trung tâm hành chính Bình Dương (tòa nhà 1, 2, quảng trường –
-              bãi xe) chuyển đổi công năng thành Trung tâm Đa chức năng Khoa học
-              công nghệ, đồng thời di dời các đơn vị đang làm việc tới các trụ
-              sở khác.
-            </p>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Hạng mục</th>
-                    <th class="num">Diện tích đất</th>
-                    <th class="num">Diện tích sàn</th>
-                    <th>Ghi chú</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Tòa nhà 1 – TTHC tỉnh Bình Dương</td>
-                    <td class="num">30.985 m²</td>
-                    <td class="num">104.416,80 m²</td>
-                    <td>
-                      Đơn vị quản lý: Ban Quản lý Tòa nhà TTHC Bình Dương.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Tòa nhà 2 – Trung tâm Hội nghị và Triển lãm</td>
-                    <td class="num">13.859 m²</td>
-                    <td class="num">16.357,30 m²</td>
-                    <td>Phục vụ hội nghị, triển lãm.</td>
-                  </tr>
-                  <tr>
-                    <td>Quảng trường, công viên, bãi đậu xe, hạ tầng chung</td>
-                    <td class="num">97.897 m²</td>
-                    <td class="num">85.589,48 m²</td>
-                    <td>Hạ tầng phục vụ khu TTHC.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>Nhu cầu bố trí và phương án di dời</h3>
-            <div class="kpi-row">
-              <div class="kpi">
-                <div class="kpi-label">Nhân sự làm việc (16/01/2026)</div>
-                <div class="kpi-value">481 người (21 đơn vị)</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Nhu cầu sau rà soát (21/01/2026)</div>
-                <div class="kpi-value">550 người (15 đơn vị)</div>
-              </div>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Trụ sở tiếp nhận</th>
-                    <th>Đơn vị bố trí</th>
-                    <th class="num">Nhân sự</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      Trụ sở Báo Bình Dương cũ – 543 Lê Hồng Phong, Phú Lợi
-                    </td>
-                    <td>
-                      Sở Nông nghiệp và Môi trường; Văn phòng đăng ký đất đai;
-                      Chi cục Bảo vệ môi trường.
-                    </td>
-                    <td class="num">59 + 58 + 16</td>
-                  </tr>
-                  <tr>
-                    <td>Cục Hải quan tỉnh Bình Dương cũ – Đại Lộ Bình Dương</td>
-                    <td>
-                      TT Phát triển công nghiệp – CN hỗ trợ; Phòng ĐKKD & TT hỗ
-                      trợ DN; Ban QL Khu chế xuất – CN; TT QH Phát triển đô thị
-                      Bình Dương; TT Phục vụ HCC.
-                    </td>
-                    <td class="num">76 + 16 + 45 + 43 + 33</td>
-                  </tr>
-                  <tr>
-                    <td>Trụ sở Đảng ủy phường Thủ Dầu Một – 14B Bạch Đằng</td>
-                    <td>
-                      Sở An toàn thực phẩm; MTTQ; Thanh tra Thành phố; Sở Y tế;
-                      Sở Nội vụ; các Ban QLDA.
-                    </td>
-                    <td class="num">51 + 6 + 12 + 16 + 24 + 70 + 25</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- 3.5.2 Trung tâm hành chính BR-VT -->
-          <section id="trungtam-brvt">
-            <h2>
-              3.5.2. Trung tâm hành chính – chính trị Bà Rịa – Vũng Tàu
-              <span class="pill-title">230 nhân sự – 17 đơn vị</span>
-            </h2>
-            <p class="section-note">
-              Trung tâm Hành chính – Chính trị tỉnh (01 Phạm Văn Đồng) bố trí
-              cho Trường Đại học Y Dược; khu 179 Bạch Đằng tiếp tục bố trí cho
-              các cơ quan còn nhu cầu, đồng thời xem xét phương án cho huyện
-              Long Điền.
-            </p>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Khu vực</th>
-                    <th class="num">Diện tích đất</th>
-                    <th class="num">Diện tích sàn</th>
-                    <th>Phương án</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Khu TTHC – Chính trị (01 Phạm Văn Đồng)</td>
-                    <td class="num">147.856 m²</td>
-                    <td class="num">204.499 m²</td>
-                    <td>
-                      Bố trí cho Trường Đại học Y Dược theo chủ trương đã thống
-                      nhất.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Khu BQL TTHC; TTPVHC, Đoàn ĐBQH & HĐND (179 Bạch Đằng)
-                    </td>
-                    <td class="num">44.620 m²</td>
-                    <td class="num">33.030 m²</td>
-                    <td>
-                      Giữ lại bố trí cho 9 cơ quan (MTTQ, Y tế, Tài chính, Nội
-                      vụ, Công thương, Du lịch, GD&ĐT, Thanh tra, BQL Khu chế
-                      xuất – CN).
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3>Trung tâm hành chính huyện Long Điền cũ</h3>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Thông tin</th>
-                    <th class="num">Diện tích</th>
-                    <th>Phương án</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Trụ sở TTHC huyện Long Điền cũ – 1939 Quốc lộ 55</td>
-                    <td class="num">Đất: 80.420 m²; Sàn: 24.067 m²</td>
-                    <td>
-                      Tiếp tục bố trí cho UBND xã Long Điền, các trung tâm
-                      chuyên ngành và Ban QLDA; đồng thời bố trí thêm Sở NN&MT
-                      và đơn vị trực thuộc.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Phương án thu hồi (trường hợp chuyển đổi công năng)</td>
-                    <td class="num">—</td>
-                    <td>
-                      Ưu tiên bố trí cho giáo dục, y tế; sử dụng thêm các trụ sở
-                      HĐND & UBND huyện Long Điền cũ, trụ sở số 123 Bạch Đằng,
-                      số 9 Huỳnh Ngọc Hay để di dời các đơn vị.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </main>
+      <div class="legend">
+        <span><span class="dot keep"></span>Giữ lại</span>
+        <span><span class="dot transfer"></span>Điều chuyển</span>
+        <span><span class="dot reclaim"></span>Thu hồi</span>
+        <span><span class="dot convert"></span>Chuyển đổi công năng</span>
       </div>
     </div>
-  </body>
-</html>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <!-- III. Kết quả rà soát -->
+    <section id="phan-iii">
+      <h2>
+        III. Kết quả rà soát, thống kê
+        <span class="pill-title">Tổng số liệu</span>
+      </h2>
+
+      <p class="section-note">
+        Tóm tắt số lượng cơ sở nhà, đất theo từng khối quản lý và thay đổi
+        so với báo cáo tháng 12/2025.
+      </p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nhóm tài sản</th>
+              <th class="num">Số cơ sở</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Khối cơ quan Đảng và doanh nghiệp kinh tế Đảng</td>
+              <td class="num">333</td>
+              <td>Không thay đổi so với Tờ trình 15944/TTr-STC.</td>
+            </tr>
+            <tr>
+              <td>Sở, ban, ngành; ĐVSN công lập; MTTQ, đoàn thể, hội</td>
+              <td class="num">1.291</td>
+              <td>Tăng 48 cơ sở so với 1.243 cơ sở trước đây.</td>
+            </tr>
+            <tr>
+              <td>Khối phường, xã, đặc khu</td>
+              <td class="num">10.369</td>
+              <td>
+                Tăng 2.743 cơ sở (bao gồm tài sản công khác, nhà công vụ,
+                đất công, nền tái định cư).
+              </td>
+            </tr>
+            <tr>
+              <td>Trụ sở làm việc, cơ sở sự nghiệp thuộc UBND cấp xã</td>
+              <td class="num">8.150</td>
+              <td>Tăng 524 cơ sở so với 7.626 trước đây.</td>
+            </tr>
+            <tr>
+              <td>
+                Tổ chức phát triển quỹ đất, tổ chức quản lý kinh doanh
+                nhà, DNNN thuộc Thành phố
+              </td>
+              <td class="num">2.993</td>
+              <td>Tăng 29 cơ sở so với 2.964.</td>
+            </tr>
+            <tr>
+              <td>Cơ sở nhà, đất do Trung ương chuyển giao</td>
+              <td class="num">60</td>
+              <td>Đã có quyết định chuyển giao về UBND Thành phố.</td>
+            </tr>
+            <tr class="total-row">
+              <td><strong>Tổng cộng tài sản công là nhà, đất</strong></td>
+              <td class="num highlight-number">14.559</td>
+              <td>Tổng số tài sản thuộc thẩm quyền quản lý của Thành phố hiện nay.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3.1.1 Khối Đảng -->
+    <section id="nhom-dang">
+      <h3 class="section-title">3.1.1 Khối cơ quan Đảng (333 cơ sở)</h3>
+
+      <div class="kpi-row kpi-row--softblue">
+        <div class="kpi">
+          <div class="kpi-label">Tổng số tài sản khối Đảng</div>
+          <div class="kpi-value">333 cơ sở</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Văn phòng Thành ủy (gồm Báo SGGP)</div>
+          <div class="kpi-value">30 cơ sở</div>
+          <div class="kpi-note">26 cơ sở VP Thành ủy + 4 cơ sở Báo Sài Gòn Giải Phóng</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Doanh nghiệp kinh tế Đảng</div>
+          <div class="kpi-value">7 cơ sở</div>
+        </div>
+
+        <div class="kpi">
+          <div class="kpi-label">Các cơ quan Đảng khác</div>
+          <div class="kpi-value">296 cơ sở</div>
+          <div class="kpi-note">333 − 30 VP Thành ủy − 7 DN = 296</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nhóm tài sản</th>
+              <th class="num">Số cơ sở</th>
+              <th>Phương án xử lý chính</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Văn phòng Thành ủy (kể cả Báo SGGP)</td>
+              <td class="num">30</td>
+              <td>
+                Giữ lại một phần làm trụ sở; dự kiến chuyển giao
+                60 cơ sở khác do Văn phòng Thành ủy đang quản lý về Thành phố lập phương án xử lý chi tiết.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Các cơ quan Đảng khác (trừ VP Thành ủy và DN)</td>
+              <td class="num">296</td>
+              <td>
+                Chủ yếu giữ lại làm trụ sở, cơ sở hoạt động sự nghiệp
+                hoặc tiếp tục khai thác cho thuê theo quy định của Đảng và pháp luật.
+              </td>
+            </tr>
+
+            <tr>
+              <td>Doanh nghiệp 100% vốn ngân sách Đảng</td>
+              <td class="num">7</td>
+              <td>
+                Tiếp tục quản lý theo pháp luật về vốn Đảng tại doanh nghiệp,
+                đảm bảo hiệu quả, không thất thoát tài sản.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3.1.2 Khối sở, ban, ngành -->
+    <section id="nhom-so-nganh">
+      <h2>
+        3.1.2. Sở, ban, ngành; ĐVSN; MTTQ, đoàn thể
+        <span class="pill-title">1.291 cơ sở</span>
+      </h2>
+
+      <p class="section-note">
+        Gồm khối cơ quan chuyên môn thuộc Thành phố, các đơn vị sự nghiệp
+        công lập và khối Mặt trận, tổ chức chính trị – xã hội, hội quần
+        chúng.
+      </p>
+
+      <!-- a) -->
+      <h3 class="section-title">a) Khối sở, ban, ngành và đơn vị trực thuộc</h3>
+
+      <div class="kpi-row kpi-row--softblue">
+        <div class="kpi">
+          <div class="kpi-label">Hiện trạng trước sắp xếp</div>
+          <div class="kpi-value">1.020 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Giữ lại làm trụ sở</div>
+          <div class="kpi-value">931 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Điều chuyển</div>
+          <div class="kpi-value">31 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Thu hồi</div>
+          <div class="kpi-value">58 cơ sở</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Phương án xử lý</th>
+              <th class="num">Số cơ sở</th>
+              <th>Ví dụ/ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
+              <td class="num">931</td>
+              <td>Bố trí tiếp tục sử dụng làm trụ sở làm việc theo mô hình mới.</td>
+            </tr>
+            <tr>
+              <td><span class="badge transfer">Điều chuyển</span></td>
+              <td class="num">31</td>
+              <td>Do thay đổi cơ quan quản lý cấp trên, sắp xếp đơn vị sự nghiệp.</td>
+            </tr>
+            <tr>
+              <td><span class="badge reclaim">Thu hồi</span></td>
+              <td class="num">58</td>
+              <td>Không còn nhu cầu; đã có quyết định thu hồi; nằm trong phạm vi dự án.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- b) -->
+      <h3 class="section-title">b) Đơn vị sự nghiệp công lập thuộc Thành phố</h3>
+
+      <div class="kpi-row kpi-row--softblue">
+        <div class="kpi">
+          <div class="kpi-label">Hiện trạng trước sắp xếp</div>
+          <div class="kpi-value">126 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Giữ lại làm trụ sở</div>
+          <div class="kpi-value">124 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Điều chuyển</div>
+          <div class="kpi-value">1 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Thu hồi</div>
+          <div class="kpi-value">1 cơ sở</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nhóm</th>
+              <th class="num">Số cơ sở</th>
+              <th>Phương án</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hiện trạng trước sắp xếp</td>
+              <td class="num">126</td>
+              <td>Tổng số cơ sở nhà, đất của ĐVSN công lập.</td>
+            </tr>
+            <tr>
+              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
+              <td class="num">124</td>
+              <td>Tiếp tục sử dụng ổn định.</td>
+            </tr>
+            <tr>
+              <td><span class="badge transfer">Điều chuyển</span></td>
+              <td class="num">1</td>
+              <td>Điều chuyển cho đơn vị khác theo phương án phê duyệt.</td>
+            </tr>
+            <tr>
+              <td><span class="badge reclaim">Thu hồi</span></td>
+              <td class="num">1</td>
+              <td>Hoàn trả do không còn nhu cầu sử dụng.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- c) -->
+      <h3 class="section-title">c) MTTQ, tổ chức chính trị – xã hội, hội quần chúng</h3>
+
+      <div class="kpi-row kpi-row--softblue">
+        <div class="kpi">
+          <div class="kpi-label">Hiện trạng trước sắp xếp</div>
+          <div class="kpi-value">145 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Giữ lại làm trụ sở</div>
+          <div class="kpi-value">116 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Điều chuyển</div>
+          <div class="kpi-value">16 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Thu hồi</div>
+          <div class="kpi-value">13 cơ sở</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nhóm</th>
+              <th class="num">Số cơ sở</th>
+              <th>Phương án</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hiện trạng trước sắp xếp</td>
+              <td class="num">145</td>
+              <td>Tổng số trụ sở, cơ sở nhà, đất.</td>
+            </tr>
+            <tr>
+              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
+              <td class="num">116</td>
+              <td>Tiếp tục sử dụng làm trụ sở làm việc.</td>
+            </tr>
+            <tr>
+              <td><span class="badge transfer">Điều chuyển</span></td>
+              <td class="num">16</td>
+              <td>Bố trí sang các cơ quan khác có nhu cầu.</td>
+            </tr>
+            <tr>
+              <td><span class="badge reclaim">Thu hồi</span></td>
+              <td class="num">13</td>
+              <td>Các cơ sở không còn nhu cầu, đề nghị hoàn trả.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3.1.3 UBND cấp xã -->
+    <section id="nhom-xa-phuong">
+      <h2>
+        3.1.3. Khối UBND cấp xã
+        <span class="pill-title">8.150 cơ sở</span>
+      </h2>
+
+      <p class="section-note">
+        Nhóm có số lượng tài sản lớn nhất, gồm trụ sở làm việc, cơ sở sự
+        nghiệp và tài sản công khác sau sắp xếp chính quyền địa phương 2
+        cấp.
+      </p>
+
+      <div class="kpi-row kpi-row--softblue kpi-row--aligned">
+        <div class="kpi">
+          <div class="kpi-label">Hiện trạng trụ sở, cơ sở sự nghiệp</div>
+          <div class="kpi-value">8.150 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Giữ lại làm trụ sở</div>
+          <div class="kpi-value">7.883 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Chuyển đổi công năng</div>
+          <div class="kpi-value">103 cơ sở</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Điều chuyển</div>
+          <div class="kpi-value">3 cơ sở</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Phương án</th>
+              <th class="num">Số cơ sở</th>
+              <th>Chi tiết</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
+              <td class="num">7.883</td>
+              <td>Tiếp tục sử dụng trụ sở hiện hữu cho mô hình tổ chức mới.</td>
+            </tr>
+
+            <tr>
+              <td><span class="badge convert">Chuyển đổi công năng</span></td>
+              <td class="num">103</td>
+              <td>
+                Y tế: 7; Giáo dục: 16; Văn hóa, thể thao: 29; Mục đích công cộng
+                (công viên, sân chơi, phòng chống thiên tai,…): 51.
+              </td>
+            </tr>
+
+            <tr>
+              <td><span class="badge transfer">Điều chuyển</span></td>
+              <td class="num">3</td>
+              <td>Chuyển cho cơ quan khác (ví dụ Bộ Công an, Cục Thuế) theo nhu cầu sử dụng.</td>
+            </tr>
+
+            <tr>
+              <td><span class="badge reclaim">Thu hồi, giao đơn vị chuyên ngành</span></td>
+              <td class="num">161</td>
+              <td>
+                148 cơ sở giao Trung tâm Quản lý nhà và Giám định xây dựng,
+                13 cơ sở giao Trung tâm Phát triển quỹ đất.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3.2 Quỹ đất, nhà chuyên ngành -->
+    <section id="nhom-quy-dat">
+      <h2>
+        3.2. Quỹ đất, nhà do đơn vị chuyên ngành quản lý
+        <span class="pill-title">2.993 cơ sở</span>
+      </h2>
+
+      <p class="section-note">
+        Gồm Trung tâm Phát triển quỹ đất, các tổ chức quản lý – kinh doanh
+        nhà địa phương, doanh nghiệp dịch vụ công, công ty Kho bãi.
+      </p>
+
+      <h3>3.2.1 Trung tâm Phát triển quỹ đất</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Trạng thái</th>
+              <th class="num">Số địa chỉ</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Quản lý tổng cộng</td>
+              <td class="num">584</td>
+              <td>Theo báo cáo của Trung tâm Phát triển quỹ đất.</td>
+            </tr>
+            <tr>
+              <td>Đã tiếp nhận</td>
+              <td class="num">463</td>
+              <td>Đã hoàn tất thủ tục bàn giao.</td>
+            </tr>
+            <tr>
+              <td>Chưa tiếp nhận</td>
+              <td class="num">118</td>
+              <td>Đang trong quá trình thực hiện thủ tục.</td>
+            </tr>
+            <tr>
+              <td>Đã bồi thường GPMB</td>
+              <td class="num">1</td>
+              <td>Đã hoàn thành giải phóng mặt bằng.</td>
+            </tr>
+            <tr>
+              <td>Đang bàn giao cho địa phương</td>
+              <td class="num">1</td>
+              <td>Chuẩn bị giao cho địa phương quản lý.</td>
+            </tr>
+            <tr>
+              <td>Bàn giao cho dự án công viên – đài tưởng niệm COVID-19</td>
+              <td class="num">1</td>
+              <td>Địa chỉ số 1 đường Lý Thái Tổ.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.2.2 Tổ chức quản lý, kinh doanh nhà địa phương</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Đơn vị</th>
+              <th class="num">Số cơ sở</th>
+              <th>Trạng thái chính</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trung tâm Quản lý nhà và Giám định xây dựng</td>
+              <td class="num">51</td>
+              <td>1 tạm quản lý chờ bàn giao; 4 đang cho thuê; còn lại để trống, lập kế hoạch khai thác.</td>
+            </tr>
+            <tr>
+              <td>Trung tâm Quản lý hạ tầng kỹ thuật tỉnh Bà Rịa – Vũng Tàu</td>
+              <td class="num">31</td>
+              <td>Lập kế hoạch khai thác, cho thuê.</td>
+            </tr>
+            <tr>
+              <td>Công ty TNHH MTV Quản lý kinh doanh nhà Thành phố</td>
+              <td class="num">344</td>
+              <td>3 cơ sở dự kiến điều chuyển cho Bộ Công an; phần còn lại tiếp tục quản lý, khai thác.</td>
+            </tr>
+            <tr>
+              <td>Công ty TNHH MTV Dịch vụ công quận, huyện</td>
+              <td class="num">1.031</td>
+              <td>Đang lập thủ tục bàn giao về Trung tâm Quản lý nhà và Giám định xây dựng.</td>
+            </tr>
+            <tr>
+              <td>Công ty Kho bãi Thành phố</td>
+              <td class="num">33</td>
+              <td>Đang lập thủ tục bàn giao để khai thác cho thuê theo Nghị định 108/2025/NĐ-CP.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3.5.1 Trung tâm hành chính Bình Dương -->
+    <section id="trungtam-bd">
+      <h2>
+        3.5.1. Trung tâm hành chính tập trung Bình Dương
+        <span class="pill-title">550 nhân sự – 15 đơn vị</span>
+      </h2>
+
+      <p class="section-note">
+        Khu Trung tâm hành chính Bình Dương (tòa nhà 1, 2, quảng trường –
+        bãi xe) chuyển đổi công năng thành Trung tâm Đa chức năng Khoa học
+        công nghệ, đồng thời di dời các đơn vị đang làm việc tới các trụ
+        sở khác.
+      </p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Hạng mục</th>
+              <th class="num">Diện tích đất</th>
+              <th class="num">Diện tích sàn</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tòa nhà 1 – TTHC tỉnh Bình Dương</td>
+              <td class="num">30.985 m²</td>
+              <td class="num">104.416,80 m²</td>
+              <td>Đơn vị quản lý: Ban Quản lý Tòa nhà TTHC Bình Dương.</td>
+            </tr>
+            <tr>
+              <td>Tòa nhà 2 – Trung tâm Hội nghị và Triển lãm</td>
+              <td class="num">13.859 m²</td>
+              <td class="num">16.357,30 m²</td>
+              <td>Phục vụ hội nghị, triển lãm.</td>
+            </tr>
+            <tr>
+              <td>Quảng trường, công viên, bãi đậu xe, hạ tầng chung</td>
+              <td class="num">97.897 m²</td>
+              <td class="num">85.589,48 m²</td>
+              <td>Hạ tầng phục vụ khu TTHC.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="section-title">Nhu cầu bố trí và phương án di dời</h3>
+
+      <div class="kpi-row kpi-row--center kpi-row--softblue kpi-row--two">
+        <div class="kpi">
+          <div class="kpi-label">Nhân sự làm việc (16/01/2026)</div>
+          <div class="kpi-value">481 người (21 đơn vị)</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Nhu cầu sau rà soát (21/01/2026)</div>
+          <div class="kpi-value">550 người (15 đơn vị)</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Trụ sở tiếp nhận</th>
+              <th>Đơn vị bố trí</th>
+              <th class="num">Nhân sự</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trụ sở Báo Bình Dương cũ – 543 Lê Hồng Phong, Phú Lợi</td>
+              <td>Sở Nông nghiệp và Môi trường; Văn phòng đăng ký đất đai; Chi cục Bảo vệ môi trường.</td>
+              <td class="num">59 + 58 + 16</td>
+            </tr>
+            <tr>
+              <td>Cục Hải quan tỉnh Bình Dương cũ – Đại Lộ Bình Dương</td>
+              <td>
+                TT Phát triển công nghiệp – CN hỗ trợ; Phòng ĐKKD &amp; TT hỗ trợ DN;
+                Ban QL Khu chế xuất – CN; TT QH Phát triển đô thị Bình Dương; TT Phục vụ HCC.
+              </td>
+              <td class="num">76 + 16 + 45 + 43 + 33</td>
+            </tr>
+            <tr>
+              <td>Trụ sở Đảng ủy phường Thủ Dầu Một – 14B Bạch Đằng</td>
+              <td>
+                Sở An toàn thực phẩm; MTTQ; Thanh tra Thành phố; Sở Y tế;
+                Sở Nội vụ; các Ban QLDA.
+              </td>
+              <td class="num">51 + 6 + 12 + 16 + 24 + 70 + 25</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3.5.2 Trung tâm hành chính BR-VT -->
+    <section id="trungtam-brvt">
+      <h2>
+        3.5.2. Trung tâm hành chính – chính trị Bà Rịa – Vũng Tàu
+        <span class="pill-title">230 nhân sự – 17 đơn vị</span>
+      </h2>
+
+      <p class="section-note">
+        Trung tâm Hành chính – Chính trị tỉnh (01 Phạm Văn Đồng) bố trí
+        cho Trường Đại học Y Dược; khu 179 Bạch Đằng tiếp tục bố trí cho
+        các cơ quan còn nhu cầu, đồng thời xem xét phương án cho huyện
+        Long Điền.
+      </p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Khu vực</th>
+              <th class="num">Diện tích đất</th>
+              <th class="num">Diện tích sàn</th>
+              <th>Phương án</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Khu TTHC – Chính trị (01 Phạm Văn Đồng)</td>
+              <td class="num">147.856 m²</td>
+              <td class="num">204.499 m²</td>
+              <td>Bố trí cho Trường Đại học Y Dược theo chủ trương đã thống nhất.</td>
+            </tr>
+            <tr>
+              <td>Кhu BQL TTHC; TTPVHC, Đoàn ĐBQH &amp; HĐND (179 Bạch Đằng)</td>
+              <td class="num">44.620 m²</td>
+              <td class="num">33.030 m²</td>
+              <td>
+                Giữ lại bố trí cho 9 cơ quan (MTTQ, Y tế, Tài chính, Nội vụ, Công thương,
+                Du lịch, GD&amp;ĐT, Thanh tra, BQL Khu chế xuất – CN).
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Trung tâm hành chính huyện Long Điền cũ</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Thông tin</th>
+              <th class="num">Diện tích</th>
+              <th>Phương án</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Trụ sở TTHC huyện Long Điền cũ – 1939 Quốc lộ 55</td>
+              <td class="num">Đất: 80.420 m²; Sàn: 24.067 m²</td>
+              <td>
+                Tiếp tục bố trí cho UBND xã Long Điền, các trung tâm chuyên ngành và Ban QLDA;
+                đồng thời bố trí thêm Sở NN&amp;MT và đơn vị trực thuộc.
+              </td>
+            </tr>
+            <tr>
+              <td>Phương án thu hồi (trường hợp chuyển đổi công năng)</td>
+              <td class="num">—</td>
+              <td>
+                Ưu tiên bố trí cho giáo dục, y tế; sử dụng thêm các trụ sở HĐND &amp; UBND huyện Long Điền cũ,
+                trụ sở số 123 Bạch Đằng, số 9 Huỳnh Ngọc Hay để di dời các đơn vị.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
