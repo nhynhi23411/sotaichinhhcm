@@ -1,1712 +1,1271 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Tờ trình sắp xếp, xử lý nhà đất công</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      /* =========================================================
-   EXECUTIVE DASHBOARD CSS
-   Readable • Presentable • Maintainable (no !important abuse)
-   ========================================================= */
-
-/* =========================================================
-   1) DESIGN TOKENS (:root)
-   ========================================================= */
-:root {
-  /* Surfaces */
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-bg-soft: #f3f7ff;
-
-  --color-border: #d9e2f2;
-  --color-border-soft: #e6edf9;
-
-  /* Brand palette */
-  --color-primary: #2c6ddd;
-  --color-primary-deep: #1054c7;
-  --color-primary-deeper: #0f459f;
-  --color-accent: #21a6e9;
-
-  --color-soft-1: #75b8fc;
-  --color-soft-2: #9dcafc;
-  --color-soft-3: #c8d9fd;
-
-  /* Deep teal accent (charts/rare emphasis) */
-  --color-teal-deep: #005073;
-  --color-teal: #117dad;
-
-  /* Semantic (soft) */
-  --color-success: #1f7a43;
-  --color-success-bg: #eaf7ef;
-
-  --color-danger: #b42318;
-  --color-danger-bg: #fdecec;
-
-  --color-warning: #b45309;
-  --color-warning-bg: #fff4e5;
-
-  --color-info: #155eef;
-  --color-info-bg: #eaf1ff;
-
-  /* Typography */
-  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-weight-regular: 500;
-  --font-weight-semibold: 650;
-  --font-weight-bold: 750;
-
-  --text-1: #0f172a;
-  --text-2: #334155;
-  --text-3: #64748b;
-
-  /* Font sizes */
-  --fs-00: 0.875rem;  /* 14 */
-  --fs-0: 1rem;       /* 16 */
-  --fs-1: 1.125rem;   /* 18 */
-  --fs-2: 1.25rem;    /* 20 */
-  --fs-3: 1.5rem;     /* 24 */
-  --fs-4: 2rem;       /* 32 */
-  --fs-kpi: clamp(1.75rem, 2.2vw, 2.5rem);
-
-  --lh-tight: 1.25;
-  --lh-normal: 1.5;
-  --lh-loose: 1.6;
-
-  /* Spacing */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 24px;
-  --sp-6: 32px;
-  --sp-7: 40px;
-
-  /* Radius & shadows */
-  --r-sm: 12px;
-  --r-md: 14px;
-  --r-lg: 16px;
-
-  --shadow-1: 0 8px 22px rgba(15, 23, 42, 0.08);
-  --shadow-2: 0 14px 30px rgba(15, 23, 42, 0.10);
-
-  /* Layout */
-  --container-max: 1280px;
-  --content-max: 1120px;
-  --sidebar-w: 300px;
-
-  /* Tables */
-  --table-header-bg: #eaf1ff;
-  --table-zebra: #f8fbff;
-  --table-hover: #eef5ff;
-
-  /* Focus */
-  --focus: 0 0 0 3px rgba(44, 109, 221, 0.25);
-  --focus-border: rgba(44, 109, 221, 0.55);
-}
-
-@media (prefers-contrast: more) {
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Tổng Quan — Kết Quả Phụ Lục Nhà Đất TP.HCM 14/3/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
   :root {
-    --text-2: #1f2a3a;
-    --text-3: #41536a;
-    --color-border: #c9d5eb;
+    --bg: #0b0f1a;
+    --surface: #131929;
+    --surface2: #1a2236;
+    --border: #1f2e47;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #00e5a0;
+    --accent4: #ffd166;
+    --accent5: #c77dff;
+    --text: #e8edf5;
+    --muted: #7a8ba8;
+    --danger: #ff4757;
+    --warn: #ffa502;
   }
-}
 
-/* =========================================================
-   2) BASE STYLES
-   ========================================================= */
-*,
-*::before,
-*::after { box-sizing: border-box; }
-
-html { color-scheme: light; }
-
-body {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--fs-1);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--lh-loose);
-  color: var(--text-1);
-  background: linear-gradient(135deg, var(--color-bg-soft), #ffffff 55%);
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  font-variant-numeric: tabular-nums;
-}
-
-a {
-  color: var(--color-primary-deep);
-  text-decoration: none;
-  text-underline-offset: 3px;
-}
-a:hover { text-decoration: underline; }
-a:focus-visible {
-  outline: none;
-  box-shadow: var(--focus);
-  border-radius: 10px;
-}
-
-h1, h2, h3 {
-  line-height: var(--lh-tight);
-  margin: 0;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.01em;
-}
-h1 { font-size: var(--fs-4); }
-h2 { font-size: var(--fs-3); }
-h3 { font-size: var(--fs-2); }
-
-p { margin: 0 0 var(--sp-3); color: var(--text-2); }
-
-::selection { background: rgba(33, 166, 233, 0.18); }
-
-/* numeric alignment helper */
-.num, .kpi-value, .kpi-value * { font-variant-numeric: tabular-nums; }
-
-/* =========================================================
-   3) LAYOUT
-   ========================================================= */
-.page {
-  max-width: var(--container-max);
-  margin: var(--sp-6) auto;
-  padding: 0 var(--sp-4) var(--sp-6);
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: minmax(260px, var(--sidebar-w)) minmax(0, 1fr);
-  gap: var(--sp-5);
-  align-items: start;
-}
-@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
-
-.sidebar {
-  position: sticky;
-  top: var(--sp-4);
-  align-self: start;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-5);
-}
-
-section {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-1);
-  padding: var(--sp-5);
-  scroll-margin-top: 92px;
-}
-
-/* section note */
-.section-note {
-  color: var(--text-3);
-  font-size: var(--fs-0);
-  margin-bottom: var(--sp-3);
-}
-
-/* =========================================================
-   4) COMPONENTS – HEADER + SUMMARY + CARD
-   ========================================================= */
-
-/* Page header */
-.header,
-.page-header {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-1);
-  padding: var(--sp-5);
-  margin-bottom: var(--sp-5);
-  position: relative;
-  overflow: hidden;
-}
-.header::before,
-.page-header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 15% 0%, rgba(44, 109, 221, 0.12), transparent 55%),
-    radial-gradient(circle at 95% 30%, rgba(33, 166, 233, 0.10), transparent 50%);
-  pointer-events: none;
-}
-.header > *,
-.page-header > * { position: relative; }
-
-/* Optional centering helpers */
-.page-header.is-centered { text-align: center; }
-.page-header .eyebrow,
-.page-header .meta { text-align: center; margin-left: auto; margin-right: auto; }
-.page-header .title {
-  color: var(--color-primary-deeper);
-  text-align: center;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Generic card */
-.card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-1);
-  padding: var(--sp-4);
-  margin-bottom: var(--sp-3);
-}
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-2);
-}
-.card-title {
-  font-size: var(--fs-00);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  font-weight: var(--font-weight-bold);
-}
-.card-tag {
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--color-success-bg);
-  color: var(--color-success);
-  border: 1px solid rgba(31, 122, 67, 0.22);
-  font-weight: var(--font-weight-semibold);
-}
-
-/* Summary strip -> grid to avoid “lonely last chip” */
-.summary-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(220px, 1fr));
-  gap: 12px;
-  align-items: stretch;
-  max-width: var(--container-max);
-  margin: 0 auto var(--sp-5);
-}
-@media (max-width: 1200px) { .summary-strip { grid-template-columns: repeat(3, minmax(220px, 1fr)); } }
-@media (max-width: 900px)  { .summary-strip { grid-template-columns: repeat(2, minmax(220px, 1fr)); } }
-@media (max-width: 520px)  { .summary-strip { grid-template-columns: 1fr; } }
-
-/* Chip (executive: blue bg + white text) */
-.chip {
-  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-deep));
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  box-shadow: 0 10px 22px rgba(16, 84, 199, 0.18);
-  padding: 12px 16px;
-  border-radius: 999px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-
-  min-height: 48px;
-}
-.chip .label {
-  color: rgba(255, 255, 255, 0.92);
-  font-weight: var(--font-weight-semibold);
-  font-size: 0.95rem;
-  line-height: 1.25;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 78%;
-}
-.chip .value {
-  color: #ffffff;
-  font-weight: var(--font-weight-bold);
-  font-size: 1.15rem;
-  white-space: nowrap;
-
-  padding-left: 12px;
-  border-left: 1px solid rgba(255, 255, 255, 0.22);
-}
-.chip:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(16, 84, 199, 0.22);
-  transition: transform 140ms ease, box-shadow 140ms ease;
-}
-.chip.is-primary {
-  background: linear-gradient(180deg, var(--color-primary-deep), var(--color-primary-deeper));
-}
-.chip.is-neutral { /* force old neutral chips to match theme */
-  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-deep));
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.18);
-}
-
-/* =========================================================
-   5) TITLES (H2 / H3 SECTION TITLES)
-   ========================================================= */
-
-/* Base title box style (no left bar, per your request) */
-section h2,
-.section-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-3);
-
-  margin: 0 0 var(--sp-3);
-  padding: 14px 16px;
-
-  color: var(--color-primary-deeper);
-  font-weight: var(--font-weight-bold);
-  font-size: clamp(1.25rem, 1.4vw, 1.6rem);
-
-  border-radius: 14px;
-  border: 1px solid rgba(44, 109, 221, 0.18);
-  background: linear-gradient(180deg, rgba(44, 109, 221, 0.08), rgba(255, 255, 255, 0.98));
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
-
-  position: relative;
-  overflow: hidden;
-}
-section h2::after,
-.section-title::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 10%, rgba(33, 166, 233, 0.14), transparent 55%),
-    radial-gradient(circle at 90% 0%, rgba(44, 109, 221, 0.12), transparent 50%);
-  pointer-events: none;
-}
-section h2 > *,
-.section-title > * { position: relative; }
-
-/* right pill in title */
-.pill-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-
-  background: #ffffff;
-  color: var(--color-primary-deeper);
-  border: 1px solid rgba(44, 109, 221, 0.30);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
-  font-weight: var(--font-weight-bold);
-}
-
-/* H3 section-title in same box style */
-h3.section-title{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-3);
-
-  margin: 0 0 var(--sp-4);
-  padding: 14px 16px;
-
-  border-radius: 14px;
-  border: 1px solid rgba(44, 109, 221, 0.18);
-  background: linear-gradient(180deg, rgba(44, 109, 221, 0.08), rgba(255, 255, 255, 0.98));
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
-
-  color: var(--color-primary-deeper);
-  font-weight: var(--font-weight-bold);
-  font-size: clamp(1.15rem, 1.2vw, 1.35rem);
-  line-height: var(--lh-tight);
-
-  position: relative;
-  overflow: hidden;
-}
-h3.section-title::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 18% 10%, rgba(33,166,233,0.14), transparent 55%),
-    radial-gradient(circle at 92% 0%, rgba(44,109,221,0.12), transparent 50%);
-  pointer-events: none;
-}
-h3.section-title > *{ position: relative; }
-
-/* Default section h3 (non boxed) */
-section h3 {
-  margin: var(--sp-4) 0 var(--sp-2);
-  color: var(--color-primary-deeper);
-  font-weight: var(--font-weight-semibold);
-}
-
-/* =========================================================
-   6) SIDEBAR – TOC + LEGEND
-   ========================================================= */
-.toc {
-  list-style: none;
-  margin: var(--sp-2) 0 0;
-  padding: 0;
-  font-size: var(--fs-0);
-}
-.toc li { margin: 6px 0; }
-.toc a {
-  display: block;
-  padding: 10px 10px;
-  border-radius: var(--r-sm);
-  color: var(--text-2);
-  border: 1px solid transparent;
-  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
-}
-.toc a:hover {
-  background: rgba(44, 109, 221, 0.10);
-  border-color: rgba(44, 109, 221, 0.18);
-  transform: translateY(-1px);
-  text-decoration: none;
-}
-.toc a:focus-visible {
-  outline: none;
-  box-shadow: var(--focus);
-  border-color: var(--focus-border);
-}
-
-/* Legend */
-.legend {
-  margin-top: var(--sp-2);
-  font-size: 0.8125rem;
-  color: var(--text-3);
-  line-height: var(--lh-normal);
-}
-.legend span {
-  display: inline-flex;
-  align-items: center;
-  margin-right: var(--sp-3);
-  white-space: nowrap;
-}
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  margin-right: 8px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-}
-.dot.keep    { background: rgba(31, 122, 67, 0.85); }
-.dot.transfer{ background: rgba(21, 94, 239, 0.75); }
-.dot.reclaim { background: rgba(180, 35, 24, 0.75); }
-.dot.convert { background: rgba(180, 83, 9, 0.75); }
-
-/* =========================================================
-   7) KPI CARDS
-   ========================================================= */
-.kpi-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--sp-3);
-  margin: var(--sp-3) 0 var(--sp-4);
-}
-@media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px)  { .kpi-row { grid-template-columns: 1fr; } }
-
-.kpi,
-.kpi-card {
-  background: linear-gradient(180deg, #ffffff, #fbfdff);
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--r-md);
-  padding: var(--sp-4);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
-  min-width: 0;
-}
-
-.kpi-label {
-  font-size: var(--fs-00);
-  color: var(--text-3);
-  letter-spacing: 0.02em;
-  margin-bottom: var(--sp-2);
-  font-weight: var(--font-weight-semibold);
-}
-
-.kpi-value {
-  font-size: var(--fs-2);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-1);
-}
-
-/* Hero KPI */
-.kpi-card.is-hero .kpi-value,
-.kpi-value.is-hero,
-.kpi-value--hero {
-  font-size: var(--fs-kpi);
-  color: var(--color-primary-deeper);
-  letter-spacing: 0.01em;
-}
-
-.kpi-note {
-  margin-top: var(--sp-2);
-  color: var(--text-3);
-  font-size: var(--fs-00);
-  line-height: var(--lh-normal);
-}
-
-/* KPI modifiers */
-.kpi-row--aligned{
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  align-items: stretch;
-}
-.kpi-row--aligned .kpi{
-  min-height: 110px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-}
-@media (max-width: 1100px){ .kpi-row--aligned{ grid-template-columns: repeat(2, 1fr);} }
-@media (max-width: 560px){  .kpi-row--aligned{ grid-template-columns: 1fr;} }
-
-.kpi-row--two{
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  align-items: stretch;
-}
-@media (max-width: 900px){ .kpi-row--two{ grid-template-columns: 1fr; } }
-
-.kpi-row--center{
-  max-width: 980px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* KPI theme: soft blue cards (used across sections) */
-.kpi-row--softblue .kpi{
-  background: linear-gradient(180deg, rgba(44,109,221,0.72), rgba(16,84,199,0.72));
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 12px 26px rgba(16,84,199,0.16);
-}
-.kpi-row--softblue .kpi-label{
-  color: rgba(255,255,255,0.90);
-  font-weight: var(--font-weight-semibold);
-  font-size: 0.95rem;
-}
-.kpi-row--softblue .kpi-value{
-  color: #ffffff;
-  font-weight: 850;
-  font-size: 1.45rem;
-  letter-spacing: 0.01em;
-}
-.kpi-row--softblue .kpi-note{
-  color: rgba(255,255,255,0.86);
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-.kpi-row--softblue .kpi:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 16px 30px rgba(16, 84, 199, 0.22);
-  transition: transform 140ms ease, box-shadow 140ms ease;
-}
-
-/* =========================================================
-   8) BADGES (STATUS / DELTA)
-   ========================================================= */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.8125rem;
-  font-weight: var(--font-weight-semibold);
-  border: 1px solid var(--color-border);
-  background: #f7f9ff;
-  color: var(--text-2);
-  white-space: nowrap;
-}
-.badge::before {
-  content: "●";
-  font-size: 0.6em;
-  opacity: 0.8;
-}
-
-/* status */
-.badge.keep {
-  background: var(--color-success-bg);
-  border-color: rgba(31, 122, 67, 0.22);
-  color: #145c31;
-}
-.badge.keep::before { color: rgba(31, 122, 67, 0.9); }
-
-.badge.transfer {
-  background: var(--color-info-bg);
-  border-color: rgba(21, 94, 239, 0.22);
-  color: #0b3fb3;
-}
-.badge.transfer::before { color: rgba(21, 94, 239, 0.9); }
-
-.badge.reclaim {
-  background: var(--color-danger-bg);
-  border-color: rgba(180, 35, 24, 0.22);
-  color: #7a1a13;
-}
-.badge.reclaim::before { color: rgba(180, 35, 24, 0.9); }
-
-.badge.convert {
-  background: var(--color-warning-bg);
-  border-color: rgba(180, 83, 9, 0.22);
-  color: #7a3b06;
-}
-.badge.convert::before { color: rgba(180, 83, 9, 0.9); }
-
-/* delta */
-.badge.delta::before { content: "▲"; }
-.badge.delta.down::before { content: "▼"; }
-.badge.delta.up   { background: rgba(31, 122, 67, 0.12); border-color: rgba(31, 122, 67, 0.26); }
-.badge.delta.down { background: rgba(180, 35, 24, 0.10); border-color: rgba(180, 35, 24, 0.22); }
-
-/* =========================================================
-   9) TABLES
-   ========================================================= */
-.table-wrap {
-  margin-top: var(--sp-3);
-  border-radius: var(--r-md);
-  border: 1px solid var(--color-border-soft);
-  overflow: hidden;
-  background: #ffffff;
-}
-
-table,
-.table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: var(--fs-0);
-  color: var(--text-2);
-}
-
-thead { background: var(--table-header-bg); }
-
-th,
-td {
-  padding: 12px 12px;
-  border-bottom: 1px solid var(--color-border-soft);
-  vertical-align: top;
-}
-
-th {
-  color: var(--text-1);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-}
-
-tbody tr:nth-child(even) { background: var(--table-zebra); }
-tbody tr:hover { background: var(--table-hover); }
-
-td.num, th.num, .num {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.table .total-row,
-tbody tr.total-row {
-  background: rgba(44, 109, 221, 0.06);
-}
-.table .total-row td,
-tbody tr.total-row td {
-  font-weight: var(--font-weight-bold);
-  color: var(--text-1);
-}
-
-/* Focus inside tables */
-.table-wrap :is(a, button, [tabindex]):focus-visible,
-.table-wrap :is(th, td):focus-visible {
-  outline: none;
-  box-shadow: var(--focus);
-  border-radius: 10px;
-}
-
-/* =========================================================
-   10) CHART + CALLOUT + BUTTON
-   ========================================================= */
-.chart-card {
-  background: #ffffff;
-  border: 1px solid var(--color-border-soft);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-1);
-  padding: var(--sp-5);
-}
-.chart-card .chart-title {
-  font-size: var(--fs-2);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-1);
-  margin-bottom: var(--sp-2);
-}
-.chart-card .chart-subtitle {
-  font-size: var(--fs-0);
-  color: var(--text-3);
-  margin-bottom: var(--sp-4);
-}
-.chart-card .legend { font-size: var(--fs-0); color: var(--text-2); }
-
-.callout {
-  display: grid;
-  grid-template-columns: 10px 1fr;
-  gap: var(--sp-3);
-  padding: var(--sp-4);
-  border-radius: var(--r-md);
-  border: 1px solid var(--color-border-soft);
-  background: #ffffff;
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
-}
-.callout::before {
-  content: "";
-  border-radius: 999px;
-  background: rgba(44, 109, 221, 0.8);
-}
-.callout .callout-title {
-  font-weight: var(--font-weight-bold);
-  color: var(--text-1);
-  margin-bottom: 4px;
-}
-.callout .callout-text { color: var(--text-2); margin: 0; }
-
-.callout.is-info    { background: var(--color-info-bg); }
-.callout.is-info::before { background: rgba(21, 94, 239, 0.85); }
-.callout.is-success { background: var(--color-success-bg); }
-.callout.is-success::before { background: rgba(31, 122, 67, 0.85); }
-.callout.is-warning { background: var(--color-warning-bg); }
-.callout.is-warning::before { background: rgba(180, 83, 9, 0.85); }
-.callout.is-danger  { background: var(--color-danger-bg); }
-.callout.is-danger::before  { background: rgba(180, 35, 24, 0.85); }
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: var(--r-sm);
-  border: 1px solid rgba(44, 109, 221, 0.28);
-  background: rgba(44, 109, 221, 0.10);
-  color: var(--color-primary-deeper);
-  font-weight: var(--font-weight-bold);
-  cursor: pointer;
-  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
-}
-.btn:hover {
-  background: rgba(44, 109, 221, 0.14);
-  border-color: rgba(44, 109, 221, 0.36);
-  transform: translateY(-1px);
-}
-.btn:focus-visible { outline: none; box-shadow: var(--focus); }
-
-.btn.is-primary {
-  background: var(--color-primary);
-  border-color: rgba(16, 84, 199, 0.40);
-  color: #ffffff;
-}
-.btn.is-primary:hover { background: var(--color-primary-deep); }
-
-/* =========================================================
-   11) SECTION-SPECIFIC OVERRIDES (keep in one place)
-   ========================================================= */
-
-/* 3.1.2: badges inside its tables as pills (consistent a/b/c) */
-#nhom-so-nganh .table-wrap .badge{
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 850;
-  font-size: 0.95rem;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: #ffffff;
-}
-#nhom-so-nganh .table-wrap .badge.keep{
-  color: #166534;
-  background: rgba(22,101,52,0.10);
-  border-color: rgba(22,101,52,0.18);
-}
-#nhom-so-nganh .table-wrap .badge.transfer{
-  color: var(--color-primary-deeper);
-  background: rgba(44,109,221,0.10);
-  border-color: rgba(44,109,221,0.18);
-}
-#nhom-so-nganh .table-wrap .badge.reclaim{
-  color: #991b1b;
-  background: rgba(153,27,27,0.10);
-  border-color: rgba(153,27,27,0.18);
-}
-#nhom-so-nganh .table-wrap .badge.convert{
-  color: #7a3b06;
-  background: rgba(180,83,9,0.10);
-  border-color: rgba(180,83,9,0.18);
-}
-
-/* 3.1.3: action labels in table as pills (fix “not in box”) */
-#nhom-xa-phuong .table-wrap .badge{
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-weight: 850;
-  font-size: 0.95rem;
-  line-height: 1;
-  white-space: nowrap;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: #ffffff;
-  box-shadow: 0 6px 14px rgba(15,23,42,0.06);
-}
-#nhom-xa-phuong .table-wrap .badge.keep{
-  color: #166534;
-  background: rgba(22,101,52,0.10);
-  border-color: rgba(22,101,52,0.18);
-}
-#nhom-xa-phuong .table-wrap .badge.convert{
-  color: #7a3b06;
-  background: rgba(180,83,9,0.12);
-  border-color: rgba(180,83,9,0.18);
-}
-#nhom-xa-phuong .table-wrap .badge.transfer{
-  color: var(--color-primary-deeper);
-  background: rgba(44,109,221,0.10);
-  border-color: rgba(44,109,221,0.18);
-}
-#nhom-xa-phuong .table-wrap .badge.reclaim{
-  color: #991b1b;
-  background: rgba(153,27,27,0.10);
-  border-color: rgba(153,27,27,0.18);
-}
-
-/* =========================================================
-   12) PRESENTATION MODE (.is-presentation)
-   ========================================================= */
-.is-presentation {
-  --fs-1: 1.25rem; /* 20 */
-  --fs-2: 1.5rem;  /* 24 */
-  --fs-3: 1.875rem;/* 30 */
-  --sp-5: 28px;
-  --sp-6: 40px;
-  --sidebar-w: 320px;
-}
-
-body.is-presentation,
-.is-presentation body {
-  font-size: var(--fs-1);
-  background: linear-gradient(135deg, #f1f6ff, #ffffff 60%);
-}
-
-.is-presentation .page {
-  max-width: var(--content-max);
-  margin: var(--sp-6) auto;
-}
-
-.is-presentation .dot { width: 12px; height: 12px; }
-.is-presentation .card-title { font-size: var(--fs-0); }
-.is-presentation .toc a { padding: 12px 12px; font-size: var(--fs-0); }
-
-.is-presentation .kpi-value.is-hero,
-.is-presentation .kpi-card.is-hero .kpi-value,
-.is-presentation .kpi-value--hero {
-  font-size: clamp(2.2rem, 3vw, 3.1rem);
-}
-
-.is-presentation th,
-.is-presentation td { padding: 14px 14px; }
-
-.is-presentation .summary-strip { gap: 16px; }
-.is-presentation .chip { padding: 14px 18px; min-height: 54px; }
-.is-presentation .chip .label { font-size: 1.05rem; }
-.is-presentation .chip .value { font-size: 1.35rem; }
-
-/* =========================================================
-   13) ACCESSIBILITY + REDUCED MOTION
-   ========================================================= */
-:focus-visible { outline: none; box-shadow: var(--focus); }
-
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; scroll-behavior: auto !important; }
-}
-
-/* =========================================================
-   14) PRINT
-   ========================================================= */
-@media print {
-  body { background: #ffffff !important; }
-  .sidebar { display: none; }
-  .layout { grid-template-columns: 1fr; }
-  section, .card, .header, .page-header { box-shadow: none; }
-}
-@media print {
-  .sidebar { display: none; }     /* bỏ sidebar khi in */
-  .layout { grid-template-columns: 1fr; }
-  section { break-inside: avoid; page-break-inside: avoid; }
-  thead { display: table-header-group; } /* header bảng lặp lại mỗi trang */
-  body { background: #fff; }
-}
-
-    </style>
-  </head>
-  <body>
-    <!-- =====================================================
-     REPORT HEADER (Executive-friendly)
-     ===================================================== -->
-<header class="page-header is-centered" role="banner">
-  <div class="page-header__inner">
-    <div class="eyebrow">BẢNG TỔNG HỢP</div>
-
-    <h1 class="title">
-      KẾT QUẢ RÀ SOÁT VÀ PHƯƠNG ÁN SẮP XẾP, XỬ LÝ TÀI SẢN CÔNG LÀ NHÀ, ĐẤT TRÊN ĐỊA BÀN THÀNH PHỐ
-    </h1>
-
-    <p class="meta">Đơn vị lập: Sở Tài chính TP. Hồ Chí Minh · Số liệu đến 01/2026</p>
-    <p class="meta">Phạm vi: Nhà, đất công do các cơ quan, tổ chức, đơn vị trên địa bàn Thành phố quản lý, sử dụng</p>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 24px;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .header-title span {
+    color: var(--accent);
+  }
+  .header-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .badge-date {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* KPI CARDS */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .kpi-card:hover { border-color: var(--accent); }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 12px 12px 0 0;
+  }
+  .kpi-card.c1::before { background: var(--accent); }
+  .kpi-card.c2::before { background: var(--accent2); }
+  .kpi-card.c3::before { background: var(--accent3); }
+  .kpi-card.c4::before { background: var(--accent4); }
+  .kpi-card.c5::before { background: var(--accent5); }
+  .kpi-card.c6::before { background: var(--danger); }
+  .kpi-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 26px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    color: var(--text);
+  }
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* TWO COL LAYOUT */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  /* PANEL */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    overflow: hidden;
+  }
+  .panel-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* PHỤLỤC TABLE */
+  .pl-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .pl-table th {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .pl-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(31,46,71,0.5);
+    font-size: 12px;
+    vertical-align: middle;
+  }
+  .pl-table tr:last-child td { border-bottom: none; }
+  .pl-table tr:hover td { background: var(--surface2); }
+  .pl-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 11px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .tag-blue { background: rgba(0,212,255,0.12); color: var(--accent); }
+  .tag-orange { background: rgba(255,107,53,0.12); color: var(--accent2); }
+  .tag-green { background: rgba(0,229,160,0.12); color: var(--accent3); }
+  .tag-yellow { background: rgba(255,209,102,0.12); color: var(--accent4); }
+  .tag-purple { background: rgba(199,125,255,0.12); color: var(--accent5); }
+  .tag-red { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+  /* BAR CHART */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .bar-label {
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 135px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .bar-track {
+    flex: 1;
+    height: 18px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+  }
+  .bar-count {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: rgba(255,255,255,0.8);
+    font-weight: 700;
+  }
+  .bar-pct {
+    font-size: 11px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    min-width: 45px;
+    text-align: right;
+  }
+
+  /* PIE / DONUT approximation using conic-gradient */
+  .donut-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .donut {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .donut-hole {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 68px; height: 68px;
+    background: var(--surface);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .legend-list { flex: 1; }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-label { color: var(--muted); flex: 1; }
+  .legend-val { font-family: 'JetBrains Mono', monospace; color: var(--text); font-weight: 700; font-size: 10px; }
+
+  /* INSIGHT CARDS */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    border-left: 4px solid;
+  }
+  .insight-card.warn { border-left-color: var(--warn); }
+  .insight-card.danger { border-left-color: var(--danger); }
+  .insight-card.ok { border-left-color: var(--accent3); }
+  .insight-card.info { border-left-color: var(--accent); }
+  .insight-card.note { border-left-color: var(--accent5); }
+  .insight-icon { font-size: 18px; margin-bottom: 6px; }
+  .insight-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .insight-body { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* PHAP LY TABLE */
+  .phap-ly-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .phap-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .phap-name { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .phap-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+  .phap-row span:first-child { color: var(--muted); }
+  .phap-row span:last-child { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .pct-bar { height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .pct-fill { height: 100%; border-radius: 2px; background: var(--accent3); }
+  .pct-fill.red { background: var(--danger); }
+
+  /* AREA FOCUS SECTION */
+  .area-section {
+    margin-bottom: 28px;
+  }
+
+  /* FULL-WIDTH PANEL */
+  .full-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  /* HEAT TABLE */
+  .heat-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .heat-table th {
+    padding: 6px 10px;
+    text-align: right;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .heat-table th:first-child { text-align: left; }
+  .heat-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(31,46,71,0.4);
+    text-align: right;
+    vertical-align: middle;
+  }
+  .heat-table td:first-child { text-align: left; color: var(--muted); }
+  .heat-table tr:hover td { background: var(--surface2); }
+
+  .cell-h { background: rgba(0,229,160,0.2); color: var(--accent3); border-radius: 4px; padding: 2px 6px; font-weight: 700; }
+  .cell-m { background: rgba(255,209,102,0.15); color: var(--accent4); border-radius: 4px; padding: 2px 6px; }
+  .cell-l { background: rgba(255,71,87,0.1); color: var(--danger); border-radius: 4px; padding: 2px 6px; }
+
+  footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 10px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="header-title">📊 Dashboard Tổng Quan — <span>Kết Quả Sắp Xếp Nhà Đất Công</span></div>
+    <div class="header-sub">Nguồn: KetQua_PhuLuc_HoanThien_14_3_2026.xlsx · 9 Phụ lục · TP. Hồ Chí Minh & vùng phụ cận</div>
   </div>
-</header>
-
-<!-- =====================================================
-     TOP SUMMARY (KPIs in chips)
-     ===================================================== -->
-<section class="summary" aria-label="Tổng quan số liệu">
-  <div class="summary-strip is-centered" role="list">
-    <div class="chip is-primary" role="listitem">
-      <span class="label">Tổng số cơ sở nhà, đất</span>
-      <span class="value">14.559</span>
-    </div>
-
-    <div class="chip is-neutral" role="listitem">
-      <span class="label">Trước rà soát (12/2025)</span>
-      <span class="value">12.166</span>
-    </div>
-
-    <div class="chip" role="listitem">
-      <span class="label">Khối cơ quan Đảng</span>
-      <span class="value">333</span>
-    </div>
-
-    <div class="chip" role="listitem">
-      <span class="label">Khối sở, ngành, ĐVSN</span>
-      <span class="value">1.291</span>
-    </div>
-
-    <div class="chip" role="listitem">
-      <span class="label">Khối phường, xã</span>
-      <span class="value">8.150</span>
-    </div>
-
-    <div class="chip" role="listitem">
-      <span class="label">Quỹ đất, nhà chuyên ngành</span>
-      <span class="value">2.993</span>
-    </div>
-
-    <div class="chip is-neutral" role="listitem">
-      <span class="label">Doanh nghiệp 100% vốn Nhà nước</span>
-      <span class="value">919</span>
-    </div>
-
-    <div class="chip is-neutral" role="listitem">
-      <span class="label">Tiếp nhận từ Trung ương</span>
-      <span class="value">60</span>
-    </div>
-  </div>
-</section>
-
-<div class="layout">
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Mục lục nhanh</div>
-        <div class="card-tag">Tổng quan</div>
-      </div>
-
-      <ul class="toc">
-        <li><a href="#phan-iii">III. Kết quả rà soát</a></li>
-        <li><a href="#nhom-dang">3.1.1 Cơ quan Đảng</a></li>
-        <li><a href="#nhom-so-nganh">3.1.2 Sở, ban, ngành</a></li>
-        <li><a href="#nhom-xa-phuong">3.1.3 UBND cấp xã</a></li>
-        <li><a href="#nhom-quy-dat">3.2 Quỹ đất, nhà chuyên ngành</a></li>
-        <li><a href="#trungtam-bd">3.5.1 TTHC Bình Dương</a></li>
-        <li><a href="#trungtam-brvt">3.5.2 TTHC BR-VT</a></li>
-      </ul>
-
-      <div class="legend">
-        <span><span class="dot keep"></span>Giữ lại</span>
-        <span><span class="dot transfer"></span>Điều chuyển</span>
-        <span><span class="dot reclaim"></span>Thu hồi</span>
-        <span><span class="dot convert"></span>Chuyển đổi công năng</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="content">
-    <!-- III. Kết quả rà soát -->
-    <section id="phan-iii">
-      <h2>
-        III. Kết quả rà soát, thống kê
-        <span class="pill-title">Tổng số liệu</span>
-      </h2>
-
-      <p class="section-note">
-        Tóm tắt số lượng cơ sở nhà, đất theo từng khối quản lý và thay đổi
-        so với báo cáo tháng 12/2025.
-      </p>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nhóm tài sản</th>
-              <th class="num">Số cơ sở</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Khối cơ quan Đảng và doanh nghiệp kinh tế Đảng</td>
-              <td class="num">333</td>
-              <td>Không thay đổi so với Tờ trình 15944/TTr-STC.</td>
-            </tr>
-            <tr>
-              <td>Sở, ban, ngành; ĐVSN công lập; MTTQ, đoàn thể, hội</td>
-              <td class="num">1.291</td>
-              <td>Tăng 48 cơ sở so với 1.243 cơ sở trước đây.</td>
-            </tr>
-            <tr>
-              <td>Khối phường, xã, đặc khu</td>
-              <td class="num">10.369</td>
-              <td>
-                Tăng 2.743 cơ sở (bao gồm tài sản công khác, nhà công vụ,
-                đất công, nền tái định cư).
-              </td>
-            </tr>
-            <tr>
-              <td>Trụ sở làm việc, cơ sở sự nghiệp thuộc UBND cấp xã</td>
-              <td class="num">8.150</td>
-              <td>Tăng 524 cơ sở so với 7.626 trước đây.</td>
-            </tr>
-            <tr>
-              <td>
-                Tổ chức phát triển quỹ đất, tổ chức quản lý kinh doanh
-                nhà, DNNN thuộc Thành phố
-              </td>
-              <td class="num">2.993</td>
-              <td>Tăng 29 cơ sở so với 2.964.</td>
-            </tr>
-            <tr>
-              <td>Cơ sở nhà, đất do Trung ương chuyển giao</td>
-              <td class="num">60</td>
-              <td>Đã có quyết định chuyển giao về UBND Thành phố.</td>
-            </tr>
-            <tr class="total-row">
-              <td><strong>Tổng cộng tài sản công là nhà, đất</strong></td>
-              <td class="num highlight-number">14.559</td>
-              <td>Tổng số tài sản thuộc thẩm quyền quản lý của Thành phố hiện nay.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3.1.1 Khối Đảng -->
-    <section id="nhom-dang">
-      <h3 class="section-title">3.1.1 Khối cơ quan Đảng (333 cơ sở)</h3>
-
-      <div class="kpi-row kpi-row--softblue">
-        <div class="kpi">
-          <div class="kpi-label">Tổng số tài sản khối Đảng</div>
-          <div class="kpi-value">333 cơ sở</div>
-        </div>
-
-        <div class="kpi">
-          <div class="kpi-label">Văn phòng Thành ủy (gồm Báo SGGP)</div>
-          <div class="kpi-value">30 cơ sở</div>
-          <div class="kpi-note">26 cơ sở VP Thành ủy + 4 cơ sở Báo Sài Gòn Giải Phóng</div>
-        </div>
-
-        <div class="kpi">
-          <div class="kpi-label">Doanh nghiệp kinh tế Đảng</div>
-          <div class="kpi-value">7 cơ sở</div>
-        </div>
-
-        <div class="kpi">
-          <div class="kpi-label">Các cơ quan Đảng khác</div>
-          <div class="kpi-value">296 cơ sở</div>
-          <div class="kpi-note">333 − 30 VP Thành ủy − 7 DN = 296</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nhóm tài sản</th>
-              <th class="num">Số cơ sở</th>
-              <th>Phương án xử lý chính</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>Văn phòng Thành ủy (kể cả Báo SGGP)</td>
-              <td class="num">30</td>
-              <td>
-                Giữ lại một phần làm trụ sở; dự kiến chuyển giao
-                60 cơ sở khác do Văn phòng Thành ủy đang quản lý về Thành phố lập phương án xử lý chi tiết.
-              </td>
-            </tr>
-
-            <tr>
-              <td>Các cơ quan Đảng khác (trừ VP Thành ủy và DN)</td>
-              <td class="num">296</td>
-              <td>
-                Chủ yếu giữ lại làm trụ sở, cơ sở hoạt động sự nghiệp
-                hoặc tiếp tục khai thác cho thuê theo quy định của Đảng và pháp luật.
-              </td>
-            </tr>
-
-            <tr>
-              <td>Doanh nghiệp 100% vốn ngân sách Đảng</td>
-              <td class="num">7</td>
-              <td>
-                Tiếp tục quản lý theo pháp luật về vốn Đảng tại doanh nghiệp,
-                đảm bảo hiệu quả, không thất thoát tài sản.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3.1.2 Khối sở, ban, ngành -->
-    <section id="nhom-so-nganh">
-      <h2>
-        3.1.2. Sở, ban, ngành; ĐVSN; MTTQ, đoàn thể
-        <span class="pill-title">1.291 cơ sở</span>
-      </h2>
-
-      <p class="section-note">
-        Gồm khối cơ quan chuyên môn thuộc Thành phố, các đơn vị sự nghiệp
-        công lập và khối Mặt trận, tổ chức chính trị – xã hội, hội quần
-        chúng.
-      </p>
-
-      <!-- a) -->
-      <h3 class="section-title">a) Khối sở, ban, ngành và đơn vị trực thuộc</h3>
-
-      <div class="kpi-row kpi-row--softblue">
-        <div class="kpi">
-          <div class="kpi-label">Hiện trạng trước sắp xếp</div>
-          <div class="kpi-value">1.020 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Giữ lại làm trụ sở</div>
-          <div class="kpi-value">931 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Điều chuyển</div>
-          <div class="kpi-value">31 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Thu hồi</div>
-          <div class="kpi-value">58 cơ sở</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Phương án xử lý</th>
-              <th class="num">Số cơ sở</th>
-              <th>Ví dụ/ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-              <td class="num">931</td>
-              <td>Bố trí tiếp tục sử dụng làm trụ sở làm việc theo mô hình mới.</td>
-            </tr>
-            <tr>
-              <td><span class="badge transfer">Điều chuyển</span></td>
-              <td class="num">31</td>
-              <td>Do thay đổi cơ quan quản lý cấp trên, sắp xếp đơn vị sự nghiệp.</td>
-            </tr>
-            <tr>
-              <td><span class="badge reclaim">Thu hồi</span></td>
-              <td class="num">58</td>
-              <td>Không còn nhu cầu; đã có quyết định thu hồi; nằm trong phạm vi dự án.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- b) -->
-      <h3 class="section-title">b) Đơn vị sự nghiệp công lập thuộc Thành phố</h3>
-
-      <div class="kpi-row kpi-row--softblue">
-        <div class="kpi">
-          <div class="kpi-label">Hiện trạng trước sắp xếp</div>
-          <div class="kpi-value">126 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Giữ lại làm trụ sở</div>
-          <div class="kpi-value">124 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Điều chuyển</div>
-          <div class="kpi-value">1 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Thu hồi</div>
-          <div class="kpi-value">1 cơ sở</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nhóm</th>
-              <th class="num">Số cơ sở</th>
-              <th>Phương án</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Hiện trạng trước sắp xếp</td>
-              <td class="num">126</td>
-              <td>Tổng số cơ sở nhà, đất của ĐVSN công lập.</td>
-            </tr>
-            <tr>
-              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-              <td class="num">124</td>
-              <td>Tiếp tục sử dụng ổn định.</td>
-            </tr>
-            <tr>
-              <td><span class="badge transfer">Điều chuyển</span></td>
-              <td class="num">1</td>
-              <td>Điều chuyển cho đơn vị khác theo phương án phê duyệt.</td>
-            </tr>
-            <tr>
-              <td><span class="badge reclaim">Thu hồi</span></td>
-              <td class="num">1</td>
-              <td>Hoàn trả do không còn nhu cầu sử dụng.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- c) -->
-      <h3 class="section-title">c) MTTQ, tổ chức chính trị – xã hội, hội quần chúng</h3>
-
-      <div class="kpi-row kpi-row--softblue">
-        <div class="kpi">
-          <div class="kpi-label">Hiện trạng trước sắp xếp</div>
-          <div class="kpi-value">145 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Giữ lại làm trụ sở</div>
-          <div class="kpi-value">116 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Điều chuyển</div>
-          <div class="kpi-value">16 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Thu hồi</div>
-          <div class="kpi-value">13 cơ sở</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nhóm</th>
-              <th class="num">Số cơ sở</th>
-              <th>Phương án</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Hiện trạng trước sắp xếp</td>
-              <td class="num">145</td>
-              <td>Tổng số trụ sở, cơ sở nhà, đất.</td>
-            </tr>
-            <tr>
-              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-              <td class="num">116</td>
-              <td>Tiếp tục sử dụng làm trụ sở làm việc.</td>
-            </tr>
-            <tr>
-              <td><span class="badge transfer">Điều chuyển</span></td>
-              <td class="num">16</td>
-              <td>Bố trí sang các cơ quan khác có nhu cầu.</td>
-            </tr>
-            <tr>
-              <td><span class="badge reclaim">Thu hồi</span></td>
-              <td class="num">13</td>
-              <td>Các cơ sở không còn nhu cầu, đề nghị hoàn trả.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3.1.3 UBND cấp xã -->
-    <section id="nhom-xa-phuong">
-      <h2>
-        3.1.3. Khối UBND cấp xã
-        <span class="pill-title">8.150 cơ sở</span>
-      </h2>
-
-      <p class="section-note">
-        Nhóm có số lượng tài sản lớn nhất, gồm trụ sở làm việc, cơ sở sự
-        nghiệp và tài sản công khác sau sắp xếp chính quyền địa phương 2
-        cấp.
-      </p>
-
-      <div class="kpi-row kpi-row--softblue kpi-row--aligned">
-        <div class="kpi">
-          <div class="kpi-label">Hiện trạng trụ sở, cơ sở sự nghiệp</div>
-          <div class="kpi-value">8.150 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Giữ lại làm trụ sở</div>
-          <div class="kpi-value">7.883 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Chuyển đổi công năng</div>
-          <div class="kpi-value">103 cơ sở</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Điều chuyển</div>
-          <div class="kpi-value">3 cơ sở</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Phương án</th>
-              <th class="num">Số cơ sở</th>
-              <th>Chi tiết</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td><span class="badge keep">Giữ lại làm trụ sở</span></td>
-              <td class="num">7.883</td>
-              <td>Tiếp tục sử dụng trụ sở hiện hữu cho mô hình tổ chức mới.</td>
-            </tr>
-
-            <tr>
-              <td><span class="badge convert">Chuyển đổi công năng</span></td>
-              <td class="num">103</td>
-              <td>
-                Y tế: 7; Giáo dục: 16; Văn hóa, thể thao: 29; Mục đích công cộng
-                (công viên, sân chơi, phòng chống thiên tai,…): 51.
-              </td>
-            </tr>
-
-            <tr>
-              <td><span class="badge transfer">Điều chuyển</span></td>
-              <td class="num">3</td>
-              <td>Chuyển cho cơ quan khác (ví dụ Bộ Công an, Cục Thuế) theo nhu cầu sử dụng.</td>
-            </tr>
-
-            <tr>
-              <td><span class="badge reclaim">Thu hồi, giao đơn vị chuyên ngành</span></td>
-              <td class="num">161</td>
-              <td>
-                148 cơ sở giao Trung tâm Quản lý nhà và Giám định xây dựng,
-                13 cơ sở giao Trung tâm Phát triển quỹ đất.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3.2 Quỹ đất, nhà chuyên ngành -->
-    <section id="nhom-quy-dat">
-      <h2>
-        3.2. Quỹ đất, nhà do đơn vị chuyên ngành quản lý
-        <span class="pill-title">2.993 cơ sở</span>
-      </h2>
-
-      <p class="section-note">
-        Gồm Trung tâm Phát triển quỹ đất, các tổ chức quản lý – kinh doanh
-        nhà địa phương, doanh nghiệp dịch vụ công, công ty Kho bãi.
-      </p>
-
-      <h3>3.2.1 Trung tâm Phát triển quỹ đất</h3>
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Trạng thái</th>
-              <th class="num">Số địa chỉ</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Quản lý tổng cộng</td>
-              <td class="num">584</td>
-              <td>Theo báo cáo của Trung tâm Phát triển quỹ đất.</td>
-            </tr>
-            <tr>
-              <td>Đã tiếp nhận</td>
-              <td class="num">463</td>
-              <td>Đã hoàn tất thủ tục bàn giao.</td>
-            </tr>
-            <tr>
-              <td>Chưa tiếp nhận</td>
-              <td class="num">118</td>
-              <td>Đang trong quá trình thực hiện thủ tục.</td>
-            </tr>
-            <tr>
-              <td>Đã bồi thường GPMB</td>
-              <td class="num">1</td>
-              <td>Đã hoàn thành giải phóng mặt bằng.</td>
-            </tr>
-            <tr>
-              <td>Đang bàn giao cho địa phương</td>
-              <td class="num">1</td>
-              <td>Chuẩn bị giao cho địa phương quản lý.</td>
-            </tr>
-            <tr>
-              <td>Bàn giao cho dự án công viên – đài tưởng niệm COVID-19</td>
-              <td class="num">1</td>
-              <td>Địa chỉ số 1 đường Lý Thái Tổ.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>3.2.2 Tổ chức quản lý, kinh doanh nhà địa phương</h3>
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Đơn vị</th>
-              <th class="num">Số cơ sở</th>
-              <th>Trạng thái chính</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Trung tâm Quản lý nhà và Giám định xây dựng</td>
-              <td class="num">51</td>
-              <td>1 tạm quản lý chờ bàn giao; 4 đang cho thuê; còn lại để trống, lập kế hoạch khai thác.</td>
-            </tr>
-            <tr>
-              <td>Trung tâm Quản lý hạ tầng kỹ thuật tỉnh Bà Rịa – Vũng Tàu</td>
-              <td class="num">31</td>
-              <td>Lập kế hoạch khai thác, cho thuê.</td>
-            </tr>
-            <tr>
-              <td>Công ty TNHH MTV Quản lý kinh doanh nhà Thành phố</td>
-              <td class="num">344</td>
-              <td>3 cơ sở dự kiến điều chuyển cho Bộ Công an; phần còn lại tiếp tục quản lý, khai thác.</td>
-            </tr>
-            <tr>
-              <td>Công ty TNHH MTV Dịch vụ công quận, huyện</td>
-              <td class="num">1.031</td>
-              <td>Đang lập thủ tục bàn giao về Trung tâm Quản lý nhà và Giám định xây dựng.</td>
-            </tr>
-            <tr>
-              <td>Công ty Kho bãi Thành phố</td>
-              <td class="num">33</td>
-              <td>Đang lập thủ tục bàn giao để khai thác cho thuê theo Nghị định 108/2025/NĐ-CP.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3.5.1 Trung tâm hành chính Bình Dương -->
-    <section id="trungtam-bd">
-      <h2>
-        3.5.1. Trung tâm hành chính tập trung Bình Dương
-        <span class="pill-title">550 nhân sự – 15 đơn vị</span>
-      </h2>
-
-      <p class="section-note">
-        Khu Trung tâm hành chính Bình Dương (tòa nhà 1, 2, quảng trường –
-        bãi xe) chuyển đổi công năng thành Trung tâm Đa chức năng Khoa học
-        công nghệ, đồng thời di dời các đơn vị đang làm việc tới các trụ
-        sở khác.
-      </p>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Hạng mục</th>
-              <th class="num">Diện tích đất</th>
-              <th class="num">Diện tích sàn</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Tòa nhà 1 – TTHC tỉnh Bình Dương</td>
-              <td class="num">30.985 m²</td>
-              <td class="num">104.416,80 m²</td>
-              <td>Đơn vị quản lý: Ban Quản lý Tòa nhà TTHC Bình Dương.</td>
-            </tr>
-            <tr>
-              <td>Tòa nhà 2 – Trung tâm Hội nghị và Triển lãm</td>
-              <td class="num">13.859 m²</td>
-              <td class="num">16.357,30 m²</td>
-              <td>Phục vụ hội nghị, triển lãm.</td>
-            </tr>
-            <tr>
-              <td>Quảng trường, công viên, bãi đậu xe, hạ tầng chung</td>
-              <td class="num">97.897 m²</td>
-              <td class="num">85.589,48 m²</td>
-              <td>Hạ tầng phục vụ khu TTHC.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="section-title">Nhu cầu bố trí và phương án di dời</h3>
-
-      <div class="kpi-row kpi-row--center kpi-row--softblue kpi-row--two">
-        <div class="kpi">
-          <div class="kpi-label">Nhân sự làm việc (16/01/2026)</div>
-          <div class="kpi-value">481 người (21 đơn vị)</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Nhu cầu sau rà soát (21/01/2026)</div>
-          <div class="kpi-value">550 người (15 đơn vị)</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Trụ sở tiếp nhận</th>
-              <th>Đơn vị bố trí</th>
-              <th class="num">Nhân sự</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Trụ sở Báo Bình Dương cũ – 543 Lê Hồng Phong, Phú Lợi</td>
-              <td>Sở Nông nghiệp và Môi trường; Văn phòng đăng ký đất đai; Chi cục Bảo vệ môi trường.</td>
-              <td class="num">59 + 58 + 16</td>
-            </tr>
-            <tr>
-              <td>Cục Hải quan tỉnh Bình Dương cũ – Đại Lộ Bình Dương</td>
-              <td>
-                TT Phát triển công nghiệp – CN hỗ trợ; Phòng ĐKKD &amp; TT hỗ trợ DN;
-                Ban QL Khu chế xuất – CN; TT QH Phát triển đô thị Bình Dương; TT Phục vụ HCC.
-              </td>
-              <td class="num">76 + 16 + 45 + 43 + 33</td>
-            </tr>
-            <tr>
-              <td>Trụ sở Đảng ủy phường Thủ Dầu Một – 14B Bạch Đằng</td>
-              <td>
-                Sở An toàn thực phẩm; MTTQ; Thanh tra Thành phố; Sở Y tế;
-                Sở Nội vụ; các Ban QLDA.
-              </td>
-              <td class="num">51 + 6 + 12 + 16 + 24 + 70 + 25</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 3.5.2 Trung tâm hành chính BR-VT -->
-    <section id="trungtam-brvt">
-      <h2>
-        3.5.2. Trung tâm hành chính – chính trị Bà Rịa – Vũng Tàu
-        <span class="pill-title">230 nhân sự – 17 đơn vị</span>
-      </h2>
-
-      <p class="section-note">
-        Trung tâm Hành chính – Chính trị tỉnh (01 Phạm Văn Đồng) bố trí
-        cho Trường Đại học Y Dược; khu 179 Bạch Đằng tiếp tục bố trí cho
-        các cơ quan còn nhu cầu, đồng thời xem xét phương án cho huyện
-        Long Điền.
-      </p>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Khu vực</th>
-              <th class="num">Diện tích đất</th>
-              <th class="num">Diện tích sàn</th>
-              <th>Phương án</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Khu TTHC – Chính trị (01 Phạm Văn Đồng)</td>
-              <td class="num">147.856 m²</td>
-              <td class="num">204.499 m²</td>
-              <td>Bố trí cho Trường Đại học Y Dược theo chủ trương đã thống nhất.</td>
-            </tr>
-            <tr>
-              <td>Кhu BQL TTHC; TTPVHC, Đoàn ĐBQH &amp; HĐND (179 Bạch Đằng)</td>
-              <td class="num">44.620 m²</td>
-              <td class="num">33.030 m²</td>
-              <td>
-                Giữ lại bố trí cho 9 cơ quan (MTTQ, Y tế, Tài chính, Nội vụ, Công thương,
-                Du lịch, GD&amp;ĐT, Thanh tra, BQL Khu chế xuất – CN).
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>Trung tâm hành chính huyện Long Điền cũ</h3>
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Thông tin</th>
-              <th class="num">Diện tích</th>
-              <th>Phương án</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Trụ sở TTHC huyện Long Điền cũ – 1939 Quốc lộ 55</td>
-              <td class="num">Đất: 80.420 m²; Sàn: 24.067 m²</td>
-              <td>
-                Tiếp tục bố trí cho UBND xã Long Điền, các trung tâm chuyên ngành và Ban QLDA;
-                đồng thời bố trí thêm Sở NN&amp;MT và đơn vị trực thuộc.
-              </td>
-            </tr>
-            <tr>
-              <td>Phương án thu hồi (trường hợp chuyển đổi công năng)</td>
-              <td class="num">—</td>
-              <td>
-                Ưu tiên bố trí cho giáo dục, y tế; sử dụng thêm các trụ sở HĐND &amp; UBND huyện Long Điền cũ,
-                trụ sở số 123 Bạch Đằng, số 9 Huỳnh Ngọc Hay để di dời các đơn vị.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-  </main>
+  <div class="badge-date">14/03/2026 · Rev. Final</div>
 </div>
+
+<!-- ===================== KPI TỔNG QUAN ===================== -->
+<div class="section-title">Tổng quan số liệu</div>
+<div class="kpi-grid">
+  <div class="kpi-card c1">
+    <div class="kpi-label">Tổng tài sản</div>
+    <div class="kpi-value">14.254</div>
+    <div class="kpi-sub">hồ sơ nhà, đất</div>
+  </div>
+  <div class="kpi-card c2">
+    <div class="kpi-label">Phụ lục</div>
+    <div class="kpi-value">9</div>
+    <div class="kpi-sub">nhóm phân loại</div>
+  </div>
+  <div class="kpi-card c3">
+    <div class="kpi-label">Tổng diện tích</div>
+    <div class="kpi-value">~117M</div>
+    <div class="kpi-sub">m² (PL 1–8, ước)</div>
+  </div>
+  <div class="kpi-card c4">
+    <div class="kpi-label">Diện tích trung bình</div>
+    <div class="kpi-value">7.514</div>
+    <div class="kpi-sub">m² (mean), 766 m² (median)</div>
+  </div>
+  <div class="kpi-card c5">
+    <div class="kpi-label">Giữ lại sử dụng</div>
+    <div class="kpi-value">~89%</div>
+    <div class="kpi-sub">chủ đạo PL2 (900/990)</div>
+  </div>
+  <div class="kpi-card c6">
+    <div class="kpi-label">Thiếu pháp lý</div>
+    <div class="kpi-value">~80%</div>
+    <div class="kpi-sub">PL 2–5 & 8–9 trống GCN</div>
+  </div>
+</div>
+
+<!-- ===================== BẢNG 9 PHỤ LỤC ===================== -->
+<div class="section-title">Chi tiết 9 phụ lục</div>
+<div class="full-panel">
+  <table class="pl-table">
+    <thead>
+      <tr>
+        <th>Phụ lục</th>
+        <th>Mô tả</th>
+        <th>Số hồ sơ</th>
+        <th>Có DT</th>
+        <th>DT min (m²)</th>
+        <th>DT max (m²)</th>
+        <th>Tổng DT (m²)</th>
+        <th>DT trung bình</th>
+        <th>Loại</th>
+        <th>Pháp lý đủ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pl-num tag tag-blue">PL 1</span></td>
+        <td>Nhà đất Đảng – cơ sở giữ lại &amp; chuyển giao</td>
+        <td class="pl-num">333</td>
+        <td class="pl-num">321</td>
+        <td class="pl-num">8</td>
+        <td class="pl-num">143.359</td>
+        <td class="pl-num">924.099</td>
+        <td class="pl-num">2.878</td>
+        <td><span class="tag tag-blue">Đảng ủy</span></td>
+        <td><span class="tag tag-green">327/333 ≈ 98%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-orange">PL 2</span></td>
+        <td>Nhà đất UBND – cơ sở sắp xếp toàn TP</td>
+        <td class="pl-num">992</td>
+        <td class="pl-num">992</td>
+        <td class="pl-num">0</td>
+        <td class="pl-num">1.656.882</td>
+        <td class="pl-num">16.944.402</td>
+        <td class="pl-num">17.398</td>
+        <td><span class="tag tag-orange">Hành chính</span></td>
+        <td><span class="tag tag-red">0/990 = 0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-green">PL 3</span></td>
+        <td>Ban quản lý dự án đầu tư xây dựng TP</td>
+        <td class="pl-num">126</td>
+        <td class="pl-num">103</td>
+        <td class="pl-num">56</td>
+        <td class="pl-num">576.195</td>
+        <td class="pl-num">2.717.872</td>
+        <td class="pl-num">26.387</td>
+        <td><span class="tag tag-green">BQL DA</span></td>
+        <td><span class="tag tag-red">0/126 = 0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-yellow">PL 4</span></td>
+        <td>MTTQ, Đoàn thể, tổ chức chính trị – xã hội</td>
+        <td class="pl-num">145</td>
+        <td class="pl-num">141</td>
+        <td class="pl-num">1</td>
+        <td class="pl-num">1.214.600</td>
+        <td class="pl-num">1.708.494</td>
+        <td class="pl-num">12.116</td>
+        <td><span class="tag tag-yellow">MTTQ/Đoàn</span></td>
+        <td><span class="tag tag-red">0/145 = 0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-purple">PL 5</span></td>
+        <td>Tài sản phường/xã toàn TP – quy mô lớn nhất</td>
+        <td class="pl-num">9.882</td>
+        <td class="pl-num">9.548</td>
+        <td class="pl-num">1</td>
+        <td class="pl-num">2.699.145</td>
+        <td class="pl-num">74.753.662</td>
+        <td class="pl-num">7.832</td>
+        <td><span class="tag tag-purple">Phường/Xã</span></td>
+        <td><span class="tag tag-red">0/9.882 = 0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-blue">PL 6</span></td>
+        <td>Bộ Tài chính – cơ sở bàn giao về địa phương</td>
+        <td class="pl-num">74</td>
+        <td class="pl-num">58</td>
+        <td class="pl-num">42</td>
+        <td class="pl-num">80.948</td>
+        <td class="pl-num">159.198</td>
+        <td class="pl-num">2.745</td>
+        <td><span class="tag tag-blue">Bộ TC</span></td>
+        <td><span class="tag tag-yellow">65/74 = 88%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-orange">PL 7</span></td>
+        <td>Quỹ đất dự kiến thanh toán, đấu giá, BT</td>
+        <td class="pl-num">298</td>
+        <td class="pl-num">296</td>
+        <td class="pl-num">17</td>
+        <td class="pl-num">2.342.303</td>
+        <td class="pl-num">14.434.649</td>
+        <td class="pl-num">48.764</td>
+        <td><span class="tag tag-orange">Quỹ đất</span></td>
+        <td><span class="tag tag-green">297/298 = 99.7%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-red">PL 8</span></td>
+        <td>Công ty TNHH MTV Quản lý Kinh doanh Nhà – tạm quản lý</td>
+        <td class="pl-num">1.490</td>
+        <td class="pl-num">1.490</td>
+        <td class="pl-num">1</td>
+        <td class="pl-num">133.740</td>
+        <td class="pl-num">6.732.545</td>
+        <td class="pl-num">4.518</td>
+        <td><span class="tag tag-red">Tạm QL</span></td>
+        <td><span class="tag tag-red">456/1.503 = 30%</span></td>
+      </tr>
+      <tr>
+        <td><span class="pl-num tag tag-purple">PL 9</span></td>
+        <td>Tổng Công ty Cấp nước Sài Gòn – SAWACO</td>
+        <td class="pl-num">919</td>
+        <td class="pl-num">887</td>
+        <td class="pl-num">28</td>
+        <td class="pl-num">—</td>
+        <td class="pl-num">—</td>
+        <td class="pl-num">—</td>
+        <td><span class="tag tag-purple">DNNN</span></td>
+        <td><span class="tag tag-red">0/919 = 0%</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===================== PHÂN BỐ DIỆN TÍCH ===================== -->
+<div class="section-title">Phân vùng diện tích đất (tổng hợp PL 1–8, loại outlier > 2 triệu m²)</div>
+<div class="two-col">
+  <div class="panel">
+    <div class="panel-title">📐 Phân nhóm diện tích — 12.922 hồ sơ có DT hợp lệ</div>
+    
+    <div class="bar-row">
+      <div class="bar-label">&lt; 100 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:17.5%; background: linear-gradient(90deg, #ff4757, #ff6b81);">
+          <span class="bar-count">2.267</span>
+        </div>
+      </div>
+      <div class="bar-pct">17.5%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">100 – 300 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:17.0%; background: linear-gradient(90deg, #ff6b35, #ff9f6b);">
+          <span class="bar-count">2.202</span>
+        </div>
+      </div>
+      <div class="bar-pct">17.0%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">300 – 500 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:8.3%; background: linear-gradient(90deg, #ffa502, #ffd166);">
+          <span class="bar-count">1.069</span>
+        </div>
+      </div>
+      <div class="bar-pct">8.3%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">500 – 1.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:11.6%; background: linear-gradient(90deg, #ffd166, #ffe5a0);">
+          <span class="bar-count">1.493</span>
+        </div>
+      </div>
+      <div class="bar-pct">11.6%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">1.000 – 2.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:11.0%; background: linear-gradient(90deg, #00e5a0, #5effd8);">
+          <span class="bar-count">1.415</span>
+        </div>
+      </div>
+      <div class="bar-pct">11.0%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">2.000 – 5.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:13.6%; background: linear-gradient(90deg, #00d4ff, #80eaff);">
+          <span class="bar-count">1.763</span>
+        </div>
+      </div>
+      <div class="bar-pct">13.6%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">5.000 – 10.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:9.5%; background: linear-gradient(90deg, #00b4d8, #00d4ff);">
+          <span class="bar-count">1.229</span>
+        </div>
+      </div>
+      <div class="bar-pct">9.5%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">10.000 – 50.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:9.9%; background: linear-gradient(90deg, #c77dff, #ddb0ff);">
+          <span class="bar-count">1.285</span>
+        </div>
+      </div>
+      <div class="bar-pct">9.9%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">50.000 – 200.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:1.1%; background: linear-gradient(90deg, #9b5de5, #c77dff);">
+          <span class="bar-count">137</span>
+        </div>
+      </div>
+      <div class="bar-pct">1.1%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">&gt; 200.000 m²</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:0.5%; background: linear-gradient(90deg, #7209b7, #9b5de5);">
+          <span class="bar-count">62</span>
+        </div>
+      </div>
+      <div class="bar-pct">0.5%</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🎯 Insight phân vùng diện tích</div>
+
+    <div style="margin-bottom:18px;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Vùng tập trung mật độ cao (34.5%)</div>
+      <div style="font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--accent2);">< 300 m²</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">4.469 hồ sơ — chủ yếu PL8 (nhà phố trung tâm) và PL9 (SAWACO giếng/trạm)</div>
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Nhóm trung bình — trụ sở cơ quan (35.2%)</div>
+      <div style="font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--accent4);">300 – 2.000 m²</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">4.554 hồ sơ — PL2/PL4/PL1, tiêu biểu trụ sở làm việc cấp quận/huyện</div>
+    </div>
+
+    <div style="margin-bottom:18px;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Nhóm lớn — thiết chế, khu đất quy hoạch (23.1%)</div>
+      <div style="font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--accent3);">2.000 – 50.000 m²</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">2.992 hồ sơ — PL3/PL5/PL7, gồm trường học, công viên, khu tái định cư</div>
+    </div>
+
+    <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:12px;font-size:11px;color:var(--muted);">
+      ⚡ <strong style="color:var(--accent)">Trung vị 766 m²</strong> cho thấy đa số tài sản là các trụ sở/nhà phố quy mô vừa; mean 7.514 m² bị kéo cao bởi các khu đất lớn trong PL3, PL7, PL5.
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PHƯƠNG ÁN SẮP XẾP ===================== -->
+<div class="section-title">Phân tích phương án sắp xếp</div>
+<div class="three-col">
+
+  <div class="panel">
+    <div class="panel-title">PL2 — UBND TP (992 cơ sở)</div>
+    <div class="donut-container">
+      <div>
+        <div class="donut" style="background: conic-gradient(#00e5a0 0% 90.9%, #ff4757 90.9% 97%, #00d4ff 97% 100%);">
+          <div class="donut-hole">992<br>cơ sở</div>
+        </div>
+      </div>
+      <div class="legend-list">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#00e5a0;"></div>
+          <span class="legend-label">Giữ lại/TT SD</span>
+          <span class="legend-val">900 (90.9%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ff4757;"></div>
+          <span class="legend-label">Thu hồi</span>
+          <span class="legend-val">60 (6.1%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#00d4ff;"></div>
+          <span class="legend-label">Điều chuyển</span>
+          <span class="legend-val">29 (2.9%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ffd166;"></div>
+          <span class="legend-label">Khác</span>
+          <span class="legend-val">1 (0.1%)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">PL4 — MTTQ/Đoàn thể (145 cơ sở)</div>
+    <div class="donut-container">
+      <div>
+        <div class="donut" style="background: conic-gradient(#00e5a0 0% 75.2%, #ff4757 75.2% 82.8%, #00d4ff 82.8% 93.8%, #ffd166 93.8% 100%);">
+          <div class="donut-hole">145<br>cơ sở</div>
+        </div>
+      </div>
+      <div class="legend-list">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#00e5a0;"></div>
+          <span class="legend-label">Giữ lại</span>
+          <span class="legend-val">109 (75.2%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ff4757;"></div>
+          <span class="legend-label">Thu hồi</span>
+          <span class="legend-val">12 (8.3%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#00d4ff;"></div>
+          <span class="legend-label">Điều chuyển</span>
+          <span class="legend-val">16 (11%)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ffd166;"></div>
+          <span class="legend-label">Khác/GIQ</span>
+          <span class="legend-val">8 (5.5%)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">PL8 — Cty Nhà (1.490 cơ sở)</div>
+    <div style="margin-bottom:10px;">
+      <div class="bar-row">
+        <div class="bar-label" style="min-width:140px;font-size:10px;">Bán đấu giá</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:7.3%; background:#c77dff;"><span class="bar-count" style="font-size:9px;">110</span></div>
+        </div>
+        <div class="bar-pct" style="font-size:10px;">7.3%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="min-width:140px;font-size:10px;">Tạm QL cho thuê</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:25%; background:#00d4ff;"><span class="bar-count" style="font-size:9px;">~375</span></div>
+        </div>
+        <div class="bar-pct" style="font-size:10px;">25%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="min-width:140px;font-size:10px;">Bán chỉ định</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:8%; background:#ffd166;"><span class="bar-count" style="font-size:9px;">~120</span></div>
+        </div>
+        <div class="bar-pct" style="font-size:10px;">8%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="min-width:140px;font-size:10px;">Chưa phê duyệt PA</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:3%; background:#ff4757;"><span class="bar-count" style="font-size:9px;">46</span></div>
+        </div>
+        <div class="bar-pct" style="font-size:10px;">3.1%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="min-width:140px;font-size:10px;">Điều chuyển TT QL</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:20%; background:#00e5a0;"><span class="bar-count" style="font-size:9px;">~300</span></div>
+        </div>
+        <div class="bar-pct" style="font-size:10px;">~20%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label" style="min-width:140px;font-size:10px;">Khác/Đặc thù</div>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:36.4%; background:#7a8ba8;"><span class="bar-count" style="font-size:9px;">~548</span></div>
+        </div>
+        <div class="bar-pct" style="font-size:10px;">36.4%</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--muted);">* Ước tính từ ~300 loại PA khác nhau trong cột phương án</div>
+  </div>
+</div>
+
+<!-- ===================== PHÂN TÍCH PHÁP LÝ ===================== -->
+<div class="section-title">Phân tích hiện trạng pháp lý (Giấy chứng nhận QSDĐ)</div>
+<div class="phap-ly-grid">
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 1 — Cơ quan Đảng</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>333</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--accent3)">327</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">6</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--accent3)"><b>98.2%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill" style="width:98.2%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">Đây là phụ lục tốt nhất — phần lớn có GCN QSDĐ đầy đủ, nguồn gốc rõ ràng (giao theo QĐ UB/UBND)</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 2 — UBND Thành phố</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>992</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--danger)">0</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">990</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger)"><b>0%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill red" style="width:100%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ Toàn bộ cột "Hiện trạng pháp lí" trống — đây là lỗ hổng lớn nhất cần bổ sung</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 3 — BQL dự án ĐTXD</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>126</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--danger)">0</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">126</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger)"><b>0%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill red" style="width:100%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ Cột pháp lý trống hoàn toàn — nhiều hồ sơ chỉ ghi "cơ sở hoạt động sự nghiệp"</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 4 — MTTQ / Đoàn thể</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>145</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--danger)">0</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">145</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger)"><b>0%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill red" style="width:100%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ Một số đất có "Hoàn trả" nhưng không kèm số GCN hay quyết định giao đất</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 5 — Phường/Xã (9.882)</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>9.882</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--danger)">0</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">9.882</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger)"><b>0%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill red" style="width:100%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ Rủi ro cao nhất — 69% tổng số hồ sơ, không có thông tin pháp lý nào trong cơ sở dữ liệu</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 6 — Bộ Tài chính</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>74</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--accent4)">65</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--warn)">9</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--accent4)"><b>87.8%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill" style="width:87.8%; background:var(--accent4);"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">Tương đối tốt — thông tin pháp lý là QĐ của BTC (4232/QĐ-BTC, 4392/QĐ-BTC...)</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 7 — Quỹ đất / BT</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>298</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--accent3)">297</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--accent3)">1</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--accent3)"><b>99.7%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill" style="width:99.7%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">Xuất sắc — hầu hết có văn bản UBND TP, QĐ phê duyệt dự án BT rõ ràng</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 8 — Cty TNHH MTV Nhà</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>1.490</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--warn)">456</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">1.047</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--warn)"><b>30.3%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill" style="width:30.3%; background:var(--warn);"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">Phần lớn chỉ có CV số tạm thời; 69.7% thiếu thông tin pháp lý đầy đủ</div>
+  </div>
+
+  <div class="phap-card">
+    <div class="phap-name">📋 Phụ lục 9 — SAWACO</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>919</span></div>
+    <div class="phap-row"><span>Có thông tin pháp lý</span><span style="color:var(--danger)">0</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger)">919</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger)"><b>0%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill red" style="width:100%;"></div></div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;">⚠️ Doanh nghiệp nhà nước — toàn bộ cột pháp lý/quy hoạch để trống trong dữ liệu</div>
+  </div>
+</div>
+
+<!-- ===================== TỔNG HỢP PHÁP LÝ ===================== -->
+<div class="section-title">Bảng tổng hợp mức độ hoàn thiện pháp lý</div>
+<div class="full-panel">
+  <table class="heat-table">
+    <thead>
+      <tr>
+        <th>Phụ lục</th>
+        <th>Hồ sơ</th>
+        <th>Có GCN/QĐ</th>
+        <th>Thiếu pháp lý</th>
+        <th>% Đủ</th>
+        <th>Đánh giá</th>
+        <th>Hành động cần thiết</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>PL 1</b> — Cơ quan Đảng</td>
+        <td>333</td>
+        <td>327</td>
+        <td>6</td>
+        <td><span class="cell-h">98.2%</span></td>
+        <td><span class="tag tag-green">✔ Tốt</span></td>
+        <td>Bổ sung 6 GCN còn thiếu</td>
+      </tr>
+      <tr>
+        <td><b>PL 2</b> — UBND TP</td>
+        <td>990</td>
+        <td>0</td>
+        <td>990</td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="tag tag-red">✘ Nghiêm trọng</span></td>
+        <td>Cần nhập toàn bộ 990 GCN QSDĐ vào hệ thống</td>
+      </tr>
+      <tr>
+        <td><b>PL 3</b> — BQL DA</td>
+        <td>126</td>
+        <td>0</td>
+        <td>126</td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="tag tag-red">✘ Nghiêm trọng</span></td>
+        <td>Rà soát từng BQL DA để bổ sung quyết định giao đất</td>
+      </tr>
+      <tr>
+        <td><b>PL 4</b> — MTTQ/Đoàn</td>
+        <td>145</td>
+        <td>0</td>
+        <td>145</td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="tag tag-red">✘ Nghiêm trọng</span></td>
+        <td>Làm rõ nguồn gốc đất, đặc biệt các cơ sở "Hoàn trả"</td>
+      </tr>
+      <tr>
+        <td><b>PL 5</b> — Phường/Xã</td>
+        <td>9.882</td>
+        <td>0</td>
+        <td>9.882</td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="tag tag-red">✘ Rủi ro rất cao</span></td>
+        <td>Ưu tiên khẩn cấp — lớn nhất, không có pháp lý nào</td>
+      </tr>
+      <tr>
+        <td><b>PL 6</b> — Bộ TC</td>
+        <td>74</td>
+        <td>65</td>
+        <td>9</td>
+        <td><span class="cell-h">87.8%</span></td>
+        <td><span class="tag tag-yellow">~ Khá</span></td>
+        <td>Bổ sung 9 QĐ còn thiếu từ BTC</td>
+      </tr>
+      <tr>
+        <td><b>PL 7</b> — Quỹ đất BT</td>
+        <td>298</td>
+        <td>297</td>
+        <td>1</td>
+        <td><span class="cell-h">99.7%</span></td>
+        <td><span class="tag tag-green">✔ Xuất sắc</span></td>
+        <td>Bổ sung 1 hồ sơ còn thiếu</td>
+      </tr>
+      <tr>
+        <td><b>PL 8</b> — Cty Nhà</td>
+        <td>1.503</td>
+        <td>456</td>
+        <td>1.047</td>
+        <td><span class="cell-l">30.3%</span></td>
+        <td><span class="tag tag-orange">⚠ Yếu</span></td>
+        <td>Bổ sung 1.047 CV/QĐ tạm thời hoặc GCN cho từng cơ sở</td>
+      </tr>
+      <tr>
+        <td><b>PL 9</b> — SAWACO</td>
+        <td>919</td>
+        <td>0</td>
+        <td>919</td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="tag tag-red">✘ Nghiêm trọng</span></td>
+        <td>SAWACO cần cung cấp toàn bộ giấy tờ pháp lý</td>
+      </tr>
+      <tr style="background:rgba(255,71,87,0.05);">
+        <td><b>TỔNG</b></td>
+        <td><b>14.270</b></td>
+        <td><b>1.145</b></td>
+        <td style="color:var(--danger);font-weight:700;"><b>13.125</b></td>
+        <td><span class="cell-l">8.0%</span></td>
+        <td><span class="tag tag-red">✘ Toàn hệ thống</span></td>
+        <td><b>92% hồ sơ THIẾU thông tin pháp lý đầy đủ trong dữ liệu</b></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===================== INSIGHTS ===================== -->
+<div class="section-title">Phân tích Insights & Rủi ro</div>
+<div class="insight-grid">
+
+  <div class="insight-card danger">
+    <div class="insight-icon">🚨</div>
+    <div class="insight-title">Pháp lý thiếu hệ thống — 92% hồ sơ</div>
+    <div class="insight-body">Chỉ PL1 và PL7 có thông tin pháp lý tương đối đầy đủ. 7 phụ lục còn lại hoàn toàn trống cột "Hiện trạng pháp lí". Đây có thể do dữ liệu chưa được nhập vào hệ thống chứ không hẳn tài sản không có giấy tờ, nhưng cần xác minh khẩn cấp.</div>
+  </div>
+
+  <div class="insight-card warn">
+    <div class="insight-icon">⚡</div>
+    <div class="insight-title">PL5 — Khổng lồ nhưng thiếu dữ liệu</div>
+    <div class="insight-body">Phụ lục 5 có 9.882 hồ sơ (69% tổng số), tổng DT ước 74.7 triệu m². Cột địa chỉ, tỉnh/thành, đường, số nhà — nhiều ô trống. Không có thông tin phương án sắp xếp. Đây là nhóm cần xây dựng hệ thống kiểm soát riêng.</div>
+  </div>
+
+  <div class="insight-card warn">
+    <div class="insight-icon">📊</div>
+    <div class="insight-title">Phân kỳ mean vs median — tài sản không đồng đều</div>
+    <div class="insight-body">Mean toàn hệ thống là 7.514 m² nhưng median chỉ 766 m² — chênh lệch gần 10 lần. Điều này cho thấy một số ít khu đất cực lớn (>50.000 m²) đang kéo trung bình lên, còn đại đa số tài sản là bất động sản nhỏ trung tâm thành phố.</div>
+  </div>
+
+  <div class="insight-card danger">
+    <div class="insight-icon">🏠</div>
+    <div class="insight-title">PL8: 626 cơ sở dưới 100 m² — rủi ro pháp lý cao</div>
+    <div class="insight-body">Cty Nhà tạm quản lý 626 bất động sản dưới 100 m², đây chủ yếu là mặt bằng shophouse/nhà mặt phố trung tâm có giá trị cao. 70% trong số này không có thông tin pháp lý rõ ràng — tiềm ẩn tranh chấp khi bán đấu giá.</div>
+  </div>
+
+  <div class="insight-card info">
+    <div class="insight-icon">💰</div>
+    <div class="insight-title">PL7: 298 khu đất tiềm năng thanh lý cao</div>
+    <div class="insight-body">Quỹ đất phục vụ dự án BT và đấu giá có tổng DT ~14.4 triệu m², DT trung bình lớn nhất (48.764 m²). Pháp lý tốt nhất (99.7%). Đây là nhóm sẵn sàng nhất để chuyển sang đấu giá/giao nhà đầu tư — tiềm năng thu ngân sách lớn.</div>
+  </div>
+
+  <div class="insight-card warn">
+    <div class="insight-icon">🔄</div>
+    <div class="insight-title">PL2: "Giữ lại" chiếm 91% — ít cải cách</div>
+    <div class="insight-body">Trong 990 cơ sở UBND quản lý, chỉ 6% thu hồi và 3% điều chuyển. Tỷ lệ "giữ lại tiếp tục sử dụng" 91% có thể phản ánh thiếu cơ chế rà soát nhu cầu thực sự. Một số cơ sở "Để trống" vẫn phân loại giữ lại.</div>
+  </div>
+
+  <div class="insight-card note">
+    <div class="insight-icon">📍</div>
+    <div class="insight-title">Địa lý: TP.HCM chiếm ưu thế, nhưng có Bà Rịa-Vũng Tàu &amp; Bình Dương</div>
+    <div class="insight-body">Dữ liệu bao gồm tài sản thuộc tỉnh Bà Rịa-Vũng Tàu (cũ — nay sáp nhập), Bình Dương (cũ), và các địa bàn giáp ranh. Cần làm rõ quy trình quản lý tài sản liên tỉnh sau sáp nhập địa giới hành chính.</div>
+  </div>
+
+  <div class="insight-card ok">
+    <div class="insight-icon">✅</div>
+    <div class="insight-title">PL1 & PL7: Mô hình tốt cần nhân rộng</div>
+    <div class="insight-body">Hai phụ lục này có pháp lý gần như hoàn chỉnh (98.2% và 99.7%), có thông tin quy hoạch, hiện trạng sử dụng rõ ràng. Đây là chuẩn mực dữ liệu cần áp dụng cho các phụ lục còn lại, đặc biệt PL5.</div>
+  </div>
+
+  <div class="insight-card note">
+    <div class="insight-icon">⚖️</div>
+    <div class="insight-title">PL8: ~300 loại phương án — thiếu chuẩn hóa</div>
+    <div class="insight-body">Cột "Phương án sắp xếp" trong PL8 có gần 300 giá trị không chuẩn hóa (CV số, tên đơn vị thuê khác nhau). Điều này gây khó khăn cho thống kê tổng hợp. Cần chuẩn hóa về 5–7 loại phương án chính thức.</div>
+  </div>
+
+  <div class="insight-card danger">
+    <div class="insight-icon">🏗️</div>
+    <div class="insight-title">Dữ liệu tọa độ &amp; Google Maps — gần như trống</div>
+    <div class="insight-body">Cột "Google map Url" và "geocoded_at" hầu hết trống trong tất cả 9 phụ lục. Không thể lập bản đồ không gian hay phân tích phân bố vùng địa lý. Đây là hạn chế lớn của dữ liệu hiện tại để ra quyết định quy hoạch.</div>
+  </div>
+
+  <div class="insight-card warn">
+    <div class="insight-icon">🔢</div>
+    <div class="insight-title">Mã định danh tài sản — tuần tự, chưa phân cấp</div>
+    <div class="insight-body">Mã T030000000xxxxx là mã tuyến tính, không phân cấp theo loại tài sản/địa bàn. Khi cần cross-reference giữa các phụ lục sẽ khó. Đề xuất xây dựng mã phân cấp: [Loại tài sản]-[Phụ lục]-[Quận/Huyện]-[STT].</div>
+  </div>
+
+  <div class="insight-card info">
+    <div class="insight-icon">📅</div>
+    <div class="insight-title">Năm đưa vào sử dụng — dữ liệu phong phú ở PL5</div>
+    <div class="insight-body">PL5 có cột "Năm đưa vào sử dụng" tương đối đầy đủ (1979–2023), cho phép phân tích tuổi tài sản. Nhiều tài sản từ trước 1990 có thể cần đánh giá lại giá trị còn lại và kế hoạch bảo trì/cải tạo.</div>
+  </div>
+</div>
+
+<!-- ===================== BẢNG HEAT MAP ===================== -->
+<div class="section-title">Ma trận chất lượng dữ liệu — theo trường thông tin</div>
+<div class="full-panel">
+  <table class="heat-table">
+    <thead>
+      <tr>
+        <th>Trường dữ liệu</th>
+        <th>PL1</th>
+        <th>PL2</th>
+        <th>PL3</th>
+        <th>PL4</th>
+        <th>PL5</th>
+        <th>PL6</th>
+        <th>PL7</th>
+        <th>PL8</th>
+        <th>PL9</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Địa chỉ đầy đủ</td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+        <td><span class="cell-h">✓ Tốt</span></td>
+      </tr>
+      <tr>
+        <td>Diện tích đất</td>
+        <td><span class="cell-h">96.4%</span></td>
+        <td><span class="cell-h">98.4%</span></td>
+        <td><span class="cell-m">81.7%</span></td>
+        <td><span class="cell-h">97.2%</span></td>
+        <td><span class="cell-h">96.6%</span></td>
+        <td><span class="cell-m">78.4%</span></td>
+        <td><span class="cell-h">99.3%</span></td>
+        <td><span class="cell-h">99.1%</span></td>
+        <td><span class="cell-h">96.5%</span></td>
+      </tr>
+      <tr>
+        <td>Diện tích sàn</td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+      </tr>
+      <tr>
+        <td>Phương án sắp xếp</td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-m">~ TB</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-l">Trống</span></td>
+      </tr>
+      <tr>
+        <td>Pháp lý điều chỉnh</td>
+        <td><span class="cell-h">98.2%</span></td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="cell-l">0%</span></td>
+        <td><span class="cell-h">87.8%</span></td>
+        <td><span class="cell-h">99.7%</span></td>
+        <td><span class="cell-l">30.3%</span></td>
+        <td><span class="cell-l">0%</span></td>
+      </tr>
+      <tr>
+        <td>Hiện trạng pháp lí</td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+      </tr>
+      <tr>
+        <td>Quy hoạch</td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+      </tr>
+      <tr>
+        <td>Google Map URL</td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+      </tr>
+      <tr>
+        <td>Nguyên giá / Giá trị còn lại</td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-l">Trống</span></td>
+        <td><span class="cell-h">✓ Đủ</span></td>
+        <td><span class="cell-l">Trống</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===================== RECOMMENDATIONS ===================== -->
+<div class="section-title">Kiến nghị hành động theo ưu tiên</div>
+<div class="full-panel">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--danger);margin-bottom:12px;">🔴 KHẨN CẤP (Ngay)</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.8;">
+        1. <b style="color:var(--text)">PL5 — Nhập pháp lý 9.882 hồ sơ phường/xã</b> — Yêu cầu 100% UBND phường nộp GCN QSDĐ/QĐ giao đất<br>
+        2. <b style="color:var(--text)">PL8 — Hoàn thiện 1.047 hồ sơ còn thiếu</b> — Ưu tiên các cơ sở đang "Bán đấu giá"<br>
+        3. <b style="color:var(--text)">PL2 — Nhập dữ liệu pháp lý 990 cơ sở</b> — Đặc biệt các cơ sở "Thu hồi" cần xác lập quyền nhà nước<br>
+        4. <b style="color:var(--text)">Bật cột "Hiện trạng pháp lí"</b> — Hiện trống hoàn toàn ở tất cả 9 PL
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--accent4);margin-bottom:12px;">🟡 NGẮN HẠN (1–3 tháng)</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.8;">
+        5. <b style="color:var(--text)">Geocoding toàn bộ địa chỉ</b> — Tích hợp Google Maps API để lập bản đồ không gian tài sản<br>
+        6. <b style="color:var(--text)">Chuẩn hóa Phương án sắp xếp PL8</b> — Rút gọn ~300 giá trị xuống 7 loại chuẩn<br>
+        7. <b style="color:var(--text)">Bổ sung thông tin quy hoạch PL2/PL3/PL4</b> — Tra cứu Sở QH-KT cho từng địa chỉ<br>
+        8. <b style="color:var(--text)">PL9 (SAWACO) — yêu cầu bổ sung hồ sơ</b> — Toàn bộ 919 cơ sở thiếu pháp lý, quy hoạch
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+    <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px;">🟢 DÀI HẠN (3–12 tháng)</div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.8;">
+      9. <b style="color:var(--text)">Xây dựng Dashboard GIS</b> — Tích hợp bản đồ, phân vùng, cảnh báo pháp lý tự động theo thay đổi quy hoạch &nbsp;|&nbsp;
+      10. <b style="color:var(--text)">Tái cơ cấu mã định danh</b> — Mã phân cấp theo loại-địa bàn-STT để dễ truy xuất &nbsp;|&nbsp;
+      11. <b style="color:var(--text)">Kết nối Sở NNMT</b> — Đồng bộ dữ liệu GCN QSDĐ từ hệ thống đăng ký đất đai &nbsp;|&nbsp;
+      12. <b style="color:var(--text)">Đánh giá lại tài sản PL5</b> — Phân tích tuổi tài sản, hiện trạng, lập kế hoạch bảo trì theo từng phường
+    </div>
+  </div>
+</div>
+
+<footer>
+  Dashboard được tạo tự động từ KetQua_PhuLuc_HoanThien_14_3_2026.xlsx · 9 phụ lục · 14.278 hồ sơ nhà đất · TP. Hồ Chí Minh · Phân tích: 14/04/2026
+</footer>
+
+</body>
+</html>
