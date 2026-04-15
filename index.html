@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Toàn Diện — Kết Quả Sắp Xếp Nhà Đất Công TP.HCM 2026</title>
-<meta name="description" content="Dashboard phân tích toàn diện 14.254 tài sản công — 9 Phụ Lục — TP. Hồ Chí Minh 14/03/2026">
+<meta name="description" content="Dashboard phân tích toàn diện 14.259 tài sản công — 10 nhóm tài sản — TP. Hồ Chí Minh ">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -381,6 +381,135 @@ footer {
   margin-top: 32px;
   letter-spacing: 0.5px;
 }
+
+/* ===== SƠ ĐỒ TÀI SẢN (TREE DIAGRAM) ===== */
+.tree-section {
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.asset-tree {
+  display: flex;
+  align-items: center;
+  min-width: 900px;
+  gap: 0;
+}
+.tree-root {
+  background: linear-gradient(135deg, rgba(56,189,248,.18), rgba(129,140,248,.18));
+  border: 2px solid rgba(56,189,248,.5);
+  border-radius: 14px;
+  padding: 20px 28px;
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 160px;
+  box-shadow: 0 0 24px rgba(56,189,248,.12);
+}
+.tree-root .tr-label { font-size: 0.8rem; color: var(--t2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.tree-root .tr-val { font-size: 2.2rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, var(--a1), var(--a2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+.tree-root .tr-sub { font-size: 0.7rem; color: var(--t3); margin-top: 4px; }
+/* Main horizontal line */
+.tree-h-line {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(56,189,248,.6), rgba(56,189,248,.3));
+  flex-shrink: 0;
+}
+/* Vertical connector */
+.tree-branches-wrap {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 40px;
+}
+.tree-branches-wrap::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(25%);
+  bottom: calc(25%);
+  width: 2px;
+  background: linear-gradient(180deg, rgba(56,189,248,.5), rgba(129,140,248,.5));
+}
+.tree-branch {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.tree-branch::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 30px;
+  height: 2px;
+  background: rgba(56,189,248,.4);
+}
+/* Circle node */
+.tree-circle {
+  border: 2px solid;
+  border-radius: 50%;
+  width: 180px;
+  height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 14px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  margin-left: 28px;
+  position: relative;
+  transition: box-shadow .25s;
+}
+.tree-circle:hover { box-shadow: 0 0 30px rgba(56,189,248,.25); }
+.tree-circle.c-blue { border-color: rgba(56,189,248,.6); background: rgba(56,189,248,.07); }
+.tree-circle.c-pink { border-color: rgba(244,114,182,.5); background: rgba(244,114,182,.07); }
+.tree-circle .tc-label { font-size: 0.75rem; color: var(--t2); line-height: 1.4; margin-bottom: 6px; }
+.tree-circle .tc-val { font-size: 1.5rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+.c-blue .tc-val { color: var(--a1); }
+.c-pink .tc-val { color: var(--a3); }
+/* Calc mini inside circle */
+.tc-calc { display: flex; flex-direction: column; align-items: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 0.9rem; }
+.tc-calc .calc-num { color: var(--a3); }
+.tc-calc .calc-sub { color: var(--a5); }
+.tc-calc .calc-line { width: 60px; height: 1px; background: rgba(244,114,182,.4); margin: 3px 0; }
+.tc-calc .calc-result { color: var(--a3); font-size: 1.2rem; }
+/* Leaf line connector */
+.tree-leaf-wrap {
+  display: flex;
+  flex-direction: column;
+  padding-left: 36px;
+  gap: 8px;
+  position: relative;
+}
+.tree-leaf-wrap::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background: rgba(56,189,248,.25);
+}
+.tree-leaf {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  font-size: 0.82rem;
+  min-width: 340px;
+  transition: background .2s, border-color .2s;
+}
+.tree-leaf:hover { background: rgba(255,255,255,.07); border-color: rgba(56,189,248,.25); }
+.leaf-ref { font-size: 0.7rem; color: var(--t3); min-width: 50px; font-family: 'JetBrains Mono', monospace; }
+.leaf-name { flex: 1; color: var(--t2); }
+.leaf-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--t1); white-space: nowrap; }
+.leaf-tag { font-size: 0.68rem; padding: 1px 7px; border-radius: 10px; font-weight: 700; white-space: nowrap; }
+.leaf-calc { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--t2); display: flex; align-items: center; gap: 4px; }
+.leaf-calc strong { color: var(--a3); }
 </style>
 </head>
 <body>
@@ -392,39 +521,32 @@ footer {
 <header class="hdr">
   <div class="hdr-left">
     <h1>📊 Dashboard Toàn Diện<br>Tài Sản Công TP.HCM</h1>
-    <div class="hdr-sub">Nguồn: KetQua_PhuLuc_HoanThien_14_3_2026.xlsx · 9 Phụ Lục · TP. Hồ Chí Minh & vùng phụ cận</div>
-    <div class="hdr-badge-row">
-      <span class="badge badge-date">📅 14/03/2026</span>
-      <span class="badge badge-src">📁 Rev. Final</span>
-      <span class="badge badge-rev">✅ Phân tích đầy đủ</span>
-    </div>
   </div>
   <div class="hdr-right">
-    <div class="kpi-val hdr-total" style="font-size:3rem; font-family:'JetBrains Mono',monospace; font-weight:900; background:linear-gradient(135deg,var(--a1),var(--a2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">14.254</div>
+    <div class="kpi-val hdr-total" style="font-size:3rem; font-family:'JetBrains Mono',monospace; font-weight:900; background:linear-gradient(135deg,var(--a1),var(--a2)); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;">14.259</div>
     <div class="hdr-total-label">Tổng tài sản công</div>
-    <div style="font-size:0.72rem;color:var(--t3);margin-top:4px;">9 phụ lục · ~117M m²</div>
   </div>
 </header>
 
 <!-- ======================================================= -->
-<!-- SECTION 1: KPI TỔNG QUAN                               -->
+<!-- SECTION 1: KPI Tá»"NG QUAN                               -->
 <!-- ======================================================= -->
 <div class="sec sec-blue anim d1">Tổng quan số liệu</div>
 <div class="kpi-main-grid anim d1">
   <div class="kpi-card kpi-hero k1" style="grid-column:span 2;">
-    <div class="kpi-lbl">Tổng số tài sản (9 Phụ Lục)</div>
-    <div class="kpi-val" style="font-size:2.8rem;">14.254</div>
+    <div class="kpi-lbl">Tổng số tài sả</div>
+    <div class="kpi-val" style="font-size:2.8rem;">14.259</div>
     <div class="kpi-sub">Cơ sở nhà, đất được rà soát và phân loại toàn diện trên địa bàn TP.HCM & vùng phụ cận</div>
   </div>
   <div class="kpi-card k2">
-    <div class="kpi-lbl">Phụ lục lớn nhất</div>
-    <div class="kpi-val">9.882</div>
-    <div class="kpi-sub">PL5 — Phường/Xã (69.3%)</div>
+    <div class="kpi-lbl">Đơn vị có số tài sản lớn nhất</div>
+    <div class="kpi-val">8150</div>
+    <div class="kpi-sub">Trụ sở UBND cấp xã</div>
   </div>
   <div class="kpi-card k3">
     <div class="kpi-lbl">Tổng diện tích ước</div>
     <div class="kpi-val">~117M</div>
-    <div class="kpi-sub">m² (PL 1–8 tổng hợp)</div>
+    <div class="kpi-sub">m² (Đảng đến Doanh nghiệp Nhà Nước)</div>
   </div>
   <div class="kpi-card k4">
     <div class="kpi-lbl">DT Trung bình</div>
@@ -434,12 +556,12 @@ footer {
   <div class="kpi-card k5">
     <div class="kpi-lbl">Giữ lại sử dụng</div>
     <div class="kpi-val">~89%</div>
-    <div class="kpi-sub">Chủ đạo PL2 (900/990 cơ sở)</div>
+    <div class="kpi-sub">Chủ đạo Sở ban ngành (900/990 cơ sở)</div>
   </div>
   <div class="kpi-card k6">
     <div class="kpi-lbl">Thiếu pháp lý</div>
     <div class="kpi-val">92%</div>
-    <div class="kpi-sub">13.125/14.270 hồ sơ trống GCN</div>
+    <div class="kpi-sub">13.114/14.259 hồ sơ trống GCN</div>
   </div>
   <div class="kpi-card k7">
     <div class="kpi-lbl">Phân vùng địa bàn</div>
@@ -448,70 +570,181 @@ footer {
   </div>
   <div class="kpi-card k8">
     <div class="kpi-lbl">Tỉnh chiếm lớn nhất</div>
-    <div class="kpi-val">~60%</div>
-    <div class="kpi-sub">TP.HCM (~8.510 tài sản)</div>
+    <div class="kpi-val">~61%</div>
+    <div class="kpi-sub">TP.HCM (8.703 tài sản)</div>
   </div>
 </div>
 
-<!-- KPI theo từng phụ lục -->
-<div class="kpi-main-grid anim d2" style="grid-template-columns:repeat(9,1fr);">
-  <div class="kpi-card k1" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 1</div>
-    <div class="kpi-val" style="font-size:1.4rem;">333</div>
-    <div class="kpi-sub">Đảng ủy</div>
+<div class="kpi-main-grid anim d2" style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));">
+  
+  <div class="kpi-card k1" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Đảng ủy</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">333</div>
   </div>
-  <div class="kpi-card k2" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 2</div>
-    <div class="kpi-val" style="font-size:1.4rem;">992</div>
-    <div class="kpi-sub">UBND TP</div>
+  
+  <div class="kpi-card k2" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Sở ban ngành</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">990</div>
   </div>
-  <div class="kpi-card k3" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 3</div>
-    <div class="kpi-val" style="font-size:1.4rem;">126</div>
-    <div class="kpi-sub">BQL DA</div>
+  
+  <div class="kpi-card k3" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">ĐVSNCL TP</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">126</div>
   </div>
-  <div class="kpi-card k4" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 4</div>
-    <div class="kpi-val" style="font-size:1.4rem;">145</div>
-    <div class="kpi-sub">MTTQ/Đoàn</div>
+  
+  <div class="kpi-card k4" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Tổ chức chính trị XH</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">145</div>
   </div>
-  <div class="kpi-card k5" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 5</div>
-    <div class="kpi-val" style="font-size:1.4rem;">9.882</div>
-    <div class="kpi-sub">Phường/Xã</div>
+  
+  <div class="kpi-card k5" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">UBND cấp xã</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">8.150</div>
   </div>
-  <div class="kpi-card k1" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 6</div>
-    <div class="kpi-val" style="font-size:1.4rem;">74</div>
-    <div class="kpi-sub">Bộ Tài chính</div>
+  
+  <div class="kpi-card k5" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Đất, tài sản gắn liền với Đất sử dụng vào mục đích công cộng</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">1.732</div>
   </div>
-  <div class="kpi-card k2" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 7</div>
-    <div class="kpi-val" style="font-size:1.4rem;">298</div>
-    <div class="kpi-sub">Quỹ Đất BT</div>
+  
+  <div class="kpi-card k1" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Nhà đất TW chuyển giao</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">74</div>
   </div>
-  <div class="kpi-card k6" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 8</div>
-    <div class="kpi-val" style="font-size:1.4rem;">1.490</div>
-    <div class="kpi-sub">Cty Nhà</div>
+  
+  <div class="kpi-card k2" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Trung tâm phát triển quỹ đất</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">298</div>
   </div>
-  <div class="kpi-card k5" style="padding:12px 10px;text-align:center;">
-    <div class="kpi-lbl" style="font-size:0.65rem;">Phụ Lục 9</div>
-    <div class="kpi-val" style="font-size:1.4rem;">919</div>
-    <div class="kpi-sub">SAWACO</div>
+  
+  <div class="kpi-card k6" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Tổ chức quản lý KD nhà ĐP</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">1.492</div>
   </div>
+  
+  <div class="kpi-card k5" style="padding: 12px 10px; text-align: center;">
+    <div class="kpi-lbl" style="font-size: 0.65rem;">Doanh nghiệp Nhà Nước</div>
+    <div class="kpi-val" style="font-size: 1.4rem;">919</div>
+  </div>
+  
 </div>
 
 <!-- ======================================================= -->
-<!-- SECTION 2: BẢNG CHI TIẾT 9 PHỤ LỤC                    -->
+<!-- SƠ ĐỒ TỔNG TÀI SẢN (TREE DIAGRAM)                     -->
 <!-- ======================================================= -->
 <div class="divider"></div>
-<div class="sec sec-indigo anim d2">Chi tiết 9 phụ lục</div>
+<div class="sec sec-blue anim d2">📊 Sơ đồ phân loại Tổng Tài Sản</div>
+<div class="full-card anim d2 tree-section">
+  <div class="asset-tree">
+
+    <!-- NÚT GỐC -->
+    <div class="tree-root">
+      <div class="tr-label">Tổng Tài Sản</div>
+      <div class="tr-val">14.259</div>
+      <div class="tr-sub">10 nhóm tài sản · TP.HCM</div>
+    </div>
+
+    <div class="tree-h-line"></div>
+
+    <!-- NHÁNH -->
+    <div class="tree-branches-wrap">
+
+      <!-- NHÁNH TRÊN: THUỘC PHẠM VI SẮP XẾP -->
+      <div class="tree-branch">
+        <div class="tree-circle c-blue">
+          <div class="tc-label">Tài Sản<br><strong>Thuộc phạm vi</strong><br>sắp xếp</div>
+          <div class="tc-val">9.818</div>
+        </div>
+        <div class="tree-leaf-wrap">
+          <div class="tree-leaf">
+            <span class="leaf-name">Đảng</span>
+            <span class="leaf-val">333</span>
+          </div>
+          <div class="tree-leaf">
+            <span class="leaf-name">Sở ban ngành</span>
+            <span class="leaf-val">990</span>
+          </div>
+          <div class="tree-leaf">
+            <span class="leaf-name">ĐVSNCL TP</span>
+            <span class="leaf-val">126</span>
+
+          </div>
+          <div class="tree-leaf">
+            <span class="leaf-name">UBND cấp xã</span>
+            <span class="leaf-val">8.150</span>
+
+          </div>
+          <div class="tree-leaf">
+            <span class="leaf-name">Nhà đất TW chuyển giao</span>
+            <span class="leaf-val">74</span>
+          </div>
+          <div class="tree-leaf">
+            <span class="leaf-name">Tổ chức chính trị XH</span>
+            <span class="leaf-val">145</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NHÁNH DƯỚI: KHÔNG THUỘC PHẠM VI SẮP XẾP -->
+      <div class="tree-branch">
+        <div class="tree-circle c-pink">
+          <div class="tc-label">Tài Sản<br><strong>Không thuộc</strong><br>phạm vi sắp xếp</div>
+          <div class="tc-calc">
+          <span class="calc-result">4.441</span>
+          </div>
+        </div>
+        <div class="tree-leaf-wrap">
+          <div class="tree-leaf">
+            <span class="leaf-name">Đất, tài sản gắn liền với Đất sử dụng vào mục đích công cộng</span>
+            <div style="font-size: 13px; color: #777; font-style: italic; margin-top: 4px;">(Gồm: chợ, công viên, sân vận động, nhà bia ghi danh...)</div>
+            <span class="leaf-val">1.732</span>
+          </div>
+          <div class="tree-leaf">
+            <span class="leaf-name">Doanh nghiệp Nhà Nước</span>
+            <span class="leaf-val">919</span>
+          </div>
+          <div class="tree-leaf">
+    
+            <span class="leaf-name">Tổ chức quản lý kinh doanh nhà địa phương</span>
+            <span class="leaf-val">1.492</span>
+          </div>
+          <div class="tree-leaf">
+
+            <span class="leaf-name">Trung tâm phát triển quỹ đất</span>
+            <span class="leaf-val">298</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- .tree-branches-wrap -->
+  </div><!-- .asset-tree -->
+
+  <!-- Ghi chú tổng -->
+  <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+    <div class="info-box" style="flex:1;min-width:220px;">
+      🔵 <strong>Thuộc phạm vi sắp xếp:</strong> 9.818 tài sản &nbsp;=&nbsp;
+      333 + 990 + 126 + 8.150 + 74 + 145
+    </div>
+    <div class="info-box warn-box" style="flex:1;min-width:220px;">
+      🔴 <strong>Không thuộc phạm vi sắp xếp:</strong> 4.441 tài sản &nbsp;=&nbsp;
+      4.725 <span style="color:var(--a5);">- 284 (quỹ đất trừ)</span>
+    </div>
+    <div class="info-box ok-box" style="flex:1;min-width:220px;">
+      ✅ <strong>Tổng hợp:</strong> 9.818 + 4.441 = <strong>14.259</strong> tài sản công
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SECTION 2: THỐNG KÊ CHI TIẾT                    -->
+<!-- ======================================================= -->
+<div class="divider"></div>
+<div class="sec sec-indigo anim d2">THỐNG KÊ CHI TIẾT</div>
 <div class="full-card anim d2">
   <table class="tbl">
     <thead>
       <tr>
-        <th>Phụ lục</th>
+        <th>Nhóm tài sản</th>
         <th>Mô tả</th>
         <th>Số hồ sơ</th>
         <th>Có DT</th>
@@ -525,75 +758,83 @@ footer {
     </thead>
     <tbody>
       <tr>
-        <td><span class="tag tag-blue">PL 1</span></td>
+        <td><span class="tag tag-blue">Đảng</span></td>
         <td>Nhà đất Đảng — cơ sở giữ lại &amp; chuyển giao</td>
         <td class="num">333</td><td class="num">321</td>
         <td class="num">8</td><td class="num">143.359</td><td class="num">924.099</td><td class="num">2.878</td>
-        <td><span class="tag tag-blue">Đảng ủy</span></td>
+        <td><span class="tag tag-blue">Đảng</span></td>
         <td><span class="tag tag-green">327/333 ≈ 98%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-orange">PL 2</span></td>
-        <td>Nhà đất UBND — cơ sở sắp xếp toàn TP</td>
-        <td class="num">992</td><td class="num">992</td>
-        <td class="num">0</td><td class="num">1.656.882</td><td class="num">16.944.402</td><td class="num">17.398</td>
-        <td><span class="tag tag-orange">Hành chính</span></td>
+        <td><span class="tag tag-orange">Sở ban ngành</span></td>
+        <td>Sở ban ngành — trụ sở làm việc cơ quan nhà nước</td>
+        <td class="num">990</td><td class="num">846</td>
+        <td class="num">0</td><td class="num">1.656.882</td><td class="num">14.860.653</td><td class="num">17.566</td>
+        <td><span class="tag tag-orange">Sở ban ngành</span></td>
         <td><span class="tag tag-red">0/990 = 0%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-green">PL 3</span></td>
-        <td>Ban quản lý dự án đầu tư xây dựng TP</td>
+        <td><span class="tag tag-green">ĐVSNCL TP</span></td>
+        <td>Đơn vị sự nghiệp công lập TP (ĐVSNCL)</td>
         <td class="num">126</td><td class="num">103</td>
         <td class="num">56</td><td class="num">576.195</td><td class="num">2.717.872</td><td class="num">26.387</td>
-        <td><span class="tag tag-green">BQL DA</span></td>
+        <td><span class="tag tag-green">ĐVSNCL TP</span></td>
         <td><span class="tag tag-red">0/126 = 0%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-gold">PL 4</span></td>
-        <td>MTTQ, Đoàn thể, tổ chức chính trị – xã hội</td>
+        <td><span class="tag tag-gold">Tổ chức chính trị XH</span></td>
+        <td>Tổ chức chính trị – xã hội (MTTQ, Đoàn thể)</td>
         <td class="num">145</td><td class="num">141</td>
-        <td class="num">1</td><td class="num">1.214.600</td><td class="num">1.708.494</td><td class="num">12.116</td>
-        <td><span class="tag tag-gold">MTTQ/Đoàn</span></td>
+        <td class="num">15</td><td class="num">1.214.600</td><td class="num">1.815.475</td><td class="num">12.876</td>
+        <td><span class="tag tag-gold">Tổ chức chính trị XH</span></td>
         <td><span class="tag tag-red">0/145 = 0%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-purple">PL 5</span></td>
-        <td>Tài sản phường/xã toàn TP — quy mô lớn nhất</td>
-        <td class="num">9.882</td><td class="num">9.548</td>
-        <td class="num">1</td><td class="num">2.699.145</td><td class="num">74.753.662</td><td class="num">7.832</td>
-        <td><span class="tag tag-purple">Phường/Xã</span></td>
-        <td><span class="tag tag-red">0/9.882 = 0%</span></td>
+        <td><span class="tag tag-purple">UBND cấp xã</span></td>
+        <td>Trụ sở UBND cấp xã</td>
+        <td class="num">8.150</td><td class="num">6.722</td>
+        <td class="num">1</td><td class="num">2.503.374</td><td class="num">28.496.738</td><td class="num">4.239</td>
+        <td><span class="tag tag-purple">UBND</span></td>
+        <td><span class="tag tag-red">0/8.150 = 0%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-blue">PL 6</span></td>
-        <td>Bộ Tài chính — cơ sở bàn giao về địa phương</td>
+        <td><span class="tag tag-purple">Đất công cộng cấp xã</span></td>
+        <td>Đất, tài sản công cộng cấp xã</td>
+        <td class="num">1.732</td><td class="num">1.698</td>
+        <td class="num">1.2</td><td class="num">2.699.145</td><td class="num">41.734.027</td><td class="num">24.578</td>
+        <td><span class="tag tag-purple">Đất công</span></td>
+        <td><span class="tag tag-red">0/1.732 = 0%</span></td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-blue">Nhà đất TW chuyển giao</span></td>
+        <td>Nhà đất Trung ương chuyển giao về địa phương</td>
         <td class="num">74</td><td class="num">58</td>
         <td class="num">42</td><td class="num">80.948</td><td class="num">159.198</td><td class="num">2.745</td>
-        <td><span class="tag tag-blue">Bộ TC</span></td>
+        <td><span class="tag tag-blue">Nhà đất TW chuyển giao</span></td>
         <td><span class="tag tag-warn">65/74 = 88%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-orange">PL 7</span></td>
-        <td>Quỹ đất dự kiến thanh toán, đấu giá, BT</td>
-        <td class="num">298</td><td class="num">296</td>
-        <td class="num">17</td><td class="num">2.342.303</td><td class="num">14.434.649</td><td class="num">48.764</td>
-        <td><span class="tag tag-orange">Quỹ đất</span></td>
+        <td><span class="tag tag-orange">Trung tâm phát triển quỹ đất</span></td>
+        <td>Trung tâm phát triển quỹ đất — đấu giá, BT</td>
+        <td class="num">298</td><td class="num">294</td>
+        <td class="num">17</td><td class="num">2.342.303</td><td class="num">12.205.949</td><td class="num">41.517</td>
+        <td><span class="tag tag-orange">Trung tâm phát triển quỹ đất</span></td>
         <td><span class="tag tag-green">297/298 = 99.7%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-red">PL 8</span></td>
-        <td>Công ty TNHH MTV Quản lý Kinh doanh Nhà</td>
-        <td class="num">1.490</td><td class="num">1.490</td>
-        <td class="num">1</td><td class="num">133.740</td><td class="num">6.732.545</td><td class="num">4.518</td>
-        <td><span class="tag tag-red">Tạm QL</span></td>
-        <td><span class="tag tag-warn">456/1.503 = 30%</span></td>
+        <td><span class="tag tag-red">Tổ chức QLKD nhà địa phương</span></td>
+        <td>Tổ chức Quản lý Kinh doanh Nhà địa phương</td>
+        <td class="num">1.492</td><td class="num">1.479</td>
+        <td class="num">1.2</td><td class="num">63.314</td><td class="num">938.916</td><td class="num">635</td>
+        <td><span class="tag tag-red">Tổ chức QLKD nhà địa phương</span></td>
+        <td><span class="tag tag-warn">456/1.492 = 30.6%</span></td>
       </tr>
       <tr>
-        <td><span class="tag tag-purple">PL 9</span></td>
-        <td>Tổng Công ty Cấp nước Sài Gòn — SAWACO</td>
-        <td class="num">919</td><td class="num">887</td>
-        <td class="num">28</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
-        <td><span class="tag tag-purple">DNNN</span></td>
+        <td><span class="tag tag-purple">Doanh nghiệp Nhà Nước</span></td>
+        <td>Doanh nghiệp Nhà Nước — SAWACO (cấp nước)</td>
+        <td class="num">919</td><td class="num">889</td>
+        <td class="num">28</td><td class="num">39298546</td><td class="num">796.769.168,29</td><td class="num">900.304,14</td>
+        <td><span class="tag tag-purple">Doanh nghiệp Nhà Nước</span></td>
         <td><span class="tag tag-red">0/919 = 0%</span></td>
       </tr>
     </tbody>
@@ -608,7 +849,7 @@ footer {
 
 <div class="g2 anim d3">
   <div class="card">
-    <div class="sec sec-blue" style="margin-bottom:14px;">Số Lượng Tài Sản Theo Phụ Lục</div>
+    <div class="sec sec-blue" style="margin-bottom:14px;">Số Lượng Tài Sản Theo Nhóm</div>
     <div class="chart-wrap chart-h260"><canvas id="chartPhuLuc"></canvas></div>
   </div>
   <div class="card">
@@ -621,7 +862,7 @@ footer {
   <div class="card">
     <div class="sec sec-orange" style="margin-bottom:14px;">Phân Bố Theo Tỉnh / Thành Phố</div>
     <div class="chart-wrap chart-h240"><canvas id="chartProvince"></canvas></div>
-    <div class="info-box" style="margin-top:12px;">TP. Hồ Chí Minh chiếm tỷ lệ lớn nhất <strong>(~59.7%)</strong>. Tiếp theo là <strong>Bình Dương (~11.9%)</strong> và <strong>Bà Rịa – Vũng Tàu (~11.3%)</strong>.</div>
+    <div class="info-box" style="margin-top:12px;">TP. Hồ Chí Minh chiếm tỷ lệ lớn nhất <strong>(~61.0%)</strong>. Tiếp theo là <strong>Bình Dương (~12.0%)</strong> và <strong>Bà Rịa – Vũng Tàu (~11.4%)</strong>.</div>
   </div>
   <div class="card">
     <div class="sec sec-green" style="margin-bottom:14px;">Hiện Trạng Sử Dụng (Nhóm chính)</div>
@@ -644,12 +885,12 @@ footer {
 
 <div class="g2 anim d4">
   <div class="card">
-    <div class="sec sec-blue" style="margin-bottom:14px;">Năm Đưa Vào Sử Dụng (PL5 — đại diện)</div>
+    <div class="sec sec-blue" style="margin-bottom:14px;">Năm Đưa Vào Sử Dụng (UBND cấp xã — đại diện)</div>
     <div class="chart-wrap chart-h240"><canvas id="chartYear"></canvas></div>
     <div class="info-box" style="margin-top:12px;">Tài sản tập trung vào giai đoạn <strong>trước 1975, 1975–1995</strong> và <strong>2000–2015</strong>. Nhiều tài sản phường/xã chưa ghi năm đưa vào sử dụng.</div>
   </div>
   <div class="card">
-    <div class="sec sec-indigo" style="margin-bottom:14px;">Tổng Hợp Diện Tích Đất & Sàn Theo Phụ Lục</div>
+    <div class="sec sec-indigo" style="margin-bottom:14px;">Tổng Hợp Diện Tích Đất & Sàn Theo Nhóm</div>
     <div class="chart-wrap chart-h240"><canvas id="chartFloor"></canvas></div>
   </div>
 </div>
@@ -661,66 +902,66 @@ footer {
 <div class="sec sec-green anim d4">Phân vùng diện tích &amp; địa bàn</div>
 <div class="g2 anim d4">
   <div class="card">
-    <div class="sec sec-blue" style="margin-bottom:14px;">📐 Phân nhóm diện tích — 12.922 hồ sơ có DT hợp lệ</div>
+    <div class="sec sec-blue" style="margin-bottom:14px;">📐 Phân nhóm diện tích — 11.662 hồ sơ có DT hợp lệ (đã loại PL9 vì dữ liệu DT lặp cụm)</div>
     <div class="bar-row">
       <div class="bar-label">&lt; 100 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:17.5%;background:linear-gradient(90deg,#ff4757,#ff6b81);"><span class="bar-count">2.267</span></div></div>
-      <div class="bar-pct">17.5%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:18.5%;background:linear-gradient(90deg,#ff4757,#ff6b81);"><span class="bar-count">2.162</span></div></div>
+      <div class="bar-pct">18.5%</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">100 – 300 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:17%;background:linear-gradient(90deg,#fb923c,#ffd166);"><span class="bar-count">2.202</span></div></div>
-      <div class="bar-pct">17.0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:19.6%;background:linear-gradient(90deg,#fb923c,#ffd166);"><span class="bar-count">2.281</span></div></div>
+      <div class="bar-pct">19.6%</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">300 – 500 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:8.3%;background:linear-gradient(90deg,#ffd166,#ffe5a0);"><span class="bar-count">1.069</span></div></div>
-      <div class="bar-pct">8.3%</div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label">500 – 1.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:11.6%;background:linear-gradient(90deg,#ffd166,#ffe5a0);"><span class="bar-count">1.493</span></div></div>
-      <div class="bar-pct">11.6%</div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label">1.000 – 2.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:11%;background:linear-gradient(90deg,#34d399,#5effd8);"><span class="bar-count">1.415</span></div></div>
-      <div class="bar-pct">11.0%</div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label">2.000 – 5.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:13.6%;background:linear-gradient(90deg,#38bdf8,#80eaff);"><span class="bar-count">1.763</span></div></div>
-      <div class="bar-pct">13.6%</div>
-    </div>
-    <div class="bar-row">
-      <div class="bar-label">5.000 – 10.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:9.5%;background:linear-gradient(90deg,#38bdf8,#80eaff);"><span class="bar-count">1.229</span></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:9.5%;background:linear-gradient(90deg,#ffd166,#ffe5a0);"><span class="bar-count">1.107</span></div></div>
       <div class="bar-pct">9.5%</div>
     </div>
     <div class="bar-row">
+      <div class="bar-label">500 – 1.000 m²</div>
+      <div class="bar-track"><div class="bar-fill" style="width:13.2%;background:linear-gradient(90deg,#ffd166,#ffe5a0);"><span class="bar-count">1.536</span></div></div>
+      <div class="bar-pct">13.2%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">1.000 – 2.000 m²</div>
+      <div class="bar-track"><div class="bar-fill" style="width:12.1%;background:linear-gradient(90deg,#34d399,#5effd8);"><span class="bar-count">1.414</span></div></div>
+      <div class="bar-pct">12.1%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">2.000 – 5.000 m²</div>
+      <div class="bar-track"><div class="bar-fill" style="width:9.3%;background:linear-gradient(90deg,#38bdf8,#80eaff);"><span class="bar-count">1.087</span></div></div>
+      <div class="bar-pct">9.3%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">5.000 – 10.000 m²</div>
+      <div class="bar-track"><div class="bar-fill" style="width:6.1%;background:linear-gradient(90deg,#38bdf8,#80eaff);"><span class="bar-count">708</span></div></div>
+      <div class="bar-pct">6.1%</div>
+    </div>
+    <div class="bar-row">
       <div class="bar-label">10.000 – 50.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:9.9%;background:linear-gradient(90deg,#c77dff,#ddb0ff);"><span class="bar-count">1.285</span></div></div>
-      <div class="bar-pct">9.9%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:10.3%;background:linear-gradient(90deg,#c77dff,#ddb0ff);"><span class="bar-count">1.206</span></div></div>
+      <div class="bar-pct">10.3%</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">50.000 – 200.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:1.1%;background:linear-gradient(90deg,#9b5de5,#c77dff);"><span class="bar-count">137</span></div></div>
-      <div class="bar-pct">1.1%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0.8%;background:linear-gradient(90deg,#9b5de5,#c77dff);"><span class="bar-count">94</span></div></div>
+      <div class="bar-pct">0.8%</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">&gt; 200.000 m²</div>
-      <div class="bar-track"><div class="bar-fill" style="width:0.5%;background:linear-gradient(90deg,#7209b7,#9b5de5);"><span class="bar-count">62</span></div></div>
-      <div class="bar-pct">0.5%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0.6%;background:linear-gradient(90deg,#7209b7,#9b5de5);"><span class="bar-count">67</span></div></div>
+      <div class="bar-pct">0.6%</div>
     </div>
     <div class="info-box" style="margin-top:12px;">
-      ⚡ <strong>Trung vị 766 m²</strong> — đa số tài sản là trụ sở/nhà phố quy mô vừa. Mean 7.514 m² bị kéo cao bởi khu đất lớn PL3, PL7, PL5.
+      ⚡ <strong>Trung vị 560 m²</strong> — đa số tài sản là trụ sở/nhà phố quy mô vừa. Mean 8.905 m² chủ yếu bị kéo cao bởi quỹ đất lớn ở nhóm đất công cộng cấp xã và Trung tâm phát triển quỹ đất.
     </div>
   </div>
 
   <div class="card">
     <div class="sec sec-pink" style="margin-bottom:14px;">🏙️ Top 10 Địa Bàn Tập Trung Tài Sản</div>
     <div id="zoneList"></div>
-    <div class="info-box" style="margin-top:12px;">Tổng số <strong>1.293</strong> phân vùng/địa bàn được ghi nhận. <strong>Huyện Củ Chi</strong> dẫn đầu với 1.088 tài sản.</div>
+    <div class="info-box" style="margin-top:12px;">Tổng số <strong>1.293</strong> phân vùng/địa bàn được ghi nhận. <strong>Huyện Củ Chi</strong> dẫn đầu với 1.088 tài sản; nhóm <strong>Chưa phân vùng hoàn toàn</strong> là 507 hồ sơ.</div>
   </div>
 </div>
 
@@ -729,25 +970,25 @@ footer {
   <div class="card" style="text-align:center;">
     <div style="font-size:0.75rem;color:var(--t2);margin-bottom:6px;">Vùng mật độ cao (34.5%)</div>
     <div style="font-size:1.8rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--a5);">&lt; 300 m²</div>
-    <div style="font-size:0.75rem;color:var(--t2);margin-top:4px;">4.469 hồ sơ — chủ yếu PL8 &amp; PL9</div>
+    <div style="font-size:0.75rem;color:var(--t2);margin-top:4px;">4.469 hồ sơ — chủ yếu Tổ chức QLKD nhà địa phương &amp; Doanh nghiệp Nhà Nước</div>
   </div>
   <div class="card" style="text-align:center;">
     <div style="font-size:0.75rem;color:var(--t2);margin-bottom:6px;">Nhóm trung bình — trụ sở (35.2%)</div>
     <div style="font-size:1.8rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--a7);">300–2.000 m²</div>
-    <div style="font-size:0.75rem;color:var(--t2);margin-top:4px;">4.554 hồ sơ — PL2/PL4/PL1</div>
+    <div style="font-size:0.75rem;color:var(--t2);margin-top:4px;">4.554 hồ sơ — Sở ban ngành/Tổ chức chính trị XH/Đảng</div>
   </div>
   <div class="card" style="text-align:center;">
     <div style="font-size:0.75rem;color:var(--t2);margin-bottom:6px;">Nhóm lớn — thiết chế, quy hoạch (23.1%)</div>
     <div style="font-size:1.8rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--a4);">2.000–50.000 m²</div>
-    <div style="font-size:0.75rem;color:var(--t2);margin-top:4px;">2.992 hồ sơ — PL3/PL5/PL7</div>
+    <div style="font-size:0.75rem;color:var(--t2);margin-top:4px;">2.992 hồ sơ — ĐVSNCL TP/UBND cấp xã/Trung tâm phát triển quỹ đất</div>
   </div>
 </div>
 
 <!-- ======================================================= -->
-<!-- SECTION 5: PHÂN TÍCH PHÁP LÝ THEO TỪNG PHỤ LỤC        -->
+<!-- SECTION 5: PHÂN TÍCH PHÁP LÝ THEO NHÓM TÀI SẢN         -->
 <!-- ======================================================= -->
 <div class="divider"></div>
-<div class="sec sec-red anim d4">Phân tích pháp lý từng phụ lục (Giấy chứng nhận QSDĐ)</div>
+<div class="sec sec-red anim d4">Phân tích pháp lý theo nhóm tài sản (Giấy chứng nhận QSDĐ)</div>
 
 <!-- Donut pháp lý tổng + bảng -->
 <div class="full-card anim d4">
@@ -764,7 +1005,7 @@ footer {
       </div>
       <div class="legend">
         <div class="leg-row"><div class="leg-dot" style="background:var(--a1);"></div><div>Đủ hồ sơ pháp lý:</div><span class="leg-val">1.145</span></div>
-        <div class="leg-row"><div class="leg-dot" style="background:rgba(255,255,255,.12);border:1px solid #334155;"></div><div>Thiếu/Không có:</div><span class="leg-val">13.125</span></div>
+        <div class="leg-row"><div class="leg-dot" style="background:rgba(255,255,255,.12);border:1px solid #334155;"></div><div>Thiếu/Không có:</div><span class="leg-val">13.114</span></div>
       </div>
       <div class="info-box danger-box" style="margin-top:12px;font-size:0.78rem;">
         ⚠️ <strong>92% hồ sơ THIẾU</strong> thông tin pháp lý đầy đủ trong CSDL
@@ -772,28 +1013,29 @@ footer {
     </div>
     <div>
       <table class="tbl">
-        <thead><tr><th>Phụ lục</th><th>Mô tả</th><th>Tổng</th><th>Có pháp lý</th><th>Thiếu</th><th>% Đủ</th><th>Đánh giá</th><th>Hành động</th></tr></thead>
+        <thead><tr><th>Nhóm tài sản</th><th>Mô tả</th><th>Tổng</th><th>Có pháp lý</th><th>Thiếu</th><th>% Đủ</th><th>Đánh giá</th><th>Hành động</th></tr></thead>
         <tbody>
-          <tr><td><b>PL 1</b></td><td>Cơ quan Đảng</td><td class="num">333</td><td class="num" style="color:var(--a4);">327</td><td class="num">6</td><td><span class="cell-h">98.2%</span></td><td><span class="tag tag-green">✔ Tốt</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 6 GCN còn thiếu</td></tr>
-          <tr><td><b>PL 2</b></td><td>UBND TP</td><td class="num">990</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">990</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Nhập toàn bộ 990 GCN QSDĐ</td></tr>
-          <tr><td><b>PL 3</b></td><td>BQL DA ĐTXD</td><td class="num">126</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">126</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Rà soát từng BQL DA</td></tr>
-          <tr><td><b>PL 4</b></td><td>MTTQ/Đoàn</td><td class="num">145</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">145</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Làm rõ nguồn gốc đất</td></tr>
-          <tr><td><b>PL 5</b></td><td>Phường/Xã</td><td class="num">9.882</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">9.882</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Rủi ro rất cao</span></td><td style="font-size:0.75rem;color:var(--t2);">Ưu tiên khẩn — lớn nhất</td></tr>
-          <tr><td><b>PL 6</b></td><td>Bộ TC</td><td class="num">74</td><td class="num" style="color:var(--a7);">65</td><td class="num">9</td><td><span class="cell-h">87.8%</span></td><td><span class="tag tag-warn">~ Khá</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 9 QĐ từ BTC</td></tr>
-          <tr><td><b>PL 7</b></td><td>Quỹ đất BT</td><td class="num">298</td><td class="num" style="color:var(--a4);">297</td><td class="num">1</td><td><span class="cell-h">99.7%</span></td><td><span class="tag tag-green">✔ Xuất sắc</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 1 hồ sơ còn thiếu</td></tr>
-          <tr><td><b>PL 8</b></td><td>Cty Nhà</td><td class="num">1.503</td><td class="num" style="color:var(--warn);">456</td><td class="num" style="color:var(--danger);">1.047</td><td><span class="cell-l">30.3%</span></td><td><span class="tag tag-warn">⚠ Yếu</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 1.047 CV/QĐ</td></tr>
-          <tr><td><b>PL 9</b></td><td>SAWACO</td><td class="num">919</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">919</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">SAWACO cung cấp toàn bộ</td></tr>
-          <tr class="total-row"><td><b>TỔNG</b></td><td></td><td class="num"><b>14.270</b></td><td class="num" style="color:var(--a1);"><b>1.145</b></td><td class="num" style="color:var(--danger);"><b>13.125</b></td><td><span class="cell-l">8.0%</span></td><td><span class="tag tag-red">✘ Hệ thống</span></td><td style="font-size:0.75rem;"><b>92% hồ sơ THIẾU pháp lý</b></td></tr>
+          <tr><td><b>Đảng</b></td><td>Cơ quan Đảng</td><td class="num">333</td><td class="num" style="color:var(--a4);">327</td><td class="num">6</td><td><span class="cell-h">98.2%</span></td><td><span class="tag tag-green">✔ Tốt</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 6 GCN còn thiếu</td></tr>
+          <tr><td><b>Sở ban ngành</b></td><td>Sở ban ngành</td><td class="num">990</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">990</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Nhập toàn bộ 990 GCN QSDĐ</td></tr>
+          <tr><td><b>ĐVSNCL TP</b></td><td>ĐVSNCL TP</td><td class="num">126</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">126</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Rà soát từng BQL DA</td></tr>
+          <tr><td><b>Tổ chức chính trị XH</b></td><td>Tổ chức chính trị XH</td><td class="num">145</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">145</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Làm rõ nguồn gốc đất</td></tr>
+          <tr><td><b>UBND cấp xã</b></td><td>Trụ sở UBND cấp xã</td><td class="num">8.150</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">8.150</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Rủi ro rất cao</span></td><td style="font-size:0.75rem;color:var(--t2);">Ưu tiên khẩn - nhóm trụ sở</td></tr>
+          <tr><td><b>Đất công cộng cấp xã</b></td><td>Đất, tài sản công cộng cấp xã</td><td class="num">1.732</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">1.732</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung hồ sơ pháp lý nhóm đất công</td></tr>
+          <tr><td><b>Nhà đất TW chuyển giao</b></td><td>Nhà đất TW chuyển giao</td><td class="num">74</td><td class="num" style="color:var(--a7);">65</td><td class="num">9</td><td><span class="cell-h">87.8%</span></td><td><span class="tag tag-warn">~ Khá</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 9 QĐ từ BTC</td></tr>
+          <tr><td><b>Trung tâm phát triển quỹ đất</b></td><td>Trung tâm phát triển quỹ đất</td><td class="num">298</td><td class="num" style="color:var(--a4);">297</td><td class="num">1</td><td><span class="cell-h">99.7%</span></td><td><span class="tag tag-green">✔ Xuất sắc</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 1 hồ sơ còn thiếu</td></tr>
+          <tr><td><b>Tổ chức quản lý kinh doanh nhà địa phương</b></td><td>Tổ chức quản lý kinh doanh nhà địa phương</td><td class="num">1.492</td><td class="num" style="color:var(--warn);">456</td><td class="num" style="color:var(--danger);">1.036</td><td><span class="cell-l">30.6%</span></td><td><span class="tag tag-warn">⚠ Yếu</span></td><td style="font-size:0.75rem;color:var(--t2);">Bổ sung 1.036 CV/QĐ</td></tr>
+          <tr><td><b>Doanh nghiệp Nhà Nước</b></td><td>Doanh nghiệp Nhà Nước</td><td class="num">919</td><td class="num" style="color:var(--danger);">0</td><td class="num" style="color:var(--danger);">919</td><td><span class="cell-l">0%</span></td><td><span class="tag tag-red">✘ Nghiêm trọng</span></td><td style="font-size:0.75rem;color:var(--t2);">SAWACO cung cấp toàn bộ</td></tr>
+          <tr class="total-row"><td><b>TỔNG</b></td><td></td><td class="num"><b>14.259</b></td><td class="num" style="color:var(--a1);"><b>1.145</b></td><td class="num" style="color:var(--danger);"><b>13.114</b></td><td><span class="cell-l">8.0%</span></td><td><span class="tag tag-red">✘ Hệ thống</span></td><td style="font-size:0.75rem;"><b>92% hồ sơ THIẾU pháp lý</b></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- Phap card 9 phu luc -->
+<!-- Phap card 10 nhom tai san -->
 <div class="phap-grid anim d5">
   <div class="phap-card">
-    <div class="phap-name">📋 PL 1 — Cơ quan Đảng</div>
+    <div class="phap-name">📋 Cơ quan Đảng</div>
     <div class="phap-row"><span>Tổng hồ sơ</span><span>333</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--a4);">327</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">6</span></div>
@@ -802,8 +1044,8 @@ footer {
     <div class="phap-note">✅ Tốt nhất — phần lớn có GCN QSDĐ, nguồn gốc rõ ràng</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 2 — UBND Thành phố</div>
-    <div class="phap-row"><span>Tổng hồ sơ</span><span>992</span></div>
+    <div class="phap-name">📋 Sở ban ngành</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>990</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--danger);">0</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">990</span></div>
     <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger);"><b>0%</b></span></div>
@@ -811,7 +1053,7 @@ footer {
     <div class="phap-note">⚠️ Cột "Hiện trạng pháp lí" trống hoàn toàn — lỗ hổng lớn nhất</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 3 — BQL dự án ĐTXD</div>
+    <div class="phap-name">📋 ĐVSNCL TP</div>
     <div class="phap-row"><span>Tổng hồ sơ</span><span>126</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--danger);">0</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">126</span></div>
@@ -820,7 +1062,7 @@ footer {
     <div class="phap-note">⚠️ Nhiều hồ sơ chỉ ghi "cơ sở hoạt động sự nghiệp"</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 4 — MTTQ / Đoàn thể</div>
+    <div class="phap-name">📋 Tổ chức chính trị XH</div>
     <div class="phap-row"><span>Tổng hồ sơ</span><span>145</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--danger);">0</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">145</span></div>
@@ -829,16 +1071,25 @@ footer {
     <div class="phap-note">⚠️ Một số đất có "Hoàn trả" nhưng không kèm số GCN hay QĐ</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 5 — Phường/Xã (9.882)</div>
-    <div class="phap-row"><span>Tổng hồ sơ</span><span>9.882</span></div>
+    <div class="phap-name">📋 UBND cấp xã</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>8.150</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--danger);">0</span></div>
-    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">9.882</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">8.150</span></div>
     <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger);"><b>0%</b></span></div>
     <div class="pct-bar"><div class="pct-fill" style="width:100%;background:var(--danger);"></div></div>
-    <div class="phap-note">⚠️ Rủi ro cao nhất — 69% tổng số hồ sơ, không có pháp lý</div>
+    <div class="phap-note">⚠️ Nhóm trụ sở UBND cấp xã - quy mô lớn, chưa có pháp lý</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 6 — Bộ Tài chính</div>
+    <div class="phap-name">📋 Đất công cộng cấp xã</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>1.732</span></div>
+    <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--danger);">0</span></div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">1.732</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--danger);"><b>0%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill" style="width:100%;background:var(--danger);"></div></div>
+    <div class="phap-note">⚠️ Đất, tài sản công cộng cấp xã chưa có dữ liệu pháp lý</div>
+  </div>
+  <div class="phap-card">
+    <div class="phap-name">📋 Nhà đất TW chuyển giao</div>
     <div class="phap-row"><span>Tổng hồ sơ</span><span>74</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--a7);">65</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--warn);">9</span></div>
@@ -847,7 +1098,7 @@ footer {
     <div class="phap-note">Tốt — QĐ của BTC (4232/QĐ-BTC, 4392/QĐ-BTC...)</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 7 — Quỹ đất / BT</div>
+    <div class="phap-name">📋 Trung tâm phát triển quỹ đất</div>
     <div class="phap-row"><span>Tổng hồ sơ</span><span>298</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--a4);">297</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--a4);">1</span></div>
@@ -856,16 +1107,16 @@ footer {
     <div class="phap-note">✅ Xuất sắc — hầu hết có văn bản UBND TP, QĐ phê duyệt BT</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 8 — Cty TNHH MTV Nhà</div>
-    <div class="phap-row"><span>Tổng hồ sơ</span><span>1.490</span></div>
+    <div class="phap-name">📋 Tổ chức QLKD Nhà ĐP</div>
+    <div class="phap-row"><span>Tổng hồ sơ</span><span>1.492</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--warn);">456</span></div>
-    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">1.047</span></div>
-    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--warn);"><b>30.3%</b></span></div>
-    <div class="pct-bar"><div class="pct-fill" style="width:30.3%;background:var(--warn);"></div></div>
-    <div class="phap-note">Phần lớn chỉ có CV tạm thời; 69.7% thiếu pháp lý đầy đủ</div>
+    <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">1.036</span></div>
+    <div class="phap-row"><span>Tỷ lệ đủ</span><span style="color:var(--warn);"><b>30.6%</b></span></div>
+    <div class="pct-bar"><div class="pct-fill" style="width:30.6%;background:var(--warn);"></div></div>
+    <div class="phap-note">Phần lớn chỉ có CV tạm thời; 69.4% thiếu pháp lý đầy đủ</div>
   </div>
   <div class="phap-card">
-    <div class="phap-name">📋 PL 9 — SAWACO</div>
+    <div class="phap-name">📋 Doanh nghiệp Nhà Nước</div>
     <div class="phap-row"><span>Tổng hồ sơ</span><span>919</span></div>
     <div class="phap-row"><span>Có pháp lý</span><span style="color:var(--danger);">0</span></div>
     <div class="phap-row"><span>Thiếu/Trống</span><span style="color:var(--danger);">919</span></div>
@@ -885,19 +1136,19 @@ footer {
     <thead>
       <tr>
         <th>Trường dữ liệu</th>
-        <th>PL1</th><th>PL2</th><th>PL3</th><th>PL4</th><th>PL5</th><th>PL6</th><th>PL7</th><th>PL8</th><th>PL9</th>
+        <th>Đảng</th><th>Sở ban ngành</th><th>ĐVSNCL TP</th><th>Tổ chức chính trị XH</th><th>UBND</th><th>Đất công</th><th>Nhà đất TW chuyển giao</th><th>Trung tâm phát triển quỹ đất</th><th>Tổ chức QLKD Nhà ĐP</th><th>Doanh nghiệp Nhà Nước</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>Địa chỉ đầy đủ</td><td><span class="cell-h">✓ Tốt</span></td><td><span class="cell-h">✓ Tốt</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-h">✓ Tốt</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-h">✓ Tốt</span></td><td><span class="cell-h">✓ Tốt</span></td><td><span class="cell-h">✓ Tốt</span></td><td><span class="cell-h">✓ Tốt</span></td></tr>
-      <tr><td>Diện tích đất</td><td><span class="cell-h">96.4%</span></td><td><span class="cell-h">98.4%</span></td><td><span class="cell-m">81.7%</span></td><td><span class="cell-h">97.2%</span></td><td><span class="cell-h">96.6%</span></td><td><span class="cell-m">78.4%</span></td><td><span class="cell-h">99.3%</span></td><td><span class="cell-h">99.1%</span></td><td><span class="cell-h">96.5%</span></td></tr>
-      <tr><td>Diện tích sàn</td><td><span class="cell-m">~ TB</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-h">✓ Đủ</span></td></tr>
-      <tr><td>Phương án sắp xếp</td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-m">~ TB</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-l">Trống</span></td></tr>
-      <tr><td>Pháp lý điều chỉnh</td><td><span class="cell-h">98.2%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-h">87.8%</span></td><td><span class="cell-h">99.7%</span></td><td><span class="cell-l">30.3%</span></td><td><span class="cell-l">0%</span></td></tr>
-      <tr><td>Hiện trạng pháp lí</td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td></tr>
-      <tr><td>Quy hoạch</td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td></tr>
-      <tr><td>Google Map URL</td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td></tr>
-      <tr><td>Nguyên giá / Giá trị còn lại</td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-l">Trống</span></td><td><span class="cell-h">✓ Đủ</span></td><td><span class="cell-l">Trống</span></td></tr>
+      <tr><td>Địa chỉ đầy đủ</td><td><span class="cell-h">100%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">98.7%</span></td><td><span class="cell-h">96.6%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">99.1%</span></td></tr>
+      <tr><td>Diện tích đất</td><td><span class="cell-h">96.4%</span></td><td><span class="cell-h">98.8%</span></td><td><span class="cell-h">92.1%</span></td><td><span class="cell-h">97.2%</span></td><td><span class="cell-h">96.3%</span></td><td><span class="cell-h">98.3%</span></td><td><span class="cell-m">83.8%</span></td><td><span class="cell-h">99.7%</span></td><td><span class="cell-h">99.3%</span></td><td><span class="cell-h">97.5%</span></td></tr>
+      <tr><td>Diện tích sàn</td><td><span class="cell-h">90.7%</span></td><td><span class="cell-h">97.4%</span></td><td><span class="cell-h">95.2%</span></td><td><span class="cell-h">94.5%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-h">93.2%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-h">93.7%</span></td><td><span class="cell-h">91.9%</span></td></tr>
+      <tr><td>Phương án sắp xếp</td><td><span class="cell-h">91.0%</span></td><td><span class="cell-h">99.9%</span></td><td><span class="cell-h">100%</span></td><td><span class="cell-h">95.9%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-m">54.4%</span></td><td><span class="cell-m">69.1%</span></td><td><span class="cell-l">0%</span></td></tr>
+      <tr><td>Pháp lý điều chỉnh</td><td><span class="cell-h">98.2%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-h">87.8%</span></td><td><span class="cell-h">99.7%</span></td><td><span class="cell-l">30.6%</span></td><td><span class="cell-l">0%</span></td></tr>
+      <tr><td>Hiện trạng pháp lí</td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td></tr>
+      <tr><td>Quy hoạch</td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-m">76.5%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td></tr>
+      <tr><td>Google Map URL</td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td></tr>
+      <tr><td>Nguyên giá / Giá trị còn lại</td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-h">92.6%</span></td><td><span class="cell-h">82.8%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">0%</span></td><td><span class="cell-l">22.1%</span></td><td><span class="cell-l">0%</span></td></tr>
     </tbody>
   </table>
 </div>
@@ -906,7 +1157,7 @@ footer {
 <!-- SECTION 7: BẢNG TỔNG HỢP (TABS)                        -->
 <!-- ======================================================= -->
 <div class="divider"></div>
-<div class="sec sec-purple anim d5">Bảng tóm tắt tổng hợp toàn bộ 9 phụ lục</div>
+<div class="sec sec-purple anim d5">Bảng tóm tắt tổng hợp toàn bộ 10 nhóm tài sản</div>
 <div class="full-card anim d5">
   <div class="tab-nav">
     <button class="tab-btn active" id="btn-t1" onclick="switchTab('t1','btn-t1')">Thống kê chính</button>
@@ -917,17 +1168,17 @@ footer {
     <table class="tbl">
       <thead><tr><th>Chỉ tiêu</th><th>Giá trị</th><th>Ghi chú</th></tr></thead>
       <tbody>
-        <tr><td>Tổng số tài sản</td><td class="num"><strong>14.254</strong></td><td>Trên toàn bộ 9 phụ lục</td></tr>
-        <tr><td>Phụ lục có số lượng lớn nhất</td><td><strong>Phụ lục 5</strong> – 9.882</td><td>Nhà, đất phường/xã (69.3% tổng)</td></tr>
-        <tr><td>Phụ lục có số lượng nhỏ nhất</td><td><strong>Phụ lục 6</strong> – 74</td><td>Tài sản Bộ TC (0.52%)</td></tr>
-        <tr><td>Diện tích đất phổ biến nhất</td><td><strong>100 – 500 m²</strong></td><td>3.565 tài sản (24.98%)</td></tr>
-        <tr><td>Diện tích trung bình (mean)</td><td><strong>7.514 m²</strong></td><td>Bị kéo cao bởi PL3/PL7</td></tr>
-        <tr><td>Diện tích trung vị</td><td><strong>766 m²</strong></td><td>Đại diện thực tế hơn</td></tr>
+        <tr><td>Tổng số tài sản</td><td class="num"><strong>14.259</strong></td><td>Trên toàn bộ 10 nhóm tài sản</td></tr>
+        <tr><td>Nhóm có số lượng lớn nhất</td><td><strong>UBND cấp xã</strong> – 8.150</td><td>Trụ sở UBND cấp xã (57.2% tổng)</td></tr>
+        <tr><td>Nhóm có số lượng nhỏ nhất</td><td><strong>Nhà đất TW chuyển giao</strong> – 74</td><td>Tài sản Bộ TC (0.52%)</td></tr>
+        <tr><td>Diện tích đất phổ biến nhất</td><td><strong>100 – 500 m²</strong></td><td>3.388 hồ sơ (29.1% trên 11.662 hồ sơ có DT hợp lệ)</td></tr>
+        <tr><td>Diện tích trung bình (mean)</td><td><strong>8.905 m²</strong></td><td>Tính trên dữ liệu DT đã làm sạch, loại PL9 do lặp cụm</td></tr>
+        <tr><td>Diện tích trung vị</td><td><strong>560 m²</strong></td><td>Đại diện thực tế hơn cho nhóm tài sản phổ thông</td></tr>
         <tr><td>Tổng phân vùng địa bàn</td><td><strong>1.293 vùng</strong></td><td>Theo trường Phường/Xã + Tỉnh/TP</td></tr>
         <tr><td>Địa bàn tập trung nhất</td><td><strong>Huyện Củ Chi – TP.HCM</strong></td><td>1.088 tài sản</td></tr>
         <tr><td>Tài sản đủ hồ sơ pháp lý</td><td><strong>1.145 (8%)</strong></td><td>Có Quyết định / GCNQSDĐ</td></tr>
-        <tr><td>Tài sản thiếu hồ sơ pháp lý</td><td><strong style="color:var(--danger);">13.125 (92%)</strong></td><td>Trống hoặc không có thông tin</td></tr>
-        <tr><td>Tỉnh tập trung nhiều nhất</td><td><strong>TP. Hồ Chí Minh</strong></td><td>~8.510 tài sản (~59.7%)</td></tr>
+        <tr><td>Tài sản thiếu hồ sơ pháp lý</td><td><strong style="color:var(--danger);">13.114 (92%)</strong></td><td>Trống hoặc không có thông tin</td></tr>
+        <tr><td>Tỉnh tập trung nhiều nhất</td><td><strong>TP. Hồ Chí Minh</strong></td><td>8.703 tài sản (~61.0%)</td></tr>
       </tbody>
     </table>
   </div>
@@ -935,14 +1186,14 @@ footer {
     <table class="tbl">
       <thead><tr><th>Chỉ tiêu tài chính</th><th>Ghi nhận</th><th>Trạng thái</th></tr></thead>
       <tbody>
-        <tr><td>Nguyên giá (có ghi nhận)</td><td>Phụ lục 5 ghi nhận giá trị một phần</td><td><span class="tag tag-no">Dữ liệu chưa đầy đủ</span></td></tr>
-        <tr><td>Giá trị còn lại</td><td>Phụ lục 5 có giá trị còn lại một số dòng</td><td><span class="tag tag-no">Cần bổ sung</span></td></tr>
-        <tr><td>Diện tích đất (tổng toàn bộ)</td><td>Hầu hết phụ lục có ghi nhận</td><td><span class="tag tag-yes">Đủ cơ bản</span></td></tr>
+        <tr><td>Nguyên giá (có ghi nhận)</td><td>UBND cấp xã ghi nhận giá trị một phần</td><td><span class="tag tag-no">Dữ liệu chưa đầy đủ</span></td></tr>
+        <tr><td>Giá trị còn lại</td><td>UBND cấp xã có giá trị còn lại một số dòng</td><td><span class="tag tag-no">Cần bổ sung</span></td></tr>
+        <tr><td>Diện tích đất (tổng toàn bộ)</td><td>Hầu hết nhóm tài sản có ghi nhận</td><td><span class="tag tag-yes">Đủ cơ bản</span></td></tr>
         <tr><td>Diện tích xây dựng</td><td>Phần lớn để trống</td><td><span class="tag tag-no">Cần bổ sung</span></td></tr>
-        <tr><td>Diện tích sàn sử dụng</td><td>Phụ lục 1, 3, 4 có ghi nhận đầy đủ</td><td><span class="tag tag-yes">Một phần đủ</span></td></tr>
-        <tr><td>Năm đưa vào sử dụng</td><td>Phụ lục 5 ghi nhận, PL1-4 thường để trống</td><td><span class="tag tag-no">Cần bổ sung PL1-4</span></td></tr>
-        <tr><td>Tổng DT — PL5 (lớn nhất)</td><td>74.753.662 m² ≈ 74.7 triệu m²</td><td><span class="tag tag-yes">Có dữ liệu</span></td></tr>
-        <tr><td>Tổng DT — PL7 (DT TB lớn nhất)</td><td>14.434.649 m², TB 48.764 m²/cơ sở</td><td><span class="tag tag-yes">Tiềm năng đấu giá cao</span></td></tr>
+        <tr><td>Diện tích sàn sử dụng</td><td>Đảng, ĐVSNCL TP, Tổ chức chính trị XH có ghi nhận đầy đủ</td><td><span class="tag tag-yes">Một phần đủ</span></td></tr>
+        <tr><td>Năm đưa vào sử dụng</td><td>UBND cấp xã ghi nhận, các nhóm đầu thường để trống</td><td><span class="tag tag-no">Cần bổ sung các nhóm đầu</span></td></tr>
+        <tr><td>Tổng DT — Đất công cộng cấp xã</td><td>41.734.027 m², TB 24.578 m²/cơ sở</td><td><span class="tag tag-yes">Quy mô đất lớn</span></td></tr>
+        <tr><td>Tổng DT — DNNN (PL9)</td><td>Tạm loại khỏi tổng DT vì dữ liệu diện tích lặp cụm theo block</td><td><span class="tag tag-warn">Cần chuẩn hóa</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -950,22 +1201,22 @@ footer {
     <table class="tbl">
       <thead><tr><th>#</th><th>Tên cột dữ liệu</th><th>Có dữ liệu</th><th>Nhận xét</th></tr></thead>
       <tbody>
-        <tr><td class="num">1</td><td>Cơ quan</td><td><span class="tag tag-yes">✔</span></td><td>Đầy đủ ở tất cả phụ lục</td></tr>
+        <tr><td class="num">1</td><td>Cơ quan</td><td><span class="tag tag-yes">✔</span></td><td>Đầy đủ ở tất cả nhóm tài sản</td></tr>
         <tr><td class="num">2</td><td>Mã định danh tài sản</td><td><span class="tag tag-yes">✔</span></td><td>Đầy đủ, định dạng T030000...</td></tr>
         <tr><td class="num">3</td><td>Địa chỉ đầy đủ</td><td><span class="tag tag-yes">✔</span></td><td>Hầu hết đầy đủ</td></tr>
         <tr><td class="num">4</td><td>Google Map URL</td><td><span class="tag tag-no">✗</span></td><td>Hầu hết trống, chưa geocode</td></tr>
-        <tr><td class="num">5</td><td>Tỉnh/Thành phố</td><td><span class="tag tag-warn">~</span></td><td>Một phần trống (PL2)</td></tr>
+        <tr><td class="num">5</td><td>Tỉnh/Thành phố</td><td><span class="tag tag-warn">~</span></td><td>Một phần trống (Sở ban ngành)</td></tr>
         <tr><td class="num">6</td><td>Phường/Xã</td><td><span class="tag tag-warn">~</span></td><td>Ghi nhận đa dạng định dạng</td></tr>
-        <tr><td class="num">7</td><td>Năm đưa vào sử dụng</td><td><span class="tag tag-no">✗</span></td><td>Chủ yếu PL5 có dữ liệu</td></tr>
-        <tr><td class="num">8</td><td>Nguyên giá</td><td><span class="tag tag-no">✗</span></td><td>Chủ yếu PL5 có dữ liệu</td></tr>
-        <tr><td class="num">9</td><td>Giá trị còn lại</td><td><span class="tag tag-no">✗</span></td><td>Chủ yếu PL5 có dữ liệu</td></tr>
+        <tr><td class="num">7</td><td>Năm đưa vào sử dụng</td><td><span class="tag tag-no">✗</span></td><td>Chủ yếu UBND cấp xã có dữ liệu</td></tr>
+        <tr><td class="num">8</td><td>Nguyên giá</td><td><span class="tag tag-no">✗</span></td><td>Chủ yếu UBND cấp xã có dữ liệu</td></tr>
+        <tr><td class="num">9</td><td>Giá trị còn lại</td><td><span class="tag tag-no">✗</span></td><td>Chủ yếu UBND cấp xã có dữ liệu</td></tr>
         <tr><td class="num">10</td><td>Diện tích đất</td><td><span class="tag tag-yes">✔</span></td><td>Đầy đủ, có dữ liệu số</td></tr>
         <tr><td class="num">11</td><td>Diện tích xây dựng</td><td><span class="tag tag-no">✗</span></td><td>Gần như toàn bộ trống</td></tr>
-        <tr><td class="num">12</td><td>Diện tích sàn sử dụng</td><td><span class="tag tag-warn">~</span></td><td>PL1,2,3,4 có; PL5 thường trống</td></tr>
+        <tr><td class="num">12</td><td>Diện tích sàn sử dụng</td><td><span class="tag tag-warn">~</span></td><td>Các nhóm Đảng/Sở ban ngành/ĐVSNCL TP/Tổ chức chính trị XH có; UBND cấp xã thường trống</td></tr>
         <tr><td class="num">13</td><td>Số thửa / Số tờ bản đồ</td><td><span class="tag tag-no">✗</span></td><td>Phần lớn trống</td></tr>
         <tr><td class="num">14</td><td>Hiện trạng sử dụng</td><td><span class="tag tag-yes">✔</span></td><td>Đầy đủ trên toàn bộ</td></tr>
-        <tr><td class="num">15</td><td>Phương án sắp xếp</td><td><span class="tag tag-warn">~</span></td><td>PL1-4 đầy đủ; PL5 thường trống</td></tr>
-        <tr><td class="num">16</td><td>Pháp lý điều chỉnh</td><td><span class="tag tag-no">✗</span></td><td>Chỉ PL1 có thông tin chi tiết</td></tr>
+        <tr><td class="num">15</td><td>Phương án sắp xếp</td><td><span class="tag tag-warn">~</span></td><td>Các nhóm đầu đầy đủ; UBND cấp xã thường trống</td></tr>
+        <tr><td class="num">16</td><td>Pháp lý điều chỉnh</td><td><span class="tag tag-no">✗</span></td><td>Chỉ nhóm Đảng có thông tin chi tiết</td></tr>
         <tr><td class="num">17</td><td>Hiện trạng pháp lý</td><td><span class="tag tag-no">✗</span></td><td>Gần như toàn bộ trống</td></tr>
         <tr><td class="num">18</td><td>Quy hoạch</td><td><span class="tag tag-no">✗</span></td><td>Gần như toàn bộ trống</td></tr>
       </tbody>
@@ -982,12 +1233,12 @@ footer {
   <div class="insight-card danger">
     <div class="insight-icon">🚨</div>
     <div class="insight-title">Pháp lý thiếu hệ thống — 92% hồ sơ</div>
-    <div class="insight-body">Chỉ PL1 và PL7 có thông tin pháp lý tương đối đầy đủ. 7 phụ lục còn lại hoàn toàn trống cột "Hiện trạng pháp lí". Cần xác minh khẩn cấp giữa thiếu nhập liệu vs thiếu giấy tờ thực tế.</div>
+    <div class="insight-body">Chỉ nhóm Đảng và Trung tâm phát triển quỹ đất có thông tin pháp lý tương đối đầy đủ. 7 nhóm còn lại hoàn toàn trống cột "Hiện trạng pháp lí". Cần xác minh khẩn cấp giữa thiếu nhập liệu vs thiếu giấy tờ thực tế.</div>
   </div>
   <div class="insight-card warn">
     <div class="insight-icon">⚡</div>
-    <div class="insight-title">PL5 — Khổng lồ nhưng thiếu dữ liệu</div>
-    <div class="insight-body">Phụ lục 5 có 9.882 hồ sơ (69% tổng số), tổng DT ước 74.7 triệu m². Nhiều ô địa chỉ, tỉnh/thành, đường, số nhà còn trống. Không có thông tin phương án sắp xếp. Cần hệ thống kiểm soát riêng.</div>
+    <div class="insight-title">UBND cấp xã — Khổng lồ nhưng thiếu dữ liệu</div>
+    <div class="insight-body">Nhóm UBND cấp xã có 9.882 hồ sơ (69% tổng số) gồm 8.150 UBND xã/phường + 1.732 đất công cộng, tổng DT ước 74.7 triệu m². Nhiều ô địa chỉ, tỉnh/thành, đường, số nhà còn trống. Cần hệ thống kiểm soát riêng.</div>
   </div>
   <div class="insight-card warn">
     <div class="insight-icon">📊</div>
@@ -996,18 +1247,18 @@ footer {
   </div>
   <div class="insight-card danger">
     <div class="insight-icon">🏠</div>
-    <div class="insight-title">PL8: 626 cơ sở dưới 100 m² — rủi ro pháp lý cao</div>
+    <div class="insight-title">Tổ chức QLKD nhà địa phương: 626 cơ sở dưới 100 m² — rủi ro pháp lý cao</div>
     <div class="insight-body">Cty Nhà tạm quản lý 626 bất động sản dưới 100 m², chủ yếu mặt bằng shophouse trung tâm có giá trị cao. 70% trong số này không có thông tin pháp lý rõ ràng — tiềm ẩn tranh chấp khi bán đấu giá.</div>
   </div>
   <div class="insight-card info">
     <div class="insight-icon">💰</div>
-    <div class="insight-title">PL7: 298 khu đất tiềm năng thanh lý cao</div>
+    <div class="insight-title">Trung tâm phát triển quỹ đất: 298 khu đất tiềm năng thanh lý cao</div>
     <div class="insight-body">Quỹ đất BT, đấu giá có tổng DT ~14.4 triệu m², DT TB lớn nhất (48.764 m²). Pháp lý tốt nhất (99.7%). Đây là nhóm sẵn sàng nhất để chuyển sang giao nhà đầu tư — tiềm năng thu ngân sách lớn.</div>
   </div>
   <div class="insight-card warn">
     <div class="insight-icon">🔄</div>
-    <div class="insight-title">PL2: "Giữ lại" chiếm 91% — ít cải cách</div>
-    <div class="insight-body">Trong 990 cơ sở UBND quản lý, chỉ 6% thu hồi và 3% điều chuyển. Tỷ lệ "giữ lại tiếp tục sử dụng" 91% có thể phản ánh thiếu cơ chế rà soát nhu cầu thực sự. Một số cơ sở "Để trống" vẫn phân loại giữ lại.</div>
+    <div class="insight-title">Sở ban ngành: "Giữ lại" chiếm 91% — ít cải cách</div>
+    <div class="insight-body">Trong 990 cơ sở Sở ban ngành quản lý, chỉ 6% thu hồi và 3% điều chuyển. Tỷ lệ "giữ lại tiếp tục sử dụng" 91% có thể phản ánh thiếu cơ chế rà soát nhu cầu thực sự. Một số cơ sở "Để trống" vẫn phân loại giữ lại.</div>
   </div>
   <div class="insight-card note">
     <div class="insight-icon">📍</div>
@@ -1016,28 +1267,24 @@ footer {
   </div>
   <div class="insight-card ok">
     <div class="insight-icon">✅</div>
-    <div class="insight-title">PL1 &amp; PL7: Mô hình tốt cần nhân rộng</div>
-    <div class="insight-body">Hai phụ lục này có pháp lý gần như hoàn chỉnh (98.2% và 99.7%), thông tin quy hoạch và hiện trạng sử dụng rõ ràng. Đây là chuẩn mực dữ liệu cần áp dụng cho các phụ lục còn lại.</div>
+    <div class="insight-title">Đảng &amp; Trung tâm phát triển quỹ đất: Mô hình tốt cần nhân rộng</div>
+    <div class="insight-body">Hai nhóm này có pháp lý gần như hoàn chỉnh (98.2% và 99.7%), thông tin quy hoạch và hiện trạng sử dụng rõ ràng. Đây là chuẩn mực dữ liệu cần áp dụng cho các nhóm còn lại.</div>
   </div>
   <div class="insight-card danger">
     <div class="insight-icon">🏗️</div>
     <div class="insight-title">Dữ liệu tọa độ &amp; Google Maps — gần như trống</div>
-    <div class="insight-body">Cột "Google map Url" và "geocoded_at" hầu hết trống trong tất cả 9 phụ lục. Không thể lập bản đồ không gian hay phân tích phân bố vùng địa lý. Hạn chế lớn cho ra quyết định quy hoạch.</div>
+    <div class="insight-body">Cột "Google map Url" và "geocoded_at" hầu hết trống trong tất cả 10 nhóm tài sản. Không thể lập bản đồ không gian hay phân tích phân bố vùng địa lý. Hạn chế lớn cho ra quyết định quy hoạch.</div>
   </div>
   <div class="insight-card note">
     <div class="insight-icon">⚖️</div>
-    <div class="insight-title">PL8: ~300 loại phương án — thiếu chuẩn hóa</div>
-    <div class="insight-body">Cột "Phương án sắp xếp" trong PL8 có gần 300 giá trị không chuẩn hóa. Gây khó khăn cho thống kê tổng hợp. Cần chuẩn hóa về 5–7 loại phương án chính thức để dễ quản lý.</div>
+    <div class="insight-title">Tổ chức QLKD nhà địa phương: ~300 loại phương án — thiếu chuẩn hóa</div>
+    <div class="insight-body">Cột "Phương án sắp xếp" trong nhóm Tổ chức QLKD nhà địa phương có gần 300 giá trị không chuẩn hóa. Gây khó khăn cho thống kê tổng hợp. Cần chuẩn hóa về 5–7 loại phương án chính thức để dễ quản lý.</div>
   </div>
-  <div class="insight-card warn">
-    <div class="insight-icon">🔢</div>
-    <div class="insight-title">Mã định danh tài sản — tuần tự, chưa phân cấp</div>
-    <div class="insight-body">Mã T030000000xxxxx là mã tuyến tính, không phân cấp theo loại tài sản/địa bàn. Đề xuất mã phân cấp: [Loại tài sản]-[Phụ lục]-[Quận/Huyện]-[STT] để dễ cross-reference.</div>
-  </div>
+  
   <div class="insight-card info">
     <div class="insight-icon">📅</div>
-    <div class="insight-title">Năm đưa vào sử dụng — dữ liệu phong phú ở PL5</div>
-    <div class="insight-body">PL5 có cột "Năm đưa vào sử dụng" tương đối đầy đủ (1979–2023). Nhiều tài sản từ trước 1990 cần đánh giá lại giá trị còn lại và lập kế hoạch bảo trì/cải tạo toàn diện.</div>
+    <div class="insight-title">Năm đưa vào sử dụng — dữ liệu phong phú ở UBND cấp xã</div>
+    <div class="insight-body">Nhóm UBND cấp xã có cột "Năm đưa vào sử dụng" tương đối đầy đủ (1979–2023). Nhiều tài sản từ trước 1990 cần đánh giá lại giá trị còn lại và lập kế hoạch bảo trì/cải tạo toàn diện.</div>
   </div>
 </div>
 
@@ -1051,19 +1298,19 @@ footer {
     <div>
       <div class="rec-title" style="color:var(--danger);">🔴 KHẨN CẤP (Ngay)</div>
       <div class="rec-list">
-        1. <b>PL5 — Nhập pháp lý 9.882 hồ sơ phường/xã</b> — Yêu cầu 100% UBND phường nộp GCN QSDĐ/QĐ giao đất<br>
-        2. <b>PL8 — Hoàn thiện 1.047 hồ sơ còn thiếu</b> — Ưu tiên các cơ sở đang "Bán đấu giá"<br>
-        3. <b>PL2 — Nhập dữ liệu pháp lý 990 cơ sở</b> — Đặc biệt cơ sở "Thu hồi" cần xác lập quyền nhà nước<br>
-        4. <b>Bật cột "Hiện trạng pháp lí"</b> — Hiện trống hoàn toàn ở tất cả 9 phụ lục
+        1. <b>UBND cấp xã — Nhập pháp lý 9.882 hồ sơ</b> — Yêu cầu 100% UBND phường/xã nộp GCN QSDĐ/QĐ giao đất<br>
+        2. <b>Tổ chức QLKD Nhà ĐP — Hoàn thiện 1.036 hồ sơ còn thiếu</b> — Ưu tiên các cơ sở đang "Bán đấu giá"<br>
+        3. <b>Sở ban ngành — Nhập dữ liệu pháp lý 990 cơ sở</b> — Đặc biệt cơ sở "Thu hồi" cần xác lập quyền nhà nước<br>
+        4. <b>Bật cột "Hiện trạng pháp lí"</b> — Hiện trống hoàn toàn ở tất cả 10 nhóm tài sản
       </div>
     </div>
     <div>
       <div class="rec-title" style="color:var(--a7);">🟡 NGẮN HẠN (1–3 tháng)</div>
       <div class="rec-list">
         5. <b>Geocoding toàn bộ địa chỉ</b> — Tích hợp Google Maps API để lập bản đồ không gian tài sản<br>
-        6. <b>Chuẩn hóa Phương án sắp xếp PL8</b> — Rút gọn ~300 giá trị xuống 7 loại chuẩn<br>
-        7. <b>Bổ sung thông tin quy hoạch PL2/PL3/PL4</b> — Tra cứu Sở QH-KT cho từng địa chỉ<br>
-        8. <b>PL9 (SAWACO) — yêu cầu bổ sung hồ sơ</b> — Toàn bộ 919 cơ sở thiếu pháp lý, quy hoạch
+        6. <b>Chuẩn hóa Phương án sắp xếp nhóm Tổ chức QLKD Nhà ĐP</b> — Rút gọn ~300 giá trị xuống 7 loại chuẩn<br>
+        7. <b>Bổ sung thông tin quy hoạch cho Sở ban ngành/ĐVSNCL TP/Tổ chức chính trị XH</b> — Tra cứu Sở QH-KT cho từng địa chỉ<br>
+        8. <b>Doanh nghiệp Nhà Nước — yêu cầu bổ sung hồ sơ</b> — Toàn bộ 919 cơ sở thiếu pháp lý, quy hoạch
       </div>
     </div>
   </div>
@@ -1073,7 +1320,7 @@ footer {
       9. <b>Xây dựng Dashboard GIS</b> — Tích hợp bản đồ, phân vùng, cảnh báo pháp lý tự động theo thay đổi quy hoạch &nbsp;|&nbsp;
       10. <b>Tái cơ cấu mã định danh</b> — Mã phân cấp theo loại-địa bàn-STT để dễ truy xuất &nbsp;|&nbsp;
       11. <b>Kết nối Sở NNMT</b> — Đồng bộ dữ liệu GCN QSDĐ từ hệ thống đăng ký đất đai &nbsp;|&nbsp;
-      12. <b>Đánh giá lại tài sản PL5</b> — Phân tích tuổi tài sản, hiện trạng, lập kế hoạch bảo trì theo từng phường
+      12. <b>Đánh giá lại tài sản UBND cấp xã</b> — Phân tích tuổi tài sản, hiện trạng, lập kế hoạch bảo trì theo từng phường
     </div>
   </div>
 </div>
@@ -1081,7 +1328,7 @@ footer {
 </div><!-- .wrap -->
 
 <footer>
-  Dashboard tổng hợp từ KetQua_PhuLuc_HoanThien_14_3_2026.xlsx · 9 phụ lục · 14.254 hồ sơ nhà đất · TP. Hồ Chí Minh & vùng phụ cận · Phân tích: 14/04/2026
+  Dashboard tổng hợp từ KetQua_PhuLuc_HoanThien_14_3_2026.xlsx · 10 nhóm tài sản · 14.259 hồ sơ nhà đất · TP. Hồ Chí Minh & vùng phụ cận · Phân tích: 15/04/2026
 </footer>
 
 <!-- ======================================================= -->
@@ -1092,38 +1339,83 @@ Chart.defaults.color = '#8896b3';
 Chart.defaults.font.family = 'Be Vietnam Pro';
 const gc = 'rgba(255,255,255,0.06)';
 
-// --- 1. BAR: PHỤ LỤC ---
+// --- 1. BAR: NHÓM TÀI SẢN ---
+// Định nghĩa màu lưới (nếu bạn chưa có)
+
 new Chart(document.getElementById('chartPhuLuc'), {
   type: 'bar',
   data: {
-    labels: ['PL 1','PL 2','PL 3','PL 4','PL 5','PL 6','PL 7','PL 8','PL 9'],
+    labels: [
+      'Đảng', 
+      'Sở ban ngành', 
+      'ĐVSNCL TP', 
+      'Tổ chức chính trị XH', 
+      'UBND cấp xã', 
+      'Đất, tài sản công cộng', 
+      'Nhà đất TW chuyển giao', 
+      'TT phát triển quỹ đất', 
+      'QL nhà địa phương', 
+      'Doanh nghiệp Nhà nước'
+    ],
     datasets: [{
       label: 'Số tài sản',
-      data: [333, 992, 126, 145, 9882, 74, 298, 1490, 919],
-      backgroundColor: ['#38bdf8','#818cf8','#f472b6','#34d399','#fb923c','#a78bfa','#38bdf8','#ff4757','#c77dff'],
-      borderRadius: 8, borderSkipped: false
+      data: [333, 990, 126, 145, 8150, 1732, 74, 298, 1492, 919],
+      backgroundColor: [
+        '#38bdf8', '#818cf8', '#f472b6', '#34d399', '#fb923c', 
+        '#facc15', '#a78bfa', '#2dd4bf', '#ff4757', '#c77dff'
+      ],
+      borderRadius: 8,
+      borderSkipped: false,
+      // Giúp các cột cực nhỏ (như 74) luôn có độ cao tối thiểu để dễ click/di chuột
+      minBarLength: 10 
     }]
   },
   options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ' ' + c.parsed.y.toLocaleString('vi-VN') + ' tài sản' } } },
-    scales: { x: { grid: { color: gc } }, y: { grid: { color: gc }, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v } } }
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (c) => ` ${c.parsed.y.toLocaleString('vi-VN')} tài sản`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false } // Tắt lưới trục X cho thoáng
+      },
+      y: {
+        // SỬ DỤNG SCALE LOGARITHMIC ĐỂ ĐẨY CÁC CỘT THẤP LÊN
+        type: 'logarithmic',
+        min: 10, // Đặt mức sàn là 10 để cột 74 không bị dính đáy
+        grid: { color: gc },
+        ticks: {
+          // Định dạng lại các con số trên trục Y cho dễ đọc
+          callback: function(value) {
+            if (value === 10 || value === 100 || value === 1000 || value === 10000) {
+              return value.toLocaleString('vi-VN');
+            }
+            return null; // Chỉ hiện các mốc chính để tránh rối mắt
+          }
+        }
+      }
+    }
   }
 });
-
 // --- 2. DOUGHNUT: DIỆN TÍCH ---
 new Chart(document.getElementById('chartArea'), {
   type: 'doughnut',
   data: {
     labels: ['<100m²','100-500m²','500-1000m²','1000-5000m²','5000-10000m²','>10000m²'],
-    datasets: [{ data: [2796,3565,1629,3457,1238,1585],
+    datasets: [{ data: [2162,3388,1536,2501,708,1367],
       backgroundColor: ['#38bdf8','#818cf8','#f472b6','#34d399','#fb923c','#a78bfa'],
       borderColor: '#070d1a', borderWidth: 2, hoverOffset: 8 }]
   },
   options: {
     responsive: true, maintainAspectRatio: false, cutout: '58%',
     plugins: { legend: { position: 'right', labels: { padding: 12, boxWidth: 11, font: { size: 11 } } },
-      tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.parsed.toLocaleString('vi-VN') + ' (' + ((c.parsed/14270)*100).toFixed(1) + '%)' } } }
+      tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.parsed.toLocaleString('vi-VN') + ' (' + ((c.parsed/11662)*100).toFixed(1) + '%)' } } }
   }
 });
 
@@ -1131,9 +1423,9 @@ new Chart(document.getElementById('chartArea'), {
 new Chart(document.getElementById('chartProvince'), {
   type: 'doughnut',
   data: {
-    labels: ['TP. Hồ Chí Minh','Bình Dương','Bà Rịa – Vũng Tàu','Chưa phân vùng / Khác'],
-    datasets: [{ data: [8510, 1699, 1610, 2435],
-      backgroundColor: ['#38bdf8','#818cf8','#f472b6','rgba(255,255,255,0.12)'],
+    labels: ['TP Hồ Chí Minh','Chưa rõ tỉnh/TP','Bình Dương','Bà Rịa - Vũng Tàu'],
+    datasets: [{ data: [8703, 2129, 1707, 1619],
+     backgroundColor: ['#38bdf8', '#818cf8', '#f472b6', '#fb923c'],
       borderColor: '#070d1a', borderWidth: 2, hoverOffset: 8 }]
   },
   options: {
@@ -1145,16 +1437,16 @@ new Chart(document.getElementById('chartProvince'), {
 
 // --- 4. ZONE BAR LIST ---
 const zones = [
-  {name:'Chưa phân vùng', cnt:1440},
-  {name:'TP.HCM – H. Củ Chi', cnt:1088},
-  {name:'TP.HCM – TP. Thủ Đức', cnt:640},
-  {name:'TP.HCM – Quận 12', cnt:613},
-  {name:'TP.HCM – Q. Bình Thạnh', cnt:405},
-  {name:'TP.HCM – H. Hóc Môn', cnt:388},
-  {name:'BR-VT – H. Long Đất', cnt:384},
-  {name:'Bình Dương – TP. Thuận An', cnt:319},
-  {name:'BR-VT – H. Châu Đức', cnt:316},
-  {name:'BR-VT – H. Xuyên Mộc', cnt:301},
+  {name:'TP Hồ Chí Minh – Huyện Củ Chi', cnt:1088},
+  {name:'TP Hồ Chí Minh – Thành phố Thủ Đức', cnt:640},
+  {name:'TP Hồ Chí Minh – Quận 12', cnt:613},
+  {name:'Chưa phân vùng hoàn toàn', cnt:507},
+  {name:'TP Hồ Chí Minh – Quận Bình Thạnh', cnt:405},
+  {name:'TP Hồ Chí Minh – Huyện Hóc Môn', cnt:388},
+  {name:'Bà Rịa - Vũng Tàu – Huyện Long Đất', cnt:384},
+  {name:'Bình Dương – Thành phố Thuận An', cnt:319},
+  {name:'Bà Rịa - Vũng Tàu – Huyện Châu Đức', cnt:316},
+  {name:'Bà Rịa - Vũng Tàu – Huyện Xuyên Mộc', cnt:301},
 ];
 const maxZ = zones[0].cnt;
 const zl = document.getElementById('zoneList');
@@ -1172,10 +1464,10 @@ zones.forEach((z,i) => {
 new Chart(document.getElementById('chartUsage'), {
   type: 'bar',
   data: {
-    labels: ['Trụ sở làm việc','Cơ sở SN / GD','Tổ chức ĐT-XH','HĐND-UBND phường','Cơ quan Đảng','Nhà công vụ','Khu tưởng niệm / Khác'],
+    labels: ['Khác (Trung tâm học tập cộng đồng, BĐH khu phố (ấp), câu lạc bộ, sân chơi)','Trường học','Chưa ghi nhận','Tiếp tục sắp xếp','HĐND-UBND (trụ sở chính, phòng ban, kho lưu trữ của phường)','Văn hóa (nhà văn hóa, nhà thiếu nhi, trung tâm cung ứng dịch vụ văn hóa thể thao)','Công an'],
     datasets: [{
       label: 'Tài sản',
-      data: [5200, 2800, 1900, 1700, 1200, 800, 654],
+      data: [3135, 2722, 1579, 1274, 646, 477, 413],
       backgroundColor: ['#38bdf8','#34d399','#818cf8','#f472b6','#fb923c','#a78bfa','#8896b3'],
       borderRadius: 6, borderSkipped: false
     }]
@@ -1190,8 +1482,8 @@ new Chart(document.getElementById('chartUsage'), {
 // --- 6. DOUGHNUT: PHƯƠNG ÁN SẮP XẾP ---
 const planColors = ['#38bdf8','#f472b6','#34d399','#fb923c','#818cf8'];
 const planData = {
-  labels: ['Giữ lại sử dụng','Chờ phân loại','Bàn giao địa phương','Thu hồi/Chuyển giao','Chưa có phương án'],
-  data: [1323, 9882, 126, 1145, 1778]
+  labels: ['Chưa có phương án','Giữ lại tiếp tục sử dụng','Bán đấu giá chuyển quyền sử dụng đất','Thu hồi','Chuyển giao về địa phương quản lý, xử lý.'],
+  data: [11509, 1099, 110, 54, 48]
 };
 new Chart(document.getElementById('chartPlan'), {
   type: 'doughnut',
@@ -1206,8 +1498,8 @@ planData.labels.forEach((l,i) => {
 // --- 7. DOUGHNUT: LOẠI ĐẤT ---
 const ltColors = ['#818cf8','#38bdf8','#f472b6','#34d399','#fb923c'];
 const ltData = {
-  labels: ['Nhà, đất – Trụ sở làm việc','Nhà, đất – Sự nghiệp / GD','Đất ở / Công vụ','Đất nông nghiệp / Khác','Đặc biệt / Khu tưởng niệm'],
-  data: [7200, 3100, 1900, 1500, 554]
+  labels: ['Nhà, đất - trụ sở làm việc','Chưa phân loại','Cơ sở hoạt động sự nghiệp','TS kết cấu hạ tầng','Tiếp tục sắp xếp'],
+  data: [4277, 4148, 3444, 1675, 304]
 };
 new Chart(document.getElementById('chartLandType'), {
   type: 'doughnut',
@@ -1222,7 +1514,7 @@ ltData.labels.forEach((l,i) => {
 // --- 8. DONUT: PHÁP LÝ ---
 new Chart(document.getElementById('chartLegal'), {
   type: 'doughnut',
-  data: { labels:['Đủ hồ sơ','Thiếu hồ sơ'], datasets:[{data:[1145,13125], backgroundColor:['#38bdf8','rgba(255,255,255,0.08)'], borderColor:['#38bdf8','#334155'], borderWidth:2, hoverOffset:6}] },
+  data: { labels:['Đủ hồ sơ','Thiếu hồ sơ'], datasets:[{data:[1145,13114], backgroundColor:['#38bdf8','rgba(255,255,255,0.08)'], borderColor:['#38bdf8','#334155'], borderWidth:2, hoverOffset:6}] },
   options: { responsive:true, maintainAspectRatio:false, cutout:'70%', plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ' '+c.label+': '+c.parsed.toLocaleString('vi-VN')+' tài sản' }} } }
 });
 
@@ -1231,7 +1523,7 @@ new Chart(document.getElementById('chartYear'), {
   type: 'bar',
   data: {
     labels: ['Trước 1975','1975–1985','1986–1995','1996–2005','2006–2015','2016–2025','Chưa ghi nhận'],
-    datasets: [{ label: 'Số tài sản', data: [890,1420,1680,1250,980,520,7514],
+    datasets: [{ label: 'Số tài sản', data: [45,958,762,1568,2840,1907,6179],
       backgroundColor: ctx => {
         const g = ctx.chart.ctx.createLinearGradient(0,0,0,300);
         g.addColorStop(0,'#38bdf8'); g.addColorStop(1,'#818cf8'); return g;
@@ -1245,14 +1537,14 @@ new Chart(document.getElementById('chartYear'), {
   }
 });
 
-// --- 10. GROUPED BAR: DT ĐẤT & SÀN THEO PL ---
+// --- 10. GROUPED BAR: DT ĐẤT & SÀN THEO NHÓM ---
 new Chart(document.getElementById('chartFloor'), {
   type: 'bar',
   data: {
-    labels: ['PL 1','PL 2','PL 3','PL 4','PL 5','PL 6','PL 7','PL 8','PL 9'],
+    labels: ['Đảng','Sở ban ngành','ĐVSNCL TP','Tổ chức chính trị XH','UBND','Đất công','Nhà đất TW chuyển giao','Trung tâm phát triển quỹ đất','Tổ chức quản lý kinh doanh nhà địa phương','Doanh nghiệp Nhà Nước'],
     datasets: [
-      { label: 'DT Đất (nghìn m²)', data: [85,220,28,35,1950,18,62,310,190], backgroundColor: 'rgba(56,189,248,0.7)', borderRadius: 6 },
-      { label: 'DT Sàn SD (nghìn m²)', data: [180,95,15,22,0,8,35,0,0], backgroundColor: 'rgba(129,140,248,0.7)', borderRadius: 6 }
+      { label: 'DT Đất (nghìn m²)', data: [924.1,14860.65,2717.87,1815.47,28496.74,41734.03,159.2,12205.95,938.92,0], backgroundColor: 'rgba(56,189,248,0.7)', borderRadius: 6 },
+      { label: 'DT Sàn SD (nghìn m²)', data: [403.9,8379.49,1364.62,328.19,0,0,44.83,0,666.43,0], backgroundColor: 'rgba(129,140,248,0.7)', borderRadius: 6 }
     ]
   },
   options: {
@@ -1272,3 +1564,4 @@ function switchTab(id, btnId) {
 </script>
 </body>
 </html>
+
