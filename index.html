@@ -36,6 +36,84 @@
   --t3: #5a6b8a;
 }
 
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg2: #ffffff;
+  --surface: #ffffff;
+  --surface2: #f1f5f9;
+  --surface3: #e2e8f0;
+  --border: rgba(0,0,0,0.1);
+  --border2: rgba(0,0,0,0.15);
+
+  --a1: #0284c7;    
+  --a2: #4338ca;    
+  --a3: #db2777;    
+  --a4: #059669;    
+  --a5: #ea580c;    
+  --a6: #9333ea;    
+  --a7: #ca8a04;    
+
+  --danger: #dc2626;
+  --warn: #d97706;
+  --ok: #059669;
+
+  --t1: #0f172a;
+  --t2: #475569;
+  --t3: #64748b;
+}
+
+[data-theme="light"] body {
+  background-image:
+    radial-gradient(ellipse at 85% 5%, rgba(2,132,199,.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 5% 95%, rgba(219,39,119,.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, rgba(67,56,202,.05) 0%, transparent 60%);
+}
+
+[data-theme="light"] .card, 
+[data-theme="light"] .full-card, 
+[data-theme="light"] .kpi-card, 
+[data-theme="light"] .phap-card, 
+[data-theme="light"] .insight-card {
+  background: rgba(255,255,255,0.9);
+}
+
+[data-theme="light"] .kpi-hero {
+  background: linear-gradient(135deg, rgba(2,132,199,.06), rgba(67,56,202,.06));
+  border-color: rgba(67,56,202,.2) !important;
+}
+
+[data-theme="light"] .tree-root { 
+  background: linear-gradient(135deg, rgba(2,132,199,.1), rgba(67,56,202,.1)); 
+}
+
+[data-theme="light"] .bar-track, 
+[data-theme="light"] .zone-bar-bg { 
+  background: rgba(0,0,0,.08); 
+}
+
+[data-theme="light"] .bar-count { color: #fff; } 
+[data-theme="light"] .tree-leaf { background: rgba(0,0,0,.03); border-color: rgba(0,0,0,.08); }
+[data-theme="light"] .tree-leaf:hover { background: rgba(0,0,0,.06); }
+
+[data-theme="light"] .tree-h-line, 
+[data-theme="light"] .tree-branches-wrap::before, 
+[data-theme="light"] .tree-branch::before, 
+[data-theme="light"] .tree-leaf-wrap::before {
+  background: rgba(2,132,199,.4);
+}
+
+[data-theme="light"] .tree-circle.c-blue { background: rgba(2,132,199,.06); border-color: rgba(2,132,199, .5); }
+[data-theme="light"] .tree-circle.c-pink { background: rgba(219,39,119,.06); border-color: rgba(219,39,119,.5); }
+
+[data-theme="light"] .tbl tr:hover td, 
+[data-theme="light"] .heat-tbl tr:hover td { 
+  background: rgba(0,0,0,.04); 
+}
+[data-theme="light"] .tbl td, 
+[data-theme="light"] .heat-tbl td { 
+  border-bottom: 1px solid rgba(0,0,0,.05); 
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -524,6 +602,11 @@ footer {
     <h1>Dashboard Toàn Diện<br>Tài Sản Công TP.HCM</h1>
   </div>
   <div class="hdr-right">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+      <button id="themeToggle" style="background: var(--surface2); border: 1px solid var(--border); color: var(--t1); border-radius: 20px; padding: 6px 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-family: 'Be Vietnam Pro', sans-serif; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <span id="themeIcon">☀️</span> <span id="themeText">Light Mode</span>
+      </button>
+    </div>
     <div class="kpi-val hdr-total" style="font-size:3rem; font-family:'JetBrains Mono',monospace; font-weight:900; background:linear-gradient(135deg,var(--a1),var(--a2)); background-clip:text; -webkit-background-clip:text; -webkit-text-fill-color:transparent;">14.259</div>
     <div class="hdr-total-label">Tổng tài sản công</div>
   </div>
@@ -1554,6 +1637,41 @@ function switchTab(id, btnId) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById(btnId).classList.add('active');
+}
+
+// --- THEME TOGGLE ---
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeText = document.getElementById('themeText');
+let isLight = localStorage.getItem('theme') === 'light';
+
+function applyTheme(light) {
+  if (light) {
+    document.documentElement.setAttribute('data-theme', 'light');
+    if(themeIcon) themeIcon.textContent = '🌙';
+    if(themeText) themeText.textContent = 'Dark Mode';
+    Chart.defaults.color = '#475569';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    if(themeIcon) themeIcon.textContent = '☀️';
+    if(themeText) themeText.textContent = 'Light Mode';
+    Chart.defaults.color = '#8896b3';
+  }
+  // Re-render chart text colors
+  for (let id in Chart.instances) {
+    Chart.instances[id].update();
+  }
+}
+
+// Initialize theme
+applyTheme(isLight);
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    isLight = !isLight;
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    applyTheme(isLight);
+  });
 }
 </script>
 </body>
