@@ -802,13 +802,7 @@ footer {
   </div>
 </div>
 
-<div class="mb20 anim d4">
-  <div class="card">
-    <div class="sec sec-blue" style="margin-bottom:14px;">Năm Đưa Vào Sử Dụng (UBND cấp xã — đại diện)</div>
-    <div class="chart-wrap chart-h240"><canvas id="chartYear"></canvas></div>
-    <div class="info-box" style="margin-top:12px;">Tài sản tập trung vào giai đoạn <strong>trước 1975, 1975–1995</strong> và <strong>2000–2015</strong>. Nhiều tài sản phường/xã chưa ghi năm đưa vào sử dụng.</div>
-  </div>
-</div>
+
 
 <!-- ======================================================= -->
 <!-- SECTION 4: PHÂN VÙNG DIỆN TÍCH + TOP 10 ĐỊA BÀN       -->
@@ -1591,26 +1585,7 @@ if (document.getElementById('chartLegal')) {
   });
 }
 
-// --- 9. BAR: NĂM ĐƯA VÀO SỬ DỤNG ---
-if (document.getElementById('chartYear')) {
-  new Chart(document.getElementById('chartYear'), {
-    type: 'bar',
-    data: {
-      labels: ['Trước 1975','1975–1985','1986–1995','1996–2005','2006–2015','2016–2025','Chưa ghi nhận'],
-      datasets: [{ label: 'Số tài sản', data: [45,958,762,1568,2840,1907,6179],
-        backgroundColor: ctx => {
-          const g = ctx.chart.ctx.createLinearGradient(0,0,0,300);
-          g.addColorStop(0,'#38bdf8'); g.addColorStop(1,'#818cf8'); return g;
-        },
-        borderRadius: 8, borderSkipped: false }]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ' ~'+c.parsed.y.toLocaleString('vi-VN')+' tài sản (ước tính)' }}},
-      scales:{ x:{grid:{color:gc}}, y:{grid:{color:gc}, ticks:{callback: v => v >= 1000 ? (v/1000).toFixed(0)+'k' : v}} }
-    }
-  });
-}
+
 
 // --- 10. GROUPED BAR: DT ĐẤT & SÀN THEO NHÓM ---
 if (document.getElementById('chartFloor')) {
